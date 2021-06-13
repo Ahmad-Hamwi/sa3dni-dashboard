@@ -5,8 +5,7 @@ import IApiExceptionFactory from "../exception/IApiExceptionFactory";
 
 export default abstract class BaseRemoteService {
 
-    constructor(protected readonly apiClient: IApiClient,
-                          protected readonly exceptionFactory: IApiExceptionFactory) {
+    protected constructor(protected readonly exceptionFactory: IApiExceptionFactory) {
     }
 
     protected tryMapResponse<T extends BaseResponse<unknown>>(responseType: (new(...args: any[]) => T), response: Response): T {
