@@ -62,6 +62,7 @@
     ]
   },
   "devDependencies": {
-    "@types/redux-logger": "^3.0.8"
+    "@types/redux-logger": "^3.0.8",
+    "babel-plugin-transform-typescript-metadata": "^0.3.2"
   }
 }
