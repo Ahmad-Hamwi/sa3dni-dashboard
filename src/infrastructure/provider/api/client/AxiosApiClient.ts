@@ -1,13 +1,10 @@
 import {AxiosInstance, AxiosResponse} from "axios";
-import IApiClient, {Response} from "./IApiClient";
+import IApiClient, {Response} from "./IApiClinet";
 import ServerException from "../../../exception/ServerException";
-import {inject, injectable} from "tsyringe";
-import {INJECT_AXIOS_CLIENT} from "../../../../di/module/network_module";
 
-@injectable()
 export default class AxiosApiClient implements IApiClient {
 
-    constructor(@inject(INJECT_AXIOS_CLIENT) private readonly axios: AxiosInstance) {
+    constructor(private readonly axios: AxiosInstance) {
     }
 
     private async tryRequest<T>(request: () => Promise<AxiosResponse<T>>): Promise<Response> {
@@ -19,6 +16,12 @@ export default class AxiosApiClient implements IApiClient {
                 code: response.status
             }
         } catch (e) {
+            if (e.response) {
+                return {
+                    body: e.response.data,
+                    code: e.response.status
+                }
+            }
             throw new ServerException();
         }
     }

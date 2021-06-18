@@ -1,8 +1,6 @@
 import IAppCache from "./IAppCache";
 import {TOKEN_CACHE_KEY} from "./cache_constants";
-import {injectable} from "tsyringe";
 
-@injectable()
 export default class LocalStorageCache implements IAppCache {
 
     getToken(): string | null {

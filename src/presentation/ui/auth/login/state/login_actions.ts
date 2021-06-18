@@ -6,14 +6,15 @@ export const login = (email: string, password: string) => async (dispatch: any) 
 
     dispatch(setLoading(true));
 
-    // const useCase = resolve<LoginUseCase>(LoginUseCase);
-    //
-    // useCase.execute(
-    //     {email, password}
-    // ).then(result => {
-    //     setAuthSuccess();
-    // }).catch(e => {
-    //     dispatch(setAuthFailed(e.message));
-    // });
+    const useCase = resolve<LoginUseCase>(LoginUseCase);
+
+    useCase.execute(
+        {email, password}
+    ).then(result => {
+        setAuthSuccess();
+    }).catch(e => {
+        console.log(e)
+        dispatch(setAuthFailed(e.message));
+    });
 
 };

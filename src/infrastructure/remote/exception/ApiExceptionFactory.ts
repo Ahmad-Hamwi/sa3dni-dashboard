@@ -1,9 +1,7 @@
 import IApiExceptionFactory from "./IApiExceptionFactory";
 import {Exception} from "../../../domain/exception/Exception";
 import UnauthorizedException from "../../../domain/exception/UnauthorizedException";
-import {injectable} from "tsyringe";
 
-@injectable()
 export default class ApiExceptionFactory implements IApiExceptionFactory {
 
     createException(statusCode: number, message: string | undefined): Exception {

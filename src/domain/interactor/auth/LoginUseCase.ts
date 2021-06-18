@@ -1,13 +1,10 @@
 import IAuthService, {INJECT_AUTH_SERVICE} from "../../gateway/IAuthService";
 import ParamUseCase from "../base/ParamUseCase";
 import User from "../../entity/User";
-import {inject, injectable} from "tsyringe";
 
-
-@injectable()
 export default class LoginUseCase extends ParamUseCase<LoginParams, LoginResult> {
 
-    constructor(@inject(INJECT_AUTH_SERVICE) private readonly authService: IAuthService) {
+    constructor(private readonly authService: IAuthService) {
         super();
     }
 

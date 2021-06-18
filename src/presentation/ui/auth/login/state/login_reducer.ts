@@ -15,10 +15,7 @@ const loginSlice = createSlice({
         setLoading: (state, {payload}: PayloadAction<boolean>) => {
             state.isLoading = payload;
         },
-        setAuthSuccess: (
-            state,
-            {payload}: PayloadAction<undefined>
-        ) => {
+        setAuthSuccess: (state) => {
             // state.result = payload;
             state.isAuth = true;
             state.isSuccess = true;

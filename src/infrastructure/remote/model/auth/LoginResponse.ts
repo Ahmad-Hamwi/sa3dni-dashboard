@@ -7,8 +7,6 @@ export default class LoginResponse extends BaseResponse<LoginResponseData> {
 }
 
 export class LoginResponseData {
-    @Expose({name: "user"})
-    @Type(() => UserModel)
     user!: UserModel;
 
     token!: string;

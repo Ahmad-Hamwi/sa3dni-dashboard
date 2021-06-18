@@ -1,16 +1,12 @@
 import IAuthService, {LoginAuthResponse} from "../../domain/gateway/IAuthService";
-import {inject, injectable} from "tsyringe";
-import IAppCache, {INJECT_APP_CACHE} from "../local/cache/IAppCache";
-import User from "../../domain/entity/User";
-import {INJECT_AUTH_REMOTE_SERVICE} from "../../di/module/remote_services_module";
+import IAppCache from "../local/cache/IAppCache";
 import IAuthRemoteService from "../remote/service/auth/IAuthRemoteService";
 import {mapToEntity} from "../model/UserModel";
 
-@injectable()
 export default class AuthService implements IAuthService {
 
-    constructor(@inject(INJECT_APP_CACHE) private readonly appCache: IAppCache,
-                @inject(INJECT_AUTH_REMOTE_SERVICE) private readonly authRemote: IAuthRemoteService) {
+    constructor(private readonly appCache: IAppCache,
+                private readonly authRemote: IAuthRemoteService) {
     }
 
 

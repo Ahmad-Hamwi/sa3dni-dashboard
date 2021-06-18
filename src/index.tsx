@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import {ThemeProvider, CssBaseline} from "@material-ui/core";
 import {Provider} from "react-redux";
 import ReactDOM from "react-dom";
