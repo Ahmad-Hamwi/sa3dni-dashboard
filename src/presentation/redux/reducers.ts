@@ -1,7 +1,7 @@
-import {loginReducer} from "../ui/auth/login/state/login_reducer";
+import { loginReducer } from "../ui/auth/login/redux/reducer";
 
 const reducers = {
-    login: loginReducer,
+  login: loginReducer,
 };
 
 export default reducers;

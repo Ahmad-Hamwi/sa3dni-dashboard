@@ -1,16 +1,15 @@
-import {Expose, plainToClass, Transform, Type} from "class-transformer";
+import { Expose, plainToClass, Transform, Type } from "class-transformer";
 
 export class BaseResponse<T> {
+  metadata: Metadata;
 
-    metadata: Metadata;
-
-    data: T
+  data: T;
 }
 
 export class Metadata {
-    status: boolean;
+  status: boolean;
 
-    statusCode: number;
+  statusCode: number;
 
-    message: string;
+  message: string;
 }

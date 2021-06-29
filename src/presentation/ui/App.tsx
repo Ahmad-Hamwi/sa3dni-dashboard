@@ -7,9 +7,9 @@ import {
 
 // import RegisterOwner from "../pages/RegisterOwner";
 // import Dashboard from "../pages/dashboard/Dashboard";
-import * as Routes from "../route/Routes"
+import * as Routes from "../route/routes";
 import Login from "./auth/login/component/login";
-import {inject} from "../../di/injection";
+import { inject } from "../../di/injection";
 
 const App = () => {
   const isUserAuthenticated = false;

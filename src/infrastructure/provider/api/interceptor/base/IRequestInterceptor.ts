@@ -1,6 +1,7 @@
-import {AxiosRequestConfig} from "axios";
+import { AxiosRequestConfig } from "axios";
 
 export default interface IRequestInterceptor {
-
-    intercept(request: AxiosRequestConfig): AxiosRequestConfig | Promise<AxiosRequestConfig>
+  intercept(
+    request: AxiosRequestConfig
+  ): AxiosRequestConfig | Promise<AxiosRequestConfig>;
 }
