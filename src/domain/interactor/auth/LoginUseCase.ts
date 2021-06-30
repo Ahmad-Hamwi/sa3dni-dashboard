@@ -1,4 +1,4 @@
-import IAuthService, { INJECT_AUTH_SERVICE } from "../../gateway/IAuthService";
+import IAuthService from "../../gateway/IAuthService";
 import ParamUseCase from "../base/ParamUseCase";
 import User from "../../entity/User";
 

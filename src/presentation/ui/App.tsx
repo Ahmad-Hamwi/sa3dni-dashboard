@@ -5,11 +5,13 @@ import {
   Switch,
 } from "react-router-dom";
 
-// import RegisterOwner from "../pages/RegisterOwner";
-// import Dashboard from "../pages/dashboard/Dashboard";
-import * as Routes from "../route/routes";
-import Login from "./auth/login/component/login";
 import { inject } from "../../di/injection";
+import { Routes } from "../route/routes";
+import { lazy, Suspense } from "react";
+
+const Login = lazy(() => import("../ui/auth/login/component/Login"));
+
+const Register = lazy(() => import("../ui/auth/register/component/Register"));
 
 const App = () => {
   const isUserAuthenticated = false;
@@ -18,16 +20,18 @@ const App = () => {
 
   return (
     <Router>
-      <Switch>
-        <Route exact path={Routes.BASE}>
-          <Redirect
-            to={isUserAuthenticated ? Routes.DASHBOARD : Routes.LOGIN}
-          />
-        </Route>
-        {/*<Route path={Routes.REGISTER_OWNER} component={RegisterOwner} />*/}
-        <Route path={Routes.LOGIN} component={Login} />
-        {/*<Route path={Routes.DASHBOARD} component={Dashboard} />*/}
-      </Switch>
+      <Suspense fallback={<h1>Loading....</h1>}>
+        <Switch>
+          <Route exact path={Routes.BASE}>
+            <Redirect
+              to={isUserAuthenticated ? Routes.DASHBOARD : Routes.LOGIN}
+            />
+          </Route>
+          <Route path={Routes.REGISTER_OWNER} component={Register} />
+          <Route path={Routes.LOGIN} component={Login} />
+          {/*<Route path={Routes.DASHBOARD} component={Dashboard} />*/}
+        </Switch>
+      </Suspense>
     </Router>
   );
 };

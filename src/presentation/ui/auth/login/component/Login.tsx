@@ -12,13 +12,12 @@ import {
   LinearProgress,
 } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import * as Routes from "../../../../route/routes";
 import { Link, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { clearState, loginSelector } from "../redux/reducer";
 import { toast, Toaster } from "react-hot-toast";
 import { login } from "../redux/actions";
-import { DASHBOARD } from "../../../../route/routes";
+import { Routes } from "../../../../route/routes";
 
 const styles = makeStyles((theme: Theme) =>
   createStyles({
@@ -53,16 +52,15 @@ const Login = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
 
     if (success) {
-      dispatch(clearState);
-      history.push(DASHBOARD);
+      history.replace(Routes.DASHBOARD);
     }
 
     return () => {
-      dispatch(clearState);
+      dispatch(clearState());
     };
   }, [dispatch, error, success]);
 
