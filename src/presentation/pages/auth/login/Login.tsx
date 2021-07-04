@@ -14,10 +14,10 @@ import {
 import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { clearState, loginSelector } from "../redux/reducer";
+import { clearState, loginSelector } from "./redux/reducer";
 import { toast, Toaster } from "react-hot-toast";
-import { login } from "../redux/actions";
-import { Routes } from "../../../../route/routes";
+import { login } from "./redux/actions";
+import { Routes } from "../../../route/routes";
 
 const styles = makeStyles((theme: Theme) =>
   createStyles({

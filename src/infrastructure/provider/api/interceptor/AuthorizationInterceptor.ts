@@ -1,7 +1,7 @@
 import IRequestInterceptor from "./base/IRequestInterceptor";
 import { AxiosRequestConfig } from "axios";
-import IAppCache, { INJECT_APP_CACHE } from "../../../local/cache/IAppCache";
-import { HEADER_AUTH } from "../../../remote/constants/remote_constants";
+import IAppCache from "../../../local/cache/IAppCache";
+import {API_HEADERS} from "../../../remote/config";
 
 export default class AuthorizationInterceptor implements IRequestInterceptor {
   constructor(private readonly appCache: IAppCache) {}
@@ -9,7 +9,7 @@ export default class AuthorizationInterceptor implements IRequestInterceptor {
   intercept(
     request: AxiosRequestConfig
   ): AxiosRequestConfig | Promise<AxiosRequestConfig> {
-    request.headers[HEADER_AUTH] = this.appCache.getToken();
+    request.headers[API_HEADERS.authorization] = this.appCache.getToken();
 
     return request;
   }

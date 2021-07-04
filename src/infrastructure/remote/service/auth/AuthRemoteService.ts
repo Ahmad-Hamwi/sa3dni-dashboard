@@ -1,14 +1,10 @@
-import IApiClient, {
-  INJECT_API_CLIENT,
-} from "../../../provider/api/client/IApiClinet";
-import IApiExceptionFactory, {
-  INJECT_API_EXCEPTION_FACTORY,
-} from "../../exception/IApiExceptionFactory";
+import IApiClient from "../../../provider/api/client/IApiClinet";
+import IApiExceptionFactory from "../../exception/IApiExceptionFactory";
 import IAuthRemoteService from "./IAuthRemoteService";
 import LoginResponse from "../../model/auth/LoginResponse";
 import LoginRequest from "../../model/auth/LoginRequest";
-import { LOGIN_URL } from "../../constants/remote_constants";
 import BaseRemoteService from "../BaseRemoteService";
+import { API_ENDPOINTS } from "../../config";
 
 export default class AuthRemoteService
   extends BaseRemoteService
@@ -22,7 +18,7 @@ export default class AuthRemoteService
   }
 
   async login(request: LoginRequest): Promise<LoginResponse> {
-    const response = await this.apiClient.post(LOGIN_URL, request);
+    const response = await this.apiClient.post(API_ENDPOINTS.login, request);
 
     return this.parseResponse<LoginResponse>(LoginResponse, response);
   }

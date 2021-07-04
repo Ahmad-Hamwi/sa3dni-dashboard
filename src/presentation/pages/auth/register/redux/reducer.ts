@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TStore } from "../../../../redux/store";
+import { TStore } from "../../../../store/store";
 import {
   initialState,
   registerFailedState,

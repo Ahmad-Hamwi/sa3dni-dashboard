@@ -16,9 +16,9 @@ import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-import { clearState, registerSelector } from "../redux/reducer";
-import { register } from "../redux/actions";
-import { Routes } from "../../../../route/routes";
+import { clearState, registerSelector } from "./redux/reducer";
+import { register } from "./redux/actions";
+import { Routes } from "../../../route/routes";
 
 const styles = makeStyles((theme: Theme) =>
   createStyles({

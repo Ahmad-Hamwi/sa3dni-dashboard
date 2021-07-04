@@ -7,7 +7,6 @@ import IApiClient, {
 } from "../../infrastructure/provider/api/client/IApiClinet";
 import AxiosApiClient from "../../infrastructure/provider/api/client/AxiosApiClient";
 import axios, { AxiosInstance } from "axios";
-import { API_BASE_URL } from "../../infrastructure/remote/constants/remote_constants";
 import AuthorizationInterceptor from "../../infrastructure/provider/api/interceptor/AuthorizationInterceptor";
 import IRequestInterceptor from "../../infrastructure/provider/api/interceptor/base/IRequestInterceptor";
 import IContainer from "../container/IContainer";
@@ -15,6 +14,7 @@ import { resolve } from "../injection";
 import IAppCache, {
   INJECT_APP_CACHE,
 } from "../../infrastructure/local/cache/IAppCache";
+import {API_CONFIG} from "../../infrastructure/remote/config";
 
 export const INJECT_AXIOS_CLIENT = "INJECT_AXIOS_CLIENT";
 
@@ -37,7 +37,7 @@ function getAxiosClient(container: IContainer): AxiosInstance {
   registerInterceptors(container);
 
   const client = axios.create({
-    baseURL: API_BASE_URL,
+    baseURL: API_CONFIG.base,
   });
 
   getInterceptors().forEach((interceptor) => {
