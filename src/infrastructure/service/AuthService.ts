@@ -1,26 +1,42 @@
-import IAuthService, {
-  LoginAuthResponse,
-} from "../../domain/gateway/IAuthService";
+import IAuthService, { LoginResult } from "../../domain/gateway/IAuthService";
+import { RegisterParams } from "../../domain/interactor/auth/RegisterUseCase";
 import IAppCache from "../local/cache/IAppCache";
-import IAuthRemoteService from "../remote/service/auth/IAuthRemoteService";
+
 import { mapToEntity } from "../model/UserModel";
+import IApiClient from "../provider/api/client/IApiClinet";
+import { API_ENDPOINTS } from "../remote/config";
+import LoginResponse from "../remote/model/auth/LoginResponse";
+import { BaseResponse } from "../remote/model/BaseResponse";
 
 export default class AuthService implements IAuthService {
   constructor(
-    private readonly appCache: IAppCache,
-    private readonly authRemote: IAuthRemoteService
+    private readonly cache: IAppCache,
+    private readonly api: IApiClient
   ) {}
 
-  async login(email: string, password: string): Promise<LoginAuthResponse> {
-    const response = await this.authRemote.login({ email, password });
+  async login(email: string, password: string): Promise<LoginResult> {
+    const response = await this.api.post<LoginResponse>(API_ENDPOINTS.login, {
+      email,
+      password,
+    });
 
     return {
-      user: mapToEntity(response.data?.user)!,
-      token: response.data?.token!,
+      user: mapToEntity(response.data.data.user)!,
+      token: response.data.data.token,
     };
   }
 
+  async register(params: RegisterParams): Promise<{}> {
+    return await this.api.post<BaseResponse<{}>>(API_ENDPOINTS.register, {
+      email: params.email,
+      password: params.password,
+      fullName: params.fullName,
+      phoneNumber: params.phoneNumber,
+      companyName: params.companyName,
+    });
+  }
+
   async saveToken(token: string): Promise<void> {
-    this.appCache.saveToken(token);
+    this.cache.saveToken(token);
   }
 }

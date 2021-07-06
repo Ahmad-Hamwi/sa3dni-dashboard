@@ -1,5 +1,3 @@
-import { Expose, plainToClass, Transform, Type } from "class-transformer";
-
 export class BaseResponse<T> {
   metadata: Metadata;
 

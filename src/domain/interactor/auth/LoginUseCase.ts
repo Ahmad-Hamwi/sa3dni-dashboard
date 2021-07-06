@@ -1,6 +1,6 @@
 import IAuthService from "../../gateway/IAuthService";
 import ParamUseCase from "../base/ParamUseCase";
-import User from "../../entity/User";
+import User, { IUser } from "../../entity/User";
 
 export default class LoginUseCase extends ParamUseCase<
   LoginParams,
@@ -27,5 +27,5 @@ export type LoginParams = {
 };
 
 export type LoginResult = {
-  user: User;
+  user: IUser;
 };

@@ -6,15 +6,15 @@ import IContainer from "../container/IContainer";
 import IAppCache, {
   INJECT_APP_CACHE,
 } from "../../infrastructure/local/cache/IAppCache";
-import IAuthRemoteService, {
-  INJECT_AUTH_REMOTE_SERVICE,
-} from "../../infrastructure/remote/service/auth/IAuthRemoteService";
+import IApiClient, {
+  INJECT_API_CLIENT,
+} from "../../infrastructure/provider/api/client/IApiClinet";
 
 export function registerGateways(container: IContainer) {
   container.registerLazySingleton<IAuthService>(INJECT_AUTH_SERVICE, (c) => {
     return new AuthService(
       c.resolve<IAppCache>(INJECT_APP_CACHE),
-      c.resolve<IAuthRemoteService>(INJECT_AUTH_REMOTE_SERVICE)
+      c.resolve<IApiClient>(INJECT_API_CLIENT)
     );
   });
 }

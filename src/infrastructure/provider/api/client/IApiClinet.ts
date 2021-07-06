@@ -1,10 +1,19 @@
 export default interface IApiClient {
-  post(url: string, data?: any): Promise<Response>;
+  post<T>(
+    url: string,
+    data?: any,
+    options?: RequestOptions
+  ): Promise<ApiResponse<T>>;
 }
 
-export const INJECT_API_CLIENT = "INJECT_API_CLIENT";
-
-export type Response = {
+export type ApiResponse<T> = {
   code: number;
-  body: any; // Json data
+  data: T; // Json data
 };
+
+export type RequestOptions = {
+  params: any;
+  headers: {};
+};
+
+export const INJECT_API_CLIENT = "INJECT_API_CLIENT";

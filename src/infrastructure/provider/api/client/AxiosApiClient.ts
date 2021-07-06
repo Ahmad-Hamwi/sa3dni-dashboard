@@ -1,5 +1,5 @@
 import { AxiosInstance, AxiosResponse } from "axios";
-import IApiClient, { Response } from "./IApiClinet";
+import IApiClient, { RequestOptions, ApiResponse } from "./IApiClinet";
 import ServerException from "../../../exception/ServerException";
 
 export default class AxiosApiClient implements IApiClient {
@@ -7,18 +7,18 @@ export default class AxiosApiClient implements IApiClient {
 
   private async tryRequest<T>(
     request: () => Promise<AxiosResponse<T>>
-  ): Promise<Response> {
+  ): Promise<ApiResponse<T>> {
     try {
       const response = await request();
 
       return {
-        body: response.data,
+        data: response.data,
         code: response.status,
       };
     } catch (e) {
       if (e.response) {
         return {
-          body: e.response.data,
+          data: e.response.data,
           code: e.response.status,
         };
       }
@@ -26,9 +26,16 @@ export default class AxiosApiClient implements IApiClient {
     }
   }
 
-  async post(url: string, data?: any): Promise<Response> {
-    return this.tryRequest(() => {
-      return this.axios.post(url, data);
+  async post<T>(
+    url: string,
+    data?: any,
+    options?: RequestOptions
+  ): Promise<ApiResponse<T>> {
+    return this.tryRequest<T>(() => {
+      return this.axios.post(url, data, {
+        params: options?.params,
+        headers: options?.headers,
+      });
     });
   }
 }

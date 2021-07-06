@@ -1,7 +1,7 @@
-import IRequestInterceptor from "./base/IRequestInterceptor";
+import IRequestInterceptor from "../../provider/api/interceptor/IRequestInterceptor";
 import { AxiosRequestConfig } from "axios";
-import IAppCache from "../../../local/cache/IAppCache";
-import {API_HEADERS} from "../../../remote/config";
+import IAppCache from "../../local/cache/IAppCache";
+import { API_HEADERS } from "../config";
 
 export default class AuthorizationInterceptor implements IRequestInterceptor {
   constructor(private readonly appCache: IAppCache) {}
