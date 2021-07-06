@@ -13,3 +13,7 @@ export function mapToEntity(model?: UserModel): User | null {
     name: model.fullName,
   });
 }
+
+export function mapToEntities(models: UserModel[]): User[] {
+  return models.map((u) => mapToEntity(u)!);
+}

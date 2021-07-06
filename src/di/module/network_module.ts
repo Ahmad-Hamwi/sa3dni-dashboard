@@ -90,8 +90,8 @@ function registerInterceptors(container: IContainer): void {
 
 function getRequestInterceptors(): IRequestInterceptor[] {
   return [
-    resolve<LoggingRequestInterceptor>(LoggingRequestInterceptor),
     resolve<AuthorizationInterceptor>(AuthorizationInterceptor),
+    resolve<LoggingRequestInterceptor>(LoggingRequestInterceptor),
   ];
 }
 

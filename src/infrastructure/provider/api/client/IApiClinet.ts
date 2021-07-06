@@ -4,6 +4,14 @@ export default interface IApiClient {
     data?: any,
     options?: RequestOptions
   ): Promise<ApiResponse<T>>;
+
+  get<T>(url: string, options?: RequestOptions): Promise<ApiResponse<T>>;
+
+  put<T>(
+    url: string,
+    data?: any,
+    options?: RequestOptions
+  ): Promise<ApiResponse<T>>;
 }
 
 export type ApiResponse<T> = {
@@ -12,8 +20,8 @@ export type ApiResponse<T> = {
 };
 
 export type RequestOptions = {
-  params: any;
-  headers: {};
+  params?: any;
+  headers?: {};
 };
 
 export const INJECT_API_CLIENT = "INJECT_API_CLIENT";

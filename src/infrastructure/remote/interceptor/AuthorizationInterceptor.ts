@@ -10,6 +10,8 @@ export default class AuthorizationInterceptor implements IRequestInterceptor {
     request: AxiosRequestConfig
   ): AxiosRequestConfig | Promise<AxiosRequestConfig> {
     request.headers[API_HEADERS.authorization] = this.appCache.getToken();
+    // request.headers[API_HEADERS.authorization] =
+    //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGJlNjQ3YzRjNzFlODI3NzRjY2ExYTIiLCJjb21wYW55SWQiOiI2MGJlNjQ3YzRjNzFlODI3NzRjY2ExYTMiLCJpYXQiOjE2MjMwOTAzMTJ9.8hXHw5IY1bFUUqxklnqjt0Y2EqHvzTlF__VRQ_3rf0U";
 
     return request;
   }

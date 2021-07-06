@@ -1,5 +1,5 @@
 import AxiosApiClient from "../provider/api/client/AxiosApiClient";
-import { AxiosInstance } from "axios";
+import { AxiosInstance, AxiosResponse } from "axios";
 import IApiExceptionFactory from "./exception/IApiExceptionFactory";
 import { ApiResponse, RequestOptions } from "../provider/api/client/IApiClinet";
 
@@ -11,12 +11,10 @@ export default class AxiosApiClientProxy extends AxiosApiClient {
     super(axios);
   }
 
-  async post<T>(
-    url: string,
-    data?: any,
-    options?: RequestOptions
+  protected async tryRequest<T>(
+    request: () => Promise<AxiosResponse<T>>
   ): Promise<ApiResponse<T>> {
-    const response = await super.post<T>(url, data, options);
+    const response = await super.tryRequest(request);
 
     this.processResponseStatus(response.data);
 

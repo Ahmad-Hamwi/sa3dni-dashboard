@@ -9,6 +9,10 @@ import IAppCache, {
 import IApiClient, {
   INJECT_API_CLIENT,
 } from "../../infrastructure/provider/api/client/IApiClinet";
+import IUserRepository, {
+  INJECT_USER_REPOSITORY,
+} from "../../domain/gateway/IUserRepository";
+import UserRepository from "../../infrastructure/repository/UserRepository";
 
 export function registerGateways(container: IContainer) {
   container.registerLazySingleton<IAuthService>(INJECT_AUTH_SERVICE, (c) => {
@@ -17,4 +21,11 @@ export function registerGateways(container: IContainer) {
       c.resolve<IApiClient>(INJECT_API_CLIENT)
     );
   });
+
+  container.registerLazySingleton<IUserRepository>(
+    INJECT_USER_REPOSITORY,
+    (c) => {
+      return new UserRepository(c.resolve<IApiClient>(INJECT_API_CLIENT));
+    }
+  );
 }
