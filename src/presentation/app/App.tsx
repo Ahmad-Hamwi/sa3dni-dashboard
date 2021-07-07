@@ -9,6 +9,7 @@ import { inject } from "../../di/injection";
 import { Routes } from "../route/routes";
 import { lazy, Suspense } from "react";
 import { ErrorBoundary } from "./ErrorBoundary";
+import {TicketLoading} from "../components/loader/TicketLoading";
 
 const Login = lazy(() => import("../pages/auth/login/Login"));
 
@@ -22,7 +23,7 @@ const App = () => {
   return (
     <Router>
       <ErrorBoundary>
-        <Suspense fallback={<h1>Loading....</h1>}>
+        <Suspense fallback={<TicketLoading/>}>
           <Switch>
             <Route exact path={Routes.BASE}>
               <Redirect

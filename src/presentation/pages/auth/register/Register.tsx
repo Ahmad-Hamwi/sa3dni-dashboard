@@ -10,12 +10,13 @@ import {
   CircularProgress,
   TextField,
   Box,
+  LinearProgress,
 } from "@material-ui/core";
 
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import toast from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
 import { clearState, registerSelector } from "./redux/reducer";
 import { register } from "./redux/actions";
 import { Routes } from "../../../route/routes";
@@ -47,6 +48,8 @@ const Register = () => {
   const dispatch = useDispatch();
   const { isLoading, success, error } = useSelector(registerSelector);
 
+  const history = useHistory();
+
   const handleClick = () => {
     dispatch(
       register({
@@ -61,11 +64,11 @@ const Register = () => {
 
   useEffect(() => {
     if (error) {
-      dispatch(clearState());
+      toast.error(error.message);
     }
 
     if (success) {
-      dispatch(clearState());
+      history.replace(Routes.DASHBOARD);
     }
 
     return () => {
@@ -77,106 +80,94 @@ const Register = () => {
 
   return (
     <div>
-      {!success ? (
-        <div>
-          <AppBar position="fixed" variant="outlined">
-            <Toolbar>
-              <Box flexGrow={1}>
-                <Typography variant="h6">Register a company</Typography>
-              </Box>
-              <Button
-                variant="text"
-                color="inherit"
-                component={Link}
-                to={Routes.LOGIN}
-              >
-                Login
-              </Button>
-            </Toolbar>
-          </AppBar>
-          {!isLoading ? (
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              height="100vh"
-            >
-              <Card className={classes.card__register} variant="outlined">
-                <Box
-                  p={6}
-                  display="flex"
-                  flexDirection="column"
-                  width={450}
-                  minHeight={550}
-                >
-                  <Box display="flex" justifyContent="center">
-                    <Typography variant="h5">Register Your Company</Typography>
-                  </Box>
-                  <Box flex={1}>
-                    <form className={classes.form__register}>
-                      <Box display="flex" flexDirection="column">
-                        <TextField
-                          variant="outlined"
-                          label="Business Email"
-                          onChange={(event) => {
-                            setEmail(event.target.value);
-                          }}
-                        />
-                        <TextField
-                          variant="outlined"
-                          label="Workspace Name"
-                          onChange={(event) => {
-                            setCompanyName(event.target.value);
-                          }}
-                        />
-                        <TextField
-                          variant="outlined"
-                          label="Password"
-                          type="password"
-                          autoComplete="current-password"
-                          onChange={(event) => {
-                            setPassword(event.target.value);
-                          }}
-                        />
-                        <TextField
-                          variant="outlined"
-                          label="Phone"
-                          onChange={(event) => {
-                            setPhoneNumber(event.target.value);
-                          }}
-                        />
-                        <TextField
-                          variant="outlined"
-                          label="Full Name"
-                          onChange={(event) => {
-                            setFullName(event.target.value);
-                          }}
-                        />
-                      </Box>
-                    </form>
-                  </Box>
-                  <Box display="flex" justifyContent="space-between">
-                    <Button variant="text" component={Link} to={Routes.LOGIN}>
-                      Sign in instead
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleClick}
-                    >
-                      Next
-                    </Button>
-                  </Box>
-                </Box>
-              </Card>
+      <Toaster />
+      <AppBar position="fixed" variant="outlined">
+        <Toolbar>
+          <Box flexGrow={1}>
+            <Typography variant="h6">Register a company</Typography>
+          </Box>
+          <Button
+            variant="text"
+            color="inherit"
+            component={Link}
+            to={Routes.LOGIN}
+          >
+            Login
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <Card className={classes.card__register} variant="outlined">
+          {isLoading && <LinearProgress />}
+          <Box
+            p={6}
+            display="flex"
+            flexDirection="column"
+            width={450}
+            minHeight={550}
+          >
+            <Box display="flex" justifyContent="center">
+              <Typography variant="h5">Register Your Company</Typography>
             </Box>
-          ) : (
-            <CircularProgress color="primary" />
-          )}{" "}
-        </div>
-      ) : (
-        <h1>Registered</h1>
-      )}
+            <Box flex={1}>
+              <form className={classes.form__register}>
+                <Box display="flex" flexDirection="column">
+                  <TextField
+                    variant="outlined"
+                    label="Business Email"
+                    onChange={(event) => {
+                      setEmail(event.target.value);
+                    }}
+                  />
+                  <TextField
+                    variant="outlined"
+                    label="Workspace Name"
+                    onChange={(event) => {
+                      setCompanyName(event.target.value);
+                    }}
+                  />
+                  <TextField
+                    variant="outlined"
+                    label="Password"
+                    type="password"
+                    autoComplete="current-password"
+                    onChange={(event) => {
+                      setPassword(event.target.value);
+                    }}
+                  />
+                  <TextField
+                    variant="outlined"
+                    label="Phone"
+                    onChange={(event) => {
+                      setPhoneNumber(event.target.value);
+                    }}
+                  />
+                  <TextField
+                    variant="outlined"
+                    label="Full Name"
+                    onChange={(event) => {
+                      setFullName(event.target.value);
+                    }}
+                  />
+                </Box>
+              </form>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Button variant="text" component={Link} to={Routes.LOGIN}>
+                Sign in instead
+              </Button>
+              <Button variant="contained" color="primary" onClick={handleClick}>
+                Next
+              </Button>
+            </Box>
+          </Box>
+        </Card>
+      </Box>
     </div>
   );
 };
