@@ -7,8 +7,10 @@ export const API_ENDPOINTS = {
   register: "register",
 
   me: "me",
-  user: "user/:id",
-  users: "user",
+  user: "users/:id",
+  users: "users",
+  deleteUser: "users/:id",
+  changeUserRole: "users/role/:id",
 };
 
 export const API_HEADERS = {

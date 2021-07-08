@@ -9,6 +9,7 @@ import IUserRepository, {
   INJECT_USER_REPOSITORY,
 } from "../../domain/gateway/IUserRepository";
 import GetUsersUseCase from "../../domain/interactor/user/GetUsersUseCase";
+import DeleteUserUseCase from "../../domain/interactor/user/DeleteUserUseCase";
 
 export function registerUseCases(container: IContainer) {
   registerAuthUseCases(container);
@@ -35,6 +36,12 @@ function registerUserUseCases(container: IContainer) {
 
   container.register<GetUsersUseCase>(GetUsersUseCase, (c) => {
     return new GetUsersUseCase(
+      c.resolve<IUserRepository>(INJECT_USER_REPOSITORY)
+    );
+  });
+
+  container.register<DeleteUserUseCase>(DeleteUserUseCase, (c) => {
+    return new DeleteUserUseCase(
       c.resolve<IUserRepository>(INJECT_USER_REPOSITORY)
     );
   });

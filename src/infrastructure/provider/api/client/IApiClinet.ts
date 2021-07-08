@@ -12,6 +12,8 @@ export default interface IApiClient {
     data?: any,
     options?: RequestOptions
   ): Promise<ApiResponse<T>>;
+
+  delete<T>(url: string, options?: RequestOptions): Promise<ApiResponse<T>>;
 }
 
 export type ApiResponse<T> = {
