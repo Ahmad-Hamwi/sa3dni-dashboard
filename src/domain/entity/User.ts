@@ -19,6 +19,7 @@ export default class User implements IUser {
 export interface IUser {
   id: string;
   name: string;
+
 }
 
 export type UserData = {
