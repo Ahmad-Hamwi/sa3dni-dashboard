@@ -52,6 +52,12 @@ export default class AxiosApiClient implements IApiClient {
     });
   }
 
+  delete<T>(url: string, options?: RequestOptions): Promise<ApiResponse<T>> {
+    return this.tryRequest<T>(() => {
+      return this.axios.delete(url, this.axiosConfig(options));
+    });
+  }
+
   private axiosConfig(options?: RequestOptions): AxiosRequestConfig {
     return {
       params: options?.params,
