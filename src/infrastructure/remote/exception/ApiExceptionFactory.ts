@@ -14,5 +14,6 @@ export default class ApiExceptionFactory implements IApiExceptionFactory {
     "401": (message?: string): Exception => {
       return new UnauthorizedException(401, message);
     },
+
   };
 }

@@ -17,18 +17,18 @@ const theme = createMuiTheme({
     },
   },
   overrides: {
-    // MuiCssBaseline: {
-    //   "@global": {
-    //     "@font-face": [
-    //       FontProps.ProductSansThinRegularProps,
-    //       FontProps.ProductSansLightRegularProps,
-    //       FontProps.ProductSansRegularProps,
-    //       FontProps.ProductSansMediumRegularProps,
-    //       FontProps.ProductSansBoldRegularProps,
-    //       FontProps.ProductSansBlackRegularProps,
-    //     ],
-    //   },
-    // },
+    MuiCssBaseline: {
+      "@global": {
+        "@font-face": [
+          FontProps.ProductSansThinRegularProps,
+          FontProps.ProductSansLightRegularProps,
+          FontProps.ProductSansRegularProps,
+          FontProps.ProductSansMediumRegularProps,
+          FontProps.ProductSansBoldRegularProps,
+          FontProps.ProductSansBlackRegularProps,
+        ],
+      },
+    },
 
     MuiTouchRipple: {
       child: {

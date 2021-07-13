@@ -19,7 +19,7 @@ import { toast, Toaster } from "react-hot-toast";
 import { login } from "./redux/actions";
 import { Routes } from "../../../route/routes";
 
-const styles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     card__login: {
       borderRadius: theme.spacing(1),
@@ -46,7 +46,6 @@ const Login = () => {
   const history = useHistory();
 
   const handleClick = () => {
-    dispatch(clearState());
     dispatch(login(email, password));
   };
 
@@ -64,84 +63,81 @@ const Login = () => {
     };
   }, [dispatch, error, success]);
 
-  const classes = styles();
+  const classes = useStyles();
 
   return (
     <div>
-      <div>
-        <Toaster />
-        <AppBar position="fixed" variant="outlined">
-          <Toolbar>
-            <Box flexGrow={1}>
-              <Typography variant="h6">Login</Typography>
+      <Toaster />
+      <AppBar position="fixed" variant="outlined">
+        <Toolbar>
+          <Box flexGrow={1}>
+            <Typography variant="h6">Login</Typography>
+          </Box>
+          <Button
+            variant="text"
+            color="inherit"
+            component={Link}
+            to={Routes.REGISTER_OWNER}
+          >
+            Register a company
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <Card className={classes.card__login} variant="outlined">
+          {isLoading && <LinearProgress />}
+          <Box p={6} display="flex" flexDirection="column" width={450}>
+            <Box display="flex" justifyContent="center">
+              <Typography variant="h5">Login</Typography>
             </Box>
-            <Button
-              variant="text"
-              color="inherit"
-              component={Link}
-              to={Routes.REGISTER_OWNER}
-            >
-              Register a company
-            </Button>
-          </Toolbar>
-        </AppBar>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100vh"
-        >
-          <Card className={classes.card__login} variant="outlined">
-            {isLoading && <LinearProgress />}
-            <Box p={6} display="flex" flexDirection="column" width={450}>
-              <Box display="flex" justifyContent="center">
-                <Typography variant="h5">Login</Typography>
-              </Box>
-              <Box flex={1}>
-                <form className={classes.form__login}>
-                  <Box display="flex" flexDirection="column">
-                    <TextField
-                      variant="outlined"
-                      label="Business Email"
-                      onChange={(event) => {
-                        setEmail(event.target.value);
-                      }}
-                    />
-                    <TextField
-                      variant="outlined"
-                      label="Password"
-                      type="password"
-                      autoComplete="current-password"
-                      onChange={(event) => {
-                        setPassword(event.target.value);
-                      }}
-                    />
-                  </Box>
-                </form>
-              </Box>
-              <Box display="flex" justifyContent="space-between">
+            <Box flex={1}>
+              <form className={classes.form__login}>
+                <Box display="flex" flexDirection="column">
+                  <TextField
+                    variant="outlined"
+                    label="Business Email"
+                    onChange={(event) => {
+                      setEmail(event.target.value);
+                    }}
+                  />
+                  <TextField
+                    variant="outlined"
+                    label="Password"
+                    type="password"
+                    autoComplete="current-password"
+                    onChange={(event) => {
+                      setPassword(event.target.value);
+                    }}
+                  />
+                </Box>
+              </form>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Button
+                variant="text"
+                component={Link}
+                to={Routes.REGISTER_OWNER}
+              >
+                Register Owner
+              </Button>
+              {
                 <Button
-                  variant="text"
-                  component={Link}
-                  to={Routes.REGISTER_OWNER}
+                  variant="contained"
+                  color="primary"
+                  onClick={handleClick}
                 >
-                  Register Owner
+                  Next
                 </Button>
-                {
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleClick}
-                  >
-                    Next
-                  </Button>
-                }
-              </Box>
+              }
             </Box>
-          </Card>
-        </Box>
-        )
-      </div>
+          </Box>
+        </Card>
+      </Box>
     </div>
   );
 };
