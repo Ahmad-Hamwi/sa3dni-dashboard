@@ -1,40 +1,49 @@
-import {IUser} from "../../../domain/entity/User";
+import { IUser } from "../../../domain/entity/User";
 
 export interface UsersState {
-  isLoading: boolean;
-  error?: Error | null;
+  isUsersLoading: boolean;
+  UsersError?: Error | null;
   users?: IUser[] | null;
+  isSelectedUserLoading: boolean;
+  selectedUserError?: Error | null;
+  selectedUser?: IUser | null;
 }
 
-export const initialState: UsersState = {
-  isLoading: false,
+export const usersInitialState: UsersState = {
+  isUsersLoading: false,
+  isSelectedUserLoading: false,
 };
 
-export const loadingState = (state: UsersState): UsersState => {
-  state.isLoading = true;
+export const usersLoadingState = (state: UsersState): UsersState => {
+  state.isUsersLoading = true;
   return state;
 };
 
-export const dataState = (
-  state: UsersState,
-  users: IUser[]
-): UsersState => {
-  state.isLoading = false;
-  state.error = null;
+export const usersSuccessState = (state: UsersState, users: IUser[]): UsersState => {
+  state.isUsersLoading = false;
   state.users = users;
   return state;
 };
 
-export const dataErrorState = (state: UsersState, error: Error): UsersState => {
-  state.isLoading = false;
-  state.error = error;
-  state.users = null;
+export const usersErrorState = (state: UsersState, error: Error): UsersState => {
+  state.isUsersLoading = false;
+  state.UsersError = error;
   return state;
 };
 
-export const clearState = (state: UsersState): UsersState => {
-  state.isLoading = false;
-  state.error = null;
-  state.users = null;
+export const selectedUserLoadingState = (state: UsersState): UsersState => {
+  state.isSelectedUserLoading = true;
   return state;
-};
+}
+
+export const selectedUserSuccessState = (state: UsersState, user: IUser): UsersState => {
+  state.isSelectedUserLoading = false;
+  state.selectedUser = user;
+  return state;
+}
+
+export const selectedUserErrorState = (state: UsersState, error: Error): UsersState => {
+  state.isSelectedUserLoading = false;
+  state.selectedUserError = error;
+  return state;
+}

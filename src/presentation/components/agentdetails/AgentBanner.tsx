@@ -135,9 +135,9 @@ export enum Role {
 
 export interface AgentBannerProps {
   status: Status;
-  username: String;
-  jobTitle: String;
-  email: String;
+  username: string;
+  jobTitle: string;
+  email: string;
   role: Role;
 }
 

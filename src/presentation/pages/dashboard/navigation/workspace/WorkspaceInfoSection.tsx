@@ -11,7 +11,7 @@ import {
 import AgentDetails from "./agents/AgentDetails";
 import GroupDetails from "./groups/GroupDetails";
 import qs from "qs";
-import {Routes} from "../../../../route/routes";
+import { Routes } from "../../../../route/routes";
 
 const useStyles = makeStyles((theme: Theme) => ({
   infoTopBar: {
@@ -58,8 +58,6 @@ const WorkspaceInfoSection = () => {
     ignoreQueryPrefix: true,
   });
 
-  const emptyComponent = () => <></>;
-
   return (
     <div className={classes.infoSection}>
       <AppBar
@@ -84,14 +82,16 @@ const WorkspaceInfoSection = () => {
           <Route
             path={path + Routes.AGENTS}
             component={
-              selectedAgentId === undefined ? emptyComponent : AgentDetails
+              selectedAgentId === undefined
+                ? () => <></>
+                : () => <AgentDetails selectedAgentId={selectedAgentId.toString()} />
             }
           />
           <Route path={path + Routes.INVITES} render={() => <></>} />
           <Route
             path={path + Routes.GROUPS}
             component={
-              selectedGroupId === undefined ? emptyComponent : GroupDetails
+              selectedGroupId === undefined ? () => <></> : GroupDetails
             }
           />
         </Switch>

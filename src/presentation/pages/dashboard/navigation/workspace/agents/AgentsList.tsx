@@ -4,16 +4,13 @@ import {
   makeStyles,
   Theme,
   CircularProgress,
-  Box,
 } from "@material-ui/core";
 
-import AgentListItem, { Status, Role } from "../../../../../components/agents/AgentListItem";
+import AgentListItem from "../../../../../components/agents/AgentListItem";
 import { useDispatch, useSelector } from "react-redux";
-import { clearActionReducer, usersSelector } from "../../../../../reducers/users/users_reducer";
-import { useEffect, useState } from "react";
-import { clearState } from "../../../../../reducers/users/users_states";
-import User, { IUser } from "../../../../../../domain/entity/User";
-import { Toaster, toast } from "react-hot-toast";
+import { usersSelector } from "../../../../../reducers/users/users_reducer";
+import { useEffect } from "react";
+import { toast } from "react-hot-toast";
 import { getUsers } from "../../../../../actions/users_actions";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -34,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function AgentsList() {
   const classes = useStyles();
 
-  const { isLoading, users, error } = useSelector(usersSelector);
+  const { isUsersLoading, users, UsersError } = useSelector(usersSelector);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -42,15 +39,14 @@ export default function AgentsList() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error.message);
+    if (UsersError) {
+      toast.error(UsersError.message);
     }
-  }, [dispatch, error]);
+  }, [UsersError]);
 
   return (
     <>
-      <Toaster />
-      {isLoading && (
+      {isUsersLoading && (
         <div className={classes.loadingContainer}>
           <CircularProgress />
         </div>
