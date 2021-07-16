@@ -18,10 +18,11 @@ import {
 } from "@material-ui/core";
 
 import { MoreHoriz, Star, VerifiedUser } from "@material-ui/icons";
-import { useState } from "react";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import qs from "qs";
-import {Routes} from "../../route/routes";
+import { Routes } from "../../route/routes";
+import { UserActiveStatus } from "../../../domain/entity/UserActiveStatus";
+import { UserRole } from "../../../domain/entity/UserRole";
 
 const OnlineBadge = withStyles((theme: Theme) =>
   createStyles({
@@ -112,24 +113,12 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export enum Status {
-  ONLINE,
-  BUSY,
-  OFFLINE,
-}
-
-export enum Role {
-  OWNER,
-  ADMIN,
-  NORMAL,
-}
-
 export interface AgentListItemProps {
   id: String;
   name: String;
   email: String;
-  role: Role;
-  status: Status;
+  role: UserRole;
+  status: UserActiveStatus;
 }
 
 export interface QueryParams {
@@ -158,7 +147,7 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
         to={path + Routes.PARAM_AGENT_ID + "=" + props.id}
       >
         <ListItemIcon className={classes.listItemIcon}>
-          {props.status === Status.ONLINE ? (
+          {props.status === UserActiveStatus.ACTIVE ? (
             <OnlineBadge
               overlap="circle"
               anchorOrigin={{
@@ -169,7 +158,7 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
             >
               {avatar}
             </OnlineBadge>
-          ) : props.status === Status.BUSY ? (
+          ) : props.status === UserActiveStatus.BUSY ? (
             <BusyBadge
               overlap="circle"
               anchorOrigin={{
@@ -180,7 +169,7 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
             >
               {avatar}
             </BusyBadge>
-          ) : props.status === Status.OFFLINE ? (
+          ) : props.status === UserActiveStatus.OFFLINE ? (
             <OfflineBadge
               overlap="circle"
               anchorOrigin={{
@@ -204,17 +193,17 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
           mx={theme.spacing(1)}
           alignItems="center"
         >
-          {props.role === Role.OWNER ? (
+          {props.role === UserRole.OWNER ? (
             <Star />
-          ) : props.role === Role.ADMIN ? (
+          ) : props.role === UserRole.ADMIN ? (
             <VerifiedUser />
           ) : null}
           <Typography className={classes.roleText}>
-            {props.role === Role.OWNER
+            {props.role === UserRole.OWNER
               ? "Owner"
-              : props.role === Role.ADMIN
+              : props.role === UserRole.ADMIN
               ? "Admin"
-              : props.role === Role.NORMAL
+              : props.role === UserRole.AGENT
               ? "Agent"
               : null}
           </Typography>

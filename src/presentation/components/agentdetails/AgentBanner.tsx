@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import { VerifiedUser, Star } from "@material-ui/icons";
 import { FC } from "react";
+import {UserRole} from "../../../domain/entity/UserRole";
 
 const OnlineBadge = withStyles((theme: Theme) =>
   createStyles({
@@ -127,18 +128,12 @@ export enum Status {
   OFFLINE,
 }
 
-export enum Role {
-  OWNER,
-  ADMIN,
-  NORMAL,
-}
-
 export interface AgentBannerProps {
   status: Status;
   username: string;
   jobTitle: string;
   email: string;
-  role: Role;
+  role: UserRole;
 }
 
 const AgentBanner: FC<AgentBannerProps> = (props: AgentBannerProps) => {
@@ -148,7 +143,7 @@ const AgentBanner: FC<AgentBannerProps> = (props: AgentBannerProps) => {
 
   return (
     <div className={classes.banner}>
-      {props.status == Status.ONLINE ? (
+      {props.status === Status.ONLINE ? (
         <OnlineBadge
           overlap="circle"
           anchorOrigin={{
@@ -159,7 +154,7 @@ const AgentBanner: FC<AgentBannerProps> = (props: AgentBannerProps) => {
         >
           {avatar}
         </OnlineBadge>
-      ) : props.status == Status.BUSY ? (
+      ) : props.status === Status.BUSY ? (
         <BusyBadge
           overlap="circle"
           anchorOrigin={{
@@ -170,7 +165,7 @@ const AgentBanner: FC<AgentBannerProps> = (props: AgentBannerProps) => {
         >
           {avatar}
         </BusyBadge>
-      ) : props.status == Status.OFFLINE ? (
+      ) : props.status === Status.OFFLINE ? (
         <OfflineBadge
           overlap="circle"
           anchorOrigin={{
@@ -186,17 +181,17 @@ const AgentBanner: FC<AgentBannerProps> = (props: AgentBannerProps) => {
         <Box display="flex" flexDirection="row">
           <Typography className={classes.roleText}>{props.username}</Typography>
           <Box className={classes.role}>
-            {props.role == Role.OWNER ? (
+            {props.role === UserRole.OWNER ? (
               <Star />
-            ) : props.role == Role.ADMIN ? (
+            ) : props.role === UserRole.ADMIN ? (
               <VerifiedUser />
             ) : null}
             <Typography className={classes.roleText}>
-              {props.role == Role.OWNER
+              {props.role === UserRole.OWNER
                 ? "Owner"
-                : props.role == Role.ADMIN
+                : props.role === UserRole.ADMIN
                 ? "Admin"
-                : props.role == Role.NORMAL
+                : props.role === UserRole.AGENT
                 ? null
                 : null}
             </Typography>

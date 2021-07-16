@@ -58,9 +58,9 @@ export default function AgentsList() {
               key={agentItem.id}
               id={agentItem.id}
               name={agentItem.name}
-              email={"SomeEmail@Gmail.com"}
-              role={1}
-              status={0}
+              email={agentItem.email}
+              role={agentItem.role}
+              status={agentItem.userStatus}
             />
           ))}
       </List>

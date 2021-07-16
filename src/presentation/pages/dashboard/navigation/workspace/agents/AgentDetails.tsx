@@ -75,12 +75,6 @@ export enum Status {
   OFFLINE,
 }
 
-export enum Role {
-  OWNER,
-  ADMIN,
-  NORMAL,
-}
-
 export interface AgentDetailsProps {
   selectedAgentId: string;
 }
@@ -114,14 +108,16 @@ const AgentDetails: FC<AgentDetailsProps> = (props: AgentDetailsProps) => {
           <div className={classes.cardContent}>
             <AgentBanner
               status={Status.BUSY}
-              username={selectedUser?.name!}
+              username={selectedUser.name}
               jobTitle={selectedUser?.jobTitle!}
               email={selectedUser?.email!}
-              role={Role.NORMAL}
+              role={selectedUser.role}
             />
             <Divider />
-            <AgentGroups groups={[]} />
-            <Divider />
+            {selectedUser.groups && (
+              <AgentGroups groups={selectedUser.groups!} />
+            )}
+            {selectedUser.groups && <Divider />}
             <AgentPerformance
               totalChatAccepted={64}
               chatSatisfaction={"3/10"}

@@ -55,6 +55,10 @@ export default class User implements IUser {
     return this._role;
   }
 
+  get userStatus(): UserActiveStatus {
+    return this._userStatus;
+  }
+
   get groupIds(): string[] {
     return this._groupIds;
   }
@@ -71,6 +75,7 @@ export interface IUser {
   email: string;
   phoneNumber: string;
   role: UserRole;
+  userStatus: UserActiveStatus;
   groupIds: string[];
   jobTitle: string;
   groups?: IGroup[];
