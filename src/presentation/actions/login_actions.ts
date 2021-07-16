@@ -1,6 +1,6 @@
-import { setLoading, setLoginSuccess, setLoginFailed } from "./reducer";
-import { resolve } from "../../../../../di/injection";
-import LoginUseCase from "../../../../../domain/interactor/auth/LoginUseCase";
+import { setLoading, setLoginSuccess, setLoginFailed } from "../reducers/login/login_reducer";
+import { resolve } from "../../di/injection";
+import LoginUseCase from "../../domain/interactor/auth/LoginUseCase";
 
 export const login =
   (email: string, password: string) => async (dispatch: any) => {

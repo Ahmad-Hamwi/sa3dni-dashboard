@@ -13,7 +13,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import DrawerListItems from "./DrawerListItems";
+import DrawerListItems from "./drawer/DrawerListItems";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

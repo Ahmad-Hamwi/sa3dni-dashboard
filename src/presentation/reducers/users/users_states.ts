@@ -1,4 +1,4 @@
-import {IUser} from "../../../../../../../domain/entity/User";
+import {IUser} from "../../../domain/entity/User";
 
 export interface UsersState {
   isLoading: boolean;

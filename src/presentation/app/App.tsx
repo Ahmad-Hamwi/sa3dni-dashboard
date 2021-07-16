@@ -8,11 +8,11 @@ import {
 import { Routes } from "../route/routes";
 import { lazy, Suspense } from "react";
 import { ErrorBoundary } from "./ErrorBoundary";
-import { TicketLoading } from "../components/loader/TicketLoading";
+import { TicketLoading } from "../components/app/loader/TicketLoading";
 import AuthenticatedRoute from "../route/AuthenticatedRoute";
 
-const Login = lazy(() => import("../pages/auth/login/Login"));
-const Register = lazy(() => import("../pages/auth/register/Register"));
+const Login = lazy(() => import("../pages/Login"));
+const Register = lazy(() => import("../pages/Register"));
 const Dashboard = lazy(() => import("../pages/dashboard/Dashboard"));
 
 const App = () => {

@@ -2,7 +2,7 @@ import {
   authenticatedState,
   initialState,
   unAuthenticatedState,
-} from "./states";
+} from "./auth_states";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TStore } from "../../../store/store";
 import { GetUserDetailsResult } from "../../../../domain/interactor/user/GetUserDetailsUseCase";

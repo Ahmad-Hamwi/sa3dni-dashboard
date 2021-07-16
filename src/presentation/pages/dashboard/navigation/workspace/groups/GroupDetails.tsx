@@ -7,9 +7,9 @@ import {
   Divider,
 } from "@material-ui/core";
 import { FC } from "react";
-import GroupBanner from "./GroupBanner";
-import GroupMembers from "./GroupMembers";
-import GroupPerformance from "./GroupPerfomance";
+import GroupBanner from "../../../../../components/groupdetails/GroupBanner";
+import GroupMembers from "../../../../../components/groupdetails/GroupMembers";
+import GroupPerformance from "../../../../../components/groupdetails/GroupPerfomance";
 
 const useStyles = makeStyles((theme: Theme) => ({
   loadingContainer: {

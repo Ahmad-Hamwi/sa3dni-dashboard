@@ -1,8 +1,8 @@
 import { Switch, Route, useRouteMatch, Redirect } from "react-router-dom";
-import DashboardDrawerAndAppBar from "./navigation/DashboardDrawerAndAppBar";
+import DashboardDrawerAndAppBar from "../../components/wrapper/DashboardDrawerAndAppBar";
 import { Routes } from "../../route/routes";
 import { lazy, Suspense } from "react";
-import { TicketLoading } from "../../components/loader/TicketLoading";
+import { TicketLoading } from "../../components/app/loader/TicketLoading";
 
 const Chats = lazy(() => import("./navigation/chats/Chats"));
 const Workspace = lazy(() => import("./navigation/workspace/Workspace"));

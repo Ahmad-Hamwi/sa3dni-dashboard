@@ -2,9 +2,9 @@ import {
   dataErrorActionReducer,
   dataSuccessActionReducer,
   loadingActionReducer,
-} from "./reducer";
-import { resolveRepository } from "../../../../../../../di/injection";
-import IUserRepository from "../../../../../../../domain/gateway/IUserRepository";
+} from "../reducers/users/users_reducer";
+import { resolveRepository } from "../../di/injection";
+import IUserRepository from "../../domain/gateway/IUserRepository";
 
 export const getUsers = () => async (dispatch: any) => {
   dispatch(loadingActionReducer());

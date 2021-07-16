@@ -1,4 +1,4 @@
-import animationData from "../../assets/ticket-loading-lottie-file.json";
+import animationData from "../../../assets/ticket-loading-lottie-file.json";
 import Lottie from "react-lottie";
 import { createStyles, makeStyles } from "@material-ui/core";
 

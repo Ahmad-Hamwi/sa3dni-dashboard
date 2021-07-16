@@ -7,27 +7,27 @@ import {
   createStyles,
   Theme,
   Card,
-  CircularProgress,
   TextField,
   Box,
   LinearProgress,
 } from "@material-ui/core";
-
+import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { clearState, loginSelector } from "../reducers/login/login_reducer";
 import { toast, Toaster } from "react-hot-toast";
-import { clearState, registerSelector } from "./redux/reducer";
-import { register } from "./redux/actions";
-import { Routes } from "../../../route/routes";
+import { login } from "../actions/login_actions";
+import { Routes } from "../route/routes";
+import { authenticateUser } from "../actions/auth_actions";
+import { authSelector } from "../reducers/app/auth/auth_reducer";
 
-const styles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    card__register: {
+    card__login: {
       borderRadius: theme.spacing(1),
     },
 
-    form__register: {
+    form__login: {
       marginTop: theme.spacing(5),
       marginBottom: theme.spacing(5),
       "& .MuiTextField-root": {
@@ -38,28 +38,18 @@ const styles = makeStyles((theme: Theme) =>
   })
 );
 
-const Register = () => {
+const Login = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
 
   const dispatch = useDispatch();
-  const { isLoading, success, error } = useSelector(registerSelector);
+  const { isLoading, error, success } = useSelector(loginSelector);
+  const { isUserAuthenticated } = useSelector(authSelector);
 
   const history = useHistory();
 
   const handleClick = () => {
-    dispatch(
-      register({
-        email,
-        password,
-        fullName,
-        companyName,
-        phoneNumber,
-      })
-    );
+    dispatch(login(email, password));
   };
 
   useEffect(() => {
@@ -68,7 +58,7 @@ const Register = () => {
     }
 
     if (success) {
-      history.replace(Routes.DASHBOARD);
+      dispatch(authenticateUser());
     }
 
     return () => {
@@ -76,7 +66,13 @@ const Register = () => {
     };
   }, [dispatch, error, success]);
 
-  const classes = styles();
+  useEffect(() => {
+    if (isUserAuthenticated === true) {
+      history.replace(Routes.DASHBOARD);
+    }
+  }, [isUserAuthenticated, history]);
+
+  const classes = useStyles();
 
   return (
     <div>
@@ -84,15 +80,15 @@ const Register = () => {
       <AppBar position="fixed" variant="outlined">
         <Toolbar>
           <Box flexGrow={1}>
-            <Typography variant="h6">Register a company</Typography>
+            <Typography variant="h6">Login</Typography>
           </Box>
           <Button
             variant="text"
             color="inherit"
             component={Link}
-            to={Routes.LOGIN}
+            to={Routes.REGISTER_OWNER}
           >
-            Login
+            Register a company
           </Button>
         </Toolbar>
       </AppBar>
@@ -102,33 +98,20 @@ const Register = () => {
         alignItems="center"
         height="100vh"
       >
-        <Card className={classes.card__register} variant="outlined">
+        <Card className={classes.card__login} variant="outlined">
           {isLoading && <LinearProgress />}
-          <Box
-            p={6}
-            display="flex"
-            flexDirection="column"
-            width={450}
-            minHeight={550}
-          >
+          <Box p={6} display="flex" flexDirection="column" width={450}>
             <Box display="flex" justifyContent="center">
-              <Typography variant="h5">Register Your Company</Typography>
+              <Typography variant="h5">Login</Typography>
             </Box>
             <Box flex={1}>
-              <form className={classes.form__register}>
+              <form className={classes.form__login}>
                 <Box display="flex" flexDirection="column">
                   <TextField
                     variant="outlined"
                     label="Business Email"
                     onChange={(event) => {
                       setEmail(event.target.value);
-                    }}
-                  />
-                  <TextField
-                    variant="outlined"
-                    label="Workspace Name"
-                    onChange={(event) => {
-                      setCompanyName(event.target.value);
                     }}
                   />
                   <TextField
@@ -140,30 +123,26 @@ const Register = () => {
                       setPassword(event.target.value);
                     }}
                   />
-                  <TextField
-                    variant="outlined"
-                    label="Phone"
-                    onChange={(event) => {
-                      setPhoneNumber(event.target.value);
-                    }}
-                  />
-                  <TextField
-                    variant="outlined"
-                    label="Full Name"
-                    onChange={(event) => {
-                      setFullName(event.target.value);
-                    }}
-                  />
                 </Box>
               </form>
             </Box>
             <Box display="flex" justifyContent="space-between">
-              <Button variant="text" component={Link} to={Routes.LOGIN}>
-                Sign in instead
+              <Button
+                variant="text"
+                component={Link}
+                to={Routes.REGISTER_OWNER}
+              >
+                Register Owner
               </Button>
-              <Button variant="contained" color="primary" onClick={handleClick}>
-                Next
-              </Button>
+              {
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleClick}
+                >
+                  Next
+                </Button>
+              }
             </Box>
           </Box>
         </Card>
@@ -172,4 +151,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;

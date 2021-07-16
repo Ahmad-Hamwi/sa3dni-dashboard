@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { ErrorWrapper } from "../components/error/Error";
+import { ErrorWrapper } from "../components/app/error/Error";
 
 const ErrorBoundary: FunctionComponent<any> = ({ children }) => {
   const handleBack = () => {

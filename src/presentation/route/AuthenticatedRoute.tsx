@@ -2,8 +2,8 @@ import { Routes } from "./routes";
 import { Redirect, Route } from "react-router-dom";
 import { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { authSelector } from "../app/redux/auth/reducer";
-import { authenticateUser } from "../app/redux/auth/actions";
+import { authSelector } from "../reducers/app/auth/auth_reducer";
+import { authenticateUser } from "../actions/auth_actions";
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
 

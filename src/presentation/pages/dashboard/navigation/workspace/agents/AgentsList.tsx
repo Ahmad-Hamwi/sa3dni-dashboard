@@ -7,14 +7,14 @@ import {
   Box,
 } from "@material-ui/core";
 
-import AgentListItem, { Status, Role } from "./AgentListItem";
+import AgentListItem, { Status, Role } from "../../../../../components/agents/AgentListItem";
 import { useDispatch, useSelector } from "react-redux";
-import { clearActionReducer, usersSelector } from "./redux/reducer";
+import { clearActionReducer, usersSelector } from "../../../../../reducers/users/users_reducer";
 import { useEffect, useState } from "react";
-import { clearState } from "./redux/states";
+import { clearState } from "../../../../../reducers/users/users_states";
 import User, { IUser } from "../../../../../../domain/entity/User";
 import { Toaster, toast } from "react-hot-toast";
-import { getUsers } from "./redux/actions";
+import { getUsers } from "../../../../../actions/users_actions";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

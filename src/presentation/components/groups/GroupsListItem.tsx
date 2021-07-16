@@ -15,7 +15,7 @@ import {
 import { MoreHoriz } from "@material-ui/icons";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import qs from "qs";
-import {Routes} from "../../../../../route/routes";
+import {Routes} from "../../route/routes";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

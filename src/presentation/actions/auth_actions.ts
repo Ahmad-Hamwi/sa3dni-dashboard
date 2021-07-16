@@ -1,6 +1,6 @@
-import { resolve } from "../../../../di/injection";
-import GetUserDetailsUseCase from "../../../../domain/interactor/user/GetUserDetailsUseCase";
-import { authenticated, unAuthenticated } from "./reducer";
+import { resolve } from "../../di/injection";
+import GetUserDetailsUseCase from "../../domain/interactor/user/GetUserDetailsUseCase";
+import { authenticated, unAuthenticated } from "../reducers/app/auth/auth_reducer";
 
 export const authenticateUser = () => async (dispatch: any) => {
   const getUserDetailsUseCase = resolve<GetUserDetailsUseCase>(

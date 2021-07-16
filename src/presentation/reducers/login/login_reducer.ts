@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TStore } from "../../../../store/store";
-import { initialState, loginFailedState, loginSuccessState } from "./states";
+import { TStore } from "../../store/store";
+import { initialState, loginFailedState, loginSuccessState } from "./login_states";
 
 const loginSlice = createSlice({
   name: "login",

@@ -21,7 +21,7 @@ import { MoreHoriz, Star, VerifiedUser } from "@material-ui/icons";
 import { useState } from "react";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import qs from "qs";
-import {Routes} from "../../../../../route/routes";
+import {Routes} from "../../route/routes";
 
 const OnlineBadge = withStyles((theme: Theme) =>
   createStyles({

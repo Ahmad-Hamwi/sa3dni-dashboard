@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TStore } from "../../../../store/store";
+import { TStore } from "../../store/store";
 import {
   initialState,
   registerFailedState,
   registerSuccessState,
-} from "./states";
+} from "./register_states";
 
 const registerSlice = createSlice({
   name: "register",

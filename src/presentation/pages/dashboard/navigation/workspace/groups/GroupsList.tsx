@@ -6,7 +6,7 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 
-import GroupListItem from "./GroupsListItem";
+import GroupListItem from "../../../../../components/groups/GroupsListItem";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

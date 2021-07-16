@@ -7,10 +7,10 @@ import {
   Divider,
 } from "@material-ui/core";
 import { FC } from "react";
-import AgentBanner from "./components/AgentBanner";
-import AgentGroups from "./components/AgentGroups";
-import AgentPerformance from "./components/AgentPerformance";
-import AgentAddtionalInfo from "./components/AgentAdditionalInfo";
+import AgentBanner from "../../../../../components/agentdetails/AgentBanner";
+import AgentGroups from "../../../../../components/agentdetails/AgentGroups";
+import AgentPerformance from "../../../../../components/agentdetails/AgentPerformance";
+import AgentAddtionalInfo from "../../../../../components/agentdetails/AgentAdditionalInfo";
 
 const useStyles = makeStyles((theme: Theme) => ({
   loadingContainer: {

@@ -8,8 +8,8 @@ import {
   Redirect,
   useLocation,
 } from "react-router-dom";
-import AgentDetails from "./agents/details/AgentDetails";
-import GroupDetails from "./groups/details/GroupDetails";
+import AgentDetails from "./agents/AgentDetails";
+import GroupDetails from "./groups/GroupDetails";
 import qs from "qs";
 import {Routes} from "../../../../route/routes";
 

@@ -1,6 +1,6 @@
-import { setLoading, setRegisterFailed, setRegisterSuccess } from "./reducer";
-import RegisterUseCase from "../../../../../domain/interactor/auth/RegisterUseCase";
-import { resolve } from "../../../../../di/injection";
+import { setLoading, setRegisterFailed, setRegisterSuccess } from "../reducers/register/register_reducer";
+import RegisterUseCase from "../../domain/interactor/auth/RegisterUseCase";
+import { resolve } from "../../di/injection";
 
 export type RegisterParams = {
   email: string;

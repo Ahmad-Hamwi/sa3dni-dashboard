@@ -1,7 +1,7 @@
-import { loginReducer } from "../pages/auth/login/redux/reducer";
-import { registerReducer } from "../pages/auth/register/redux/reducer";
-import { usersSliceReducer } from "../pages/dashboard/navigation/workspace/agents/redux/reducer";
-import {authReducer} from "../app/redux/auth/reducer";
+import { loginReducer } from "../reducers/login/login_reducer";
+import { registerReducer } from "../reducers/register/register_reducer";
+import { usersSliceReducer } from "../reducers/users/users_reducer";
+import {authReducer} from "../reducers/app/auth/auth_reducer";
 
 const reducers = {
   auth: authReducer,

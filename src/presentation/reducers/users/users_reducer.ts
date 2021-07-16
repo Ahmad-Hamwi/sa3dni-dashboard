@@ -6,10 +6,10 @@ import {
   initialState,
   loadingState,
   UsersState,
-} from "./states";
-import { GetUsersResult } from "../../../../../../../domain/interactor/user/GetUsersUseCase";
-import { TStore } from "../../../../../../store/store";
-import {IUser} from "../../../../../../../domain/entity/User";
+} from "./users_states";
+import { GetUsersResult } from "../../../domain/interactor/user/GetUsersUseCase";
+import { TStore } from "../../store/store";
+import {IUser} from "../../../domain/entity/User";
 
 const usersSlice = createSlice({
   name: "users",
