@@ -1,5 +1,5 @@
 import User from "../../domain/entity/User";
-import UserRole from "../../domain/entity/UserRole";
+import { UserRole } from "../../domain/entity/UserRole";
 import GroupModel, { mapToEntity as groupMapper } from "./GroupModel";
 import { mapToEntities } from "./Mapper";
 import { UserActiveStatus } from "../../domain/entity/UserActiveStatus";
@@ -35,10 +35,9 @@ export function mapToEntity(model?: UserModel): User | null {
 }
 
 export function mapUserRole(role: string): UserRole {
-  return new UserRole(
-    role,
-    `${role[0].toUpperCase()}${role.substr(1).toLowerCase()}`
-  );
+  return Object.values<UserRole>(UserRole).find(
+      (r) => r === role
+  )!;
 }
 
 export function mapUserStatus(status: string): UserActiveStatus {

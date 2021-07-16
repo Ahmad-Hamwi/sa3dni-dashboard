@@ -1,5 +1,5 @@
 import UseCase from "../base/UseCase";
-import { IUserRole } from "../../entity/UserRole";
+import { UserRole } from "../../entity/UserRole";
 import IUserRoleRepository from "../../gateway/IUserRoleRepository";
 
 export default class GetUserRolesUseCase extends UseCase<GetUserRolesResult> {
@@ -15,5 +15,5 @@ export default class GetUserRolesUseCase extends UseCase<GetUserRolesResult> {
 }
 
 export type GetUserRolesResult = {
-  roles: Array<IUserRole>;
+  roles: Array<UserRole>;
 };

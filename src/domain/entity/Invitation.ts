@@ -1,10 +1,10 @@
-import { IUserRole } from "./UserRole";
+import { UserRole } from "./UserRole";
 
 export default class Invitation implements IInvitation {
   private readonly _id: string;
   private readonly _companyId: string;
   private readonly _email: string;
-  private readonly _role: IUserRole;
+  private readonly _role: UserRole;
   private readonly _groups: string[];
 
   constructor(params: InvitationData) {
@@ -27,7 +27,7 @@ export default class Invitation implements IInvitation {
     return this._email;
   }
 
-  get role(): IUserRole {
+  get role(): UserRole {
     return this._role;
   }
 
@@ -40,7 +40,7 @@ export interface IInvitation {
   id: string;
   companyId: string;
   email: string;
-  role: IUserRole;
+  role: UserRole;
   groups: string[];
 }
 
@@ -48,6 +48,6 @@ export type InvitationData = {
   id: string;
   companyId: string;
   email: string;
-  role: IUserRole;
+  role: UserRole;
   groups: string[];
 };

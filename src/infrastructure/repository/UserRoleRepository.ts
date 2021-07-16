@@ -1,5 +1,5 @@
 import IUserRoleRepository from "../../domain/gateway/IUserRoleRepository";
-import UserRole from "../../domain/entity/UserRole";
+import { UserRole } from "../../domain/entity/UserRole";
 import IApiClient from "../provider/api/client/IApiClinet";
 import EmptyResponse from "../remote/model/EmptyResponse";
 import { API_ENDPOINTS } from "../remote/config";
@@ -7,25 +7,14 @@ import { API_ENDPOINTS } from "../remote/config";
 export default class UserRoleRepository implements IUserRoleRepository {
   constructor(private readonly api: IApiClient) {}
 
-  async get(id: string): Promise<UserRole | undefined> {
-    let roles = await this.getAll();
-    roles = roles.filter((r) => r.id === id);
-
-    return roles.length > 0 ? roles[0] : undefined;
-  }
-
   async getAll(): Promise<Array<UserRole>> {
-    return [
-      new UserRole("OWNER", "Owner"),
-      new UserRole("ADMIN", "Admin"),
-      new UserRole("AGENT", "Agent"),
-    ];
+    return [UserRole.OWNER, UserRole.ADMIN, UserRole.AGENT];
   }
 
-  async update(userId: string, roleId: string): Promise<boolean> {
+  async update(userId: string, role: string): Promise<boolean> {
     const response = await this.api.put<EmptyResponse>(
       API_ENDPOINTS.userRole,
-      { role: roleId },
+      { role: role },
       {
         params: {
           id: userId,

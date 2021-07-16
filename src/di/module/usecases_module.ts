@@ -10,7 +10,6 @@ import IUserRepository, {
 } from "../../domain/gateway/IUserRepository";
 import GetUsersUseCase from "../../domain/interactor/user/GetUsersUseCase";
 import DeleteUserUseCase from "../../domain/interactor/user/DeleteUserUseCase";
-import ChangeUserRoleUseCase from "../../domain/interactor/user/ChangeUserRoleUseCase";
 import IUserRoleRepository, {INJECT_USER_ROLE_REPOSITORY} from "../../domain/gateway/IUserRoleRepository";
 import GetUserRolesUseCase from "../../domain/interactor/userrole/GetUserRolesUseCase";
 
@@ -46,12 +45,6 @@ function registerUserUseCases(container: IContainer) {
   container.register<DeleteUserUseCase>(DeleteUserUseCase, (c) => {
     return new DeleteUserUseCase(
       c.resolve<IUserRepository>(INJECT_USER_REPOSITORY)
-    );
-  });
-
-  container.register<ChangeUserRoleUseCase>(ChangeUserRoleUseCase, (c) => {
-    return new ChangeUserRoleUseCase(
-        c.resolve<IUserRoleRepository>(INJECT_USER_ROLE_REPOSITORY)
     );
   });
 

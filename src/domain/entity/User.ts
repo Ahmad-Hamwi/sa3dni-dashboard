@@ -1,4 +1,4 @@
-import { IUserRole } from "./UserRole";
+import {UserRole} from "./UserRole";
 import { IGroup } from "./Group";
 import { UserActiveStatus } from "./UserActiveStatus";
 
@@ -10,7 +10,7 @@ export default class User implements IUser {
   private readonly _phoneNumber: string;
   private readonly _jobTitle: string;
   private readonly _userStatus: UserActiveStatus;
-  private readonly _role: IUserRole;
+  private readonly _role: UserRole;
   private readonly _groupIds: string[];
   private readonly _groups: IGroup[] | undefined;
 
@@ -51,7 +51,7 @@ export default class User implements IUser {
     return this._jobTitle;
   }
 
-  get role(): IUserRole {
+  get role(): UserRole {
     return this._role;
   }
 
@@ -70,7 +70,7 @@ export interface IUser {
   name: string;
   email: string;
   phoneNumber: string;
-  role: IUserRole;
+  role: UserRole;
   groupIds: string[];
   jobTitle: string;
   groups?: IGroup[];
@@ -82,7 +82,7 @@ export type UserData = {
   name: string;
   email: string;
   phoneNumber: string;
-  role: IUserRole;
+  role: UserRole;
   userStatus: UserActiveStatus;
   groupIds: string[];
   jobTitle: string;
