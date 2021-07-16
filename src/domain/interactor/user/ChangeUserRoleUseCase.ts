@@ -9,11 +9,11 @@ export default class ChangeUserRoleUseCase extends ParamUseCase<ChangeUserRolePa
     }
 
     async execute(param: ChangeUserRoleParams): Promise<ChangeUserRoleResult> {
-        const result = await this.userRoleRepository.updateRole(param.userId, param.roleId);
+        const result = await this.userRoleRepository.update(param.userId, param.roleId);
 
         return {
             userId: param.userId,
-            newRole: (await this.userRoleRepository.getRole(param.roleId))!
+            newRole: (await this.userRoleRepository.get(param.roleId))!
         }
     }
 

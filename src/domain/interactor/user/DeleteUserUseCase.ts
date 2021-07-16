@@ -11,7 +11,7 @@ export default class DeleteUserUseCase extends ParamUseCase<
   }
 
   async execute(param: DeleteUserParams): Promise<DeleteUserResult> {
-    const result = await this.userRepository.deleteUser(param.userId);
+    const result = await this.userRepository.delete(param.userId);
 
     if (result)
       return {

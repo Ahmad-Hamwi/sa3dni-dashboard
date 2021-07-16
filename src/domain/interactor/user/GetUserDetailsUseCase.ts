@@ -16,7 +16,7 @@ export default class GetUserDetailsUseCase extends ParamUseCase<
   async execute(param: UserDetailsParams): Promise<GetUserDetailsResult> {
     return {
       user: param.id
-        ? await this.userRepository.getUser(param.id)
+        ? await this.userRepository.get(param.id)
         : await this.userRepository.me(),
     };
   }

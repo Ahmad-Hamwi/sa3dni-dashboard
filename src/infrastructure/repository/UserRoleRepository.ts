@@ -7,14 +7,14 @@ import { API_ENDPOINTS } from "../remote/config";
 export default class UserRoleRepository implements IUserRoleRepository {
   constructor(private readonly api: IApiClient) {}
 
-  async getRole(id: string): Promise<UserRole | undefined> {
-    let roles = await this.getRoles();
+  async get(id: string): Promise<UserRole | undefined> {
+    let roles = await this.getAll();
     roles = roles.filter((r) => r.id === id);
 
     return roles.length > 0 ? roles[0] : undefined;
   }
 
-  async getRoles(): Promise<Array<UserRole>> {
+  async getAll(): Promise<Array<UserRole>> {
     return [
       new UserRole("OWNER", "Owner"),
       new UserRole("ADMIN", "Admin"),
@@ -22,7 +22,7 @@ export default class UserRoleRepository implements IUserRoleRepository {
     ];
   }
 
-  async updateRole(userId: string, roleId: string): Promise<boolean> {
+  async update(userId: string, roleId: string): Promise<boolean> {
     const response = await this.api.put<EmptyResponse>(
       API_ENDPOINTS.changeUserRole,
       { role: roleId },

@@ -9,7 +9,7 @@ export default class GetUsersUseCase extends UseCase<GetUsersResult> {
 
   async execute(): Promise<GetUsersResult> {
     return {
-      users: await this.userRepository.getUsers(),
+      users: await this.userRepository.getAll(),
     };
   }
 }

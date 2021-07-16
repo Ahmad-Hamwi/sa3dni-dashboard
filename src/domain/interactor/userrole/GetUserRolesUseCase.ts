@@ -9,7 +9,7 @@ export default class GetUserRolesUseCase extends UseCase<GetUserRolesResult> {
 
   async execute(): Promise<GetUserRolesResult> {
     return {
-      roles: await this.userRoleRepository.getRoles(),
+      roles: await this.userRoleRepository.getAll(),
     };
   }
 }

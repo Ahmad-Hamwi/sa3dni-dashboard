@@ -10,7 +10,7 @@ import EmptyResponse from "../remote/model/EmptyResponse";
 export default class UserRepository implements IUserRepository {
   constructor(private readonly api: IApiClient) {}
 
-  async getUser(id: string): Promise<User> {
+  async get(id: string): Promise<User> {
     const response = await this.api.get<UserResponse>(API_ENDPOINTS.user, {
       params: {
         id: id,
@@ -26,13 +26,13 @@ export default class UserRepository implements IUserRepository {
     return mapToEntity(response.data.data)!;
   }
 
-  async getUsers(): Promise<Array<User>> {
+  async getAll(): Promise<Array<User>> {
     const response = await this.api.get<UsersResponse>(API_ENDPOINTS.users);
 
     return mapToEntities(response.data.data)!;
   }
 
-  async deleteUser(userId: string): Promise<boolean> {
+  async delete(userId: string): Promise<boolean> {
     const response = await this.api.delete<EmptyResponse>(
       API_ENDPOINTS.deleteUser,
       {

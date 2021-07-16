@@ -1,13 +1,13 @@
 import User from "../entity/User";
 
 export default interface IUserRepository {
-  getUsers(): Promise<Array<User>>;
+  getAll(): Promise<Array<User>>;
 
-  getUser(id: string): Promise<User>;
+  get(id: string): Promise<User>;
 
   me(): Promise<User>;
 
-  deleteUser(userId: string): Promise<boolean>;
+  delete(userId: string): Promise<boolean>;
 }
 
 export const INJECT_USER_REPOSITORY = "INJECT_USER_REPOSITORY";
