@@ -14,6 +14,9 @@ export const API_ENDPOINTS = {
 
   group: "groups/:id",
   groups: "groups",
+
+  invitation: "invitations/:id",
+  invitations: "invitations",
 };
 
 export const API_HEADERS = {

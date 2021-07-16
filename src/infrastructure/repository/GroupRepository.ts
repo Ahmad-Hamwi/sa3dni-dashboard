@@ -29,7 +29,7 @@ export default class GroupRepository implements IGroupRepository {
       },
     });
 
-    return response.data.success();
+    return response.data.metadata.status;
   }
 
   async get(id: string): Promise<Group | null> {

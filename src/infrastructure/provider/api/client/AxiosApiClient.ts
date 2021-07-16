@@ -62,6 +62,7 @@ export default class AxiosApiClient implements IApiClient {
     return {
       params: options?.params,
       headers: options?.headers,
+      data: options?.data
     };
   }
 }
