@@ -6,11 +6,18 @@ import {
   Avatar,
   Divider,
 } from "@material-ui/core";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import AgentBanner from "../../../../../components/agentdetails/AgentBanner";
 import AgentGroups from "../../../../../components/agentdetails/AgentGroups";
 import AgentPerformance from "../../../../../components/agentdetails/AgentPerformance";
 import AgentAddtionalInfo from "../../../../../components/agentdetails/AgentAdditionalInfo";
+import {
+  getSelectedUser,
+  getUsers,
+} from "../../../../../actions/users_actions";
+import { toast } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { usersSelector } from "../../../../../reducers/users/users_reducer";
 
 const useStyles = makeStyles((theme: Theme) => ({
   loadingContainer: {
@@ -75,38 +82,55 @@ export enum Role {
 }
 
 export interface AgentDetailsProps {
-  status: Status;
-  username: String;
-  jobTitle: String;
-  email: String;
-  role: Role;
+  selectedAgentId: string;
 }
 
 const AgentDetails: FC<AgentDetailsProps> = (props: AgentDetailsProps) => {
   const classes = useStyles();
 
+  const { isSelectedUserLoading, selectedUser, selectedUserError } =
+    useSelector(usersSelector);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getSelectedUser(props.selectedAgentId));
+  }, [props, dispatch]);
+
+  useEffect(() => {
+    if (selectedUserError) {
+      toast.error(selectedUserError.message);
+    }
+  }, [selectedUserError]);
+
   return (
     <>
-      <div className={classes.loadingContainer}>
-        <CircularProgress />
-      </div>
-      <Card variant="outlined" className={classes.card}>
-        <div className={classes.cardContent}>
-          <AgentBanner
-            status={Status.BUSY}
-            username={"Abdulrahman Tayara"}
-            jobTitle={"Support Agent"}
-            email={"email@email.com"}
-            role={Role.NORMAL}
-          />
-          <Divider />
-          <AgentGroups groups={[]} />
-          <Divider />
-          <AgentPerformance totalChatAccepted={64} chatSatisfaction={"3/10"} />
-          <Divider />
-          <AgentAddtionalInfo chatLimit={4} />
+      {isSelectedUserLoading && (
+        <div className={classes.loadingContainer}>
+          <CircularProgress />
         </div>
-      </Card>
+      )}
+      {selectedUser && (
+        <Card variant="outlined" className={classes.card}>
+          <div className={classes.cardContent}>
+            <AgentBanner
+              status={Status.BUSY}
+              username={selectedUser?.name!}
+              jobTitle={selectedUser?.jobTitle!}
+              email={selectedUser?.email!}
+              role={Role.NORMAL}
+            />
+            <Divider />
+            <AgentGroups groups={[]} />
+            <Divider />
+            <AgentPerformance
+              totalChatAccepted={64}
+              chatSatisfaction={"3/10"}
+            />
+            <Divider />
+            <AgentAddtionalInfo chatLimit={4} />
+          </div>
+        </Card>
+      )}
     </>
   );
 };

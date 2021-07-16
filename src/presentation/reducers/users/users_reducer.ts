@@ -1,38 +1,53 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
-  clearState,
-  dataErrorState,
-  dataState,
-  initialState,
-  loadingState,
+  usersErrorState,
+  usersSuccessState,
+  usersInitialState,
+  usersLoadingState,
   UsersState,
+  selectedUserLoadingState,
+  selectedUserSuccessState,
+  selectedUserErrorState,
 } from "./users_states";
-import { GetUsersResult } from "../../../domain/interactor/user/GetUsersUseCase";
 import { TStore } from "../../store/store";
-import {IUser} from "../../../domain/entity/User";
+import { IUser } from "../../../domain/entity/User";
 
 const usersSlice = createSlice({
   name: "users",
-  initialState,
+  initialState: usersInitialState,
   reducers: {
-    clearActionReducer: (state: UsersState) => clearState(state),
-    loadingActionReducer: (state: UsersState) => loadingState(state),
-    dataSuccessActionReducer: (
+    usersLoadingReducer: (state: UsersState) => usersLoadingState(state),
+
+    usersSuccessReducer: (
       state: UsersState,
       { payload }: PayloadAction<IUser[]>
-    ) => dataState(state, payload),
-    dataErrorActionReducer: (
+    ) => usersSuccessState(state, payload),
+
+    usersErrorReducer: (state: UsersState, { payload }: PayloadAction<Error>) =>
+      usersErrorState(state, payload),
+
+    selectedUserLoadingReducer: (state: UsersState) =>
+      selectedUserLoadingState(state),
+
+    selectedUserSuccessReducer: (
+      state: UsersState,
+      { payload }: PayloadAction<IUser>
+    ) => selectedUserSuccessState(state, payload),
+
+    selectedUserErrorReducer: (
       state: UsersState,
       { payload }: PayloadAction<Error>
-    ) => dataErrorState(state, payload),
+    ) => selectedUserErrorState(state, payload),
   },
 });
 
 export const {
-  clearActionReducer,
-  loadingActionReducer,
-  dataSuccessActionReducer,
-  dataErrorActionReducer,
+  usersLoadingReducer,
+  usersSuccessReducer,
+  usersErrorReducer,
+  selectedUserLoadingReducer,
+  selectedUserSuccessReducer,
+  selectedUserErrorReducer,
 } = usersSlice.actions;
 
 export const usersSliceReducer = usersSlice.reducer;

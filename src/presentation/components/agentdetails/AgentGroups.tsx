@@ -1,5 +1,6 @@
 import { Typography, Box, Card, Theme, makeStyles } from "@material-ui/core";
 import { FC } from "react";
+import {IGroup} from "../../../domain/entity/Group";
 
 const useStyles = makeStyles((theme: Theme) => ({
   content: {
@@ -29,73 +30,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export interface Group {
-  name: String;
-}
-
 export interface AgentGroupsProps {
-  groups: Group[];
+  groups: IGroup[];
 }
 
 const AgentGroups: FC<AgentGroupsProps> = (props: AgentGroupsProps) => {
   const classes = useStyles();
-
-  const groups: Group[] = [
-    {
-      name: "Group",
-    },
-    {
-      name: "My Group",
-    },
-    {
-      name: "ITE",
-    },
-    {
-      name: "SOME STUFF",
-    },
-    {
-      name: "Private",
-    },
-    {
-      name: "The Most Amazing Group",
-    },
-    {
-      name: "Haha",
-    },
-    {
-      name: "Group",
-    },
-    {
-      name: "Group",
-    },
-    {
-      name: "Memes",
-    },
-    {
-      name: "Group",
-    },
-    {
-      name: "Group",
-    },
-    {
-      name: "Group",
-    },
-    {
-      name: "Group",
-    },
-    {
-      name: "Group",
-    },
-    {
-      name: "Group",
-    },
-    {
-      name: "Group",
-    },
-    {
-      name: "Group",
-    },
-  ];
 
   return (
     <div className={classes.content}>
@@ -108,7 +48,7 @@ const AgentGroups: FC<AgentGroupsProps> = (props: AgentGroupsProps) => {
         className={classes.list}
         flexWrap="wrap"
       >
-        {groups.map((group) => (
+        {props.groups.map((group) => (
           <Typography className={classes.groupFlexItem}>
             {group.name}
           </Typography>
