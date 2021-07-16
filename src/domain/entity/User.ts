@@ -1,5 +1,6 @@
 import { IUserRole } from "./UserRole";
 import { IGroup } from "./Group";
+import { UserActiveStatus } from "./UserActiveStatus";
 
 export default class User implements IUser {
   private readonly _id: string;
@@ -8,6 +9,7 @@ export default class User implements IUser {
   private readonly _email: string;
   private readonly _phoneNumber: string;
   private readonly _jobTitle: string;
+  private readonly _userStatus: UserActiveStatus;
   private readonly _role: IUserRole;
   private readonly _groupIds: string[];
   private readonly _groups: IGroup[] | undefined;
@@ -19,6 +21,7 @@ export default class User implements IUser {
     this._email = params.email;
     this._phoneNumber = params.phoneNumber;
     this._jobTitle = params.jobTitle;
+    this._userStatus = params.userStatus;
     this._role = params.role;
     this._groupIds = params.groupIds;
     this._groups = params.groups;
@@ -80,6 +83,7 @@ export type UserData = {
   email: string;
   phoneNumber: string;
   role: IUserRole;
+  userStatus: UserActiveStatus;
   groupIds: string[];
   jobTitle: string;
   groups?: IGroup[];
