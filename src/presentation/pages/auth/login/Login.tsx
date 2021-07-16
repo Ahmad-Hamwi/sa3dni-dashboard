@@ -18,6 +18,8 @@ import { clearState, loginSelector } from "./redux/reducer";
 import { toast, Toaster } from "react-hot-toast";
 import { login } from "./redux/actions";
 import { Routes } from "../../../route/routes";
+import { authenticateUser } from "../../../app/redux/auth/actions";
+import { authSelector } from "../../../app/redux/auth/reducer";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,6 +44,7 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const { isLoading, error, success } = useSelector(loginSelector);
+  const { isUserAuthenticated } = useSelector(authSelector);
 
   const history = useHistory();
 
@@ -55,13 +58,19 @@ const Login = () => {
     }
 
     if (success) {
-      history.replace(Routes.DASHBOARD);
+      dispatch(authenticateUser());
     }
 
     return () => {
       dispatch(clearState());
     };
   }, [dispatch, error, success]);
+
+  useEffect(() => {
+    if (isUserAuthenticated === true) {
+      history.replace(Routes.DASHBOARD);
+    }
+  }, [isUserAuthenticated, history]);
 
   const classes = useStyles();
 

@@ -5,6 +5,9 @@ import ReactDOM from "react-dom";
 import { store } from "./presentation/store/store";
 import theme from "./presentation/theme/theme";
 import App from "./presentation/app/App";
+import {inject} from "./di/injection";
+
+inject();
 
 ReactDOM.render(
   <Provider store={store}>
