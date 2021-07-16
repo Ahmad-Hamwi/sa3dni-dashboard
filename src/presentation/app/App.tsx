@@ -5,34 +5,28 @@ import {
   Switch,
 } from "react-router-dom";
 
-import { inject } from "../../di/injection";
 import { Routes } from "../route/routes";
 import { lazy, Suspense } from "react";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { TicketLoading } from "../components/loader/TicketLoading";
-import Dashboard from "../pages/dashboard/Dashboard";
+import AuthenticatedRoute from "../route/AuthenticatedRoute";
 
 const Login = lazy(() => import("../pages/auth/login/Login"));
 const Register = lazy(() => import("../pages/auth/register/Register"));
+const Dashboard = lazy(() => import("../pages/dashboard/Dashboard"));
 
 const App = () => {
-  const isUserAuthenticated = false;
-
-  inject();
-
   return (
     <Router>
       <ErrorBoundary>
         <Suspense fallback={<TicketLoading />}>
           <Switch>
             <Route exact path={Routes.BASE}>
-              <Redirect
-                to={isUserAuthenticated ? Routes.DASHBOARD : Routes.LOGIN}
-              />
+              <Redirect to={Routes.DASHBOARD} />
             </Route>
             <Route path={Routes.REGISTER_OWNER} component={Register} />
             <Route path={Routes.LOGIN} component={Login} />
-            <Route path={Routes.DASHBOARD} component={Dashboard} />
+            <AuthenticatedRoute path={Routes.DASHBOARD} component={Dashboard}/>
           </Switch>
         </Suspense>
       </ErrorBoundary>
