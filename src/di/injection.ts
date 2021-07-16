@@ -4,8 +4,15 @@ import Container from "./container/Container";
 import IContainer from "./container/IContainer";
 import { registerGateways } from "./module/gateways_module";
 import { registerUseCases } from "./module/usecases_module";
-import IUserRepository, { INJECT_USER_REPOSITORY } from "../domain/gateway/IUserRepository";
-import IGroupRepository, {INJECT_GROUP_REPOSITORY} from "../domain/gateway/IGroupRepository";
+import IUserRepository, {
+  INJECT_USER_REPOSITORY,
+} from "../domain/gateway/IUserRepository";
+import IGroupRepository, {
+  INJECT_GROUP_REPOSITORY,
+} from "../domain/gateway/IGroupRepository";
+import IInvitationRepository, {
+  INJECT_INVITATION_REPOSITORY,
+} from "../domain/gateway/IInvitationRepository";
 
 let initialized = false;
 
@@ -26,6 +33,8 @@ export function resolve<T>(token: any): T {
 export const resolveRepository = {
   users: (): IUserRepository => resolve(INJECT_USER_REPOSITORY),
   groups: (): IGroupRepository => resolve(INJECT_GROUP_REPOSITORY),
+  invitations: (): IInvitationRepository =>
+    resolve(INJECT_INVITATION_REPOSITORY),
 };
 
 function register(container: IContainer) {

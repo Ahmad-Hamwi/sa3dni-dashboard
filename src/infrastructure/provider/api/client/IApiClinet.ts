@@ -24,6 +24,7 @@ export type ApiResponse<T> = {
 export type RequestOptions = {
   params?: any;
   headers?: {};
+  data?: {};
 };
 
 export const INJECT_API_CLIENT = "INJECT_API_CLIENT";
