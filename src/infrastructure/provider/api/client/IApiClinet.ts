@@ -25,6 +25,7 @@ export type RequestOptions = {
   params?: any;
   headers?: {};
   data?: {};
+  queryParams?: any
 };
 
 export const INJECT_API_CLIENT = "INJECT_API_CLIENT";

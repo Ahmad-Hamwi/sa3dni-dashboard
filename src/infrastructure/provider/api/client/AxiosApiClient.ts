@@ -32,12 +32,16 @@ export default class AxiosApiClient implements IApiClient {
     options?: RequestOptions
   ): Promise<ApiResponse<T>> {
     return this.tryRequest<T>(() => {
+      url = this.applyParams(url, options?.params);
+
       return this.axios.post(url, data, this.axiosConfig(options));
     });
   }
 
   get<T>(url: string, options?: RequestOptions): Promise<ApiResponse<T>> {
     return this.tryRequest<T>(() => {
+      url = this.applyParams(url, options?.params);
+
       return this.axios.get(url, this.axiosConfig(options));
     });
   }
@@ -48,21 +52,36 @@ export default class AxiosApiClient implements IApiClient {
     options?: RequestOptions
   ): Promise<ApiResponse<T>> {
     return this.tryRequest<T>(() => {
+      url = this.applyParams(url, options?.params);
+
       return this.axios.put(url, data, this.axiosConfig(options));
     });
   }
 
   delete<T>(url: string, options?: RequestOptions): Promise<ApiResponse<T>> {
     return this.tryRequest<T>(() => {
+      url = this.applyParams(url, options?.params);
+
       return this.axios.delete(url, this.axiosConfig(options));
     });
   }
 
   private axiosConfig(options?: RequestOptions): AxiosRequestConfig {
     return {
-      params: options?.params,
       headers: options?.headers,
-      data: options?.data
+      data: options?.data,
+      params: options?.queryParams,
     };
+  }
+
+  private applyParams(url: string, params?: any): string {
+    if (params) {
+      Object.entries(params).forEach((e) => {
+        const [key, value] = e;
+
+        url = url.replace(`:${key}`, value as string);
+      });
+    }
+    return url;
   }
 }

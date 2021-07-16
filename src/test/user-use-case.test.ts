@@ -1,16 +1,12 @@
-import { inject, resolve } from "../di/injection";
-import GetUserDetailsUseCase from "../domain/interactor/user/GetUserDetailsUseCase";
+import {inject, resolve, resolveRepository} from "../di/injection";
+
 
 test("Get User Details", async () => {
   inject();
 
-  const getUserDetailsUseCaseTest = resolve<GetUserDetailsUseCase>(
-    GetUserDetailsUseCase
-  );
+  const userRepository = resolveRepository.users();
 
-  const userResult = await getUserDetailsUseCaseTest.execute({});
+  const user = await userRepository.get("asdasd");
 
-  console.log("Result", userResult);
-
-  expect(userResult).toEqual({});
+  console.log(user);
 }, 1000000);
