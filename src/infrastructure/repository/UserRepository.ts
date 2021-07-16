@@ -1,11 +1,12 @@
 import IUserRepository from "../../domain/gateway/IUserRepository";
 import User from "../../domain/entity/User";
 import IApiClient from "../provider/api/client/IApiClinet";
-import { mapToEntities, mapToEntity } from "../model/UserModel";
+import { mapToEntity } from "../model/UserModel";
 import { API_ENDPOINTS } from "../remote/config";
 import { UserResponse } from "../remote/model/user/UserResponse";
 import { UsersResponse } from "../remote/model/user/UsersResponse";
 import EmptyResponse from "../remote/model/EmptyResponse";
+import { mapToEntities } from "../model/Mapper";
 
 export default class UserRepository implements IUserRepository {
   constructor(private readonly api: IApiClient) {}
@@ -29,12 +30,12 @@ export default class UserRepository implements IUserRepository {
   async getAll(): Promise<Array<User>> {
     const response = await this.api.get<UsersResponse>(API_ENDPOINTS.users);
 
-    return mapToEntities(response.data.data)!;
+    return mapToEntities(response.data.data, mapToEntity);
   }
 
   async delete(userId: string): Promise<boolean> {
     const response = await this.api.delete<EmptyResponse>(
-      API_ENDPOINTS.deleteUser,
+      API_ENDPOINTS.user,
       {
         params: {
           id: userId,

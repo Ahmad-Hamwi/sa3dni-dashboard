@@ -24,7 +24,7 @@ export default class UserRoleRepository implements IUserRoleRepository {
 
   async update(userId: string, roleId: string): Promise<boolean> {
     const response = await this.api.put<EmptyResponse>(
-      API_ENDPOINTS.changeUserRole,
+      API_ENDPOINTS.userRole,
       { role: roleId },
       {
         params: {

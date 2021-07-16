@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function AgentsList() {
   const classes = useStyles();
 
-  const { isLoading, success, error } = useSelector(usersSelector);
+  const { isLoading, users, error } = useSelector(usersSelector);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -56,8 +56,8 @@ export default function AgentsList() {
         </div>
       )}
       <List className={classes.agentsList}>
-        {success &&
-          success.users.map((agentItem) => (
+        {users &&
+          users.map((agentItem) => (
             <AgentListItem
               key={agentItem.id}
               id={agentItem.id}

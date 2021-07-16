@@ -9,8 +9,11 @@ export const API_ENDPOINTS = {
   me: "me",
   user: "users/:id",
   users: "users",
-  deleteUser: "users/:id",
-  changeUserRole: "users/role/:id",
+
+  userRole: "users/role/:id",
+
+  group: "groups/:id",
+  groups: "groups",
 };
 
 export const API_HEADERS = {

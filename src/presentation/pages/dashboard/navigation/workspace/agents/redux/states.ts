@@ -1,9 +1,9 @@
-import { GetUsersResult } from "../../../../../../../domain/interactor/user/GetUsersUseCase";
+import {IUser} from "../../../../../../../domain/entity/User";
 
 export interface UsersState {
   isLoading: boolean;
   error?: Error | null;
-  success?: GetUsersResult | null;
+  users?: IUser[] | null;
 }
 
 export const initialState: UsersState = {
@@ -17,24 +17,24 @@ export const loadingState = (state: UsersState): UsersState => {
 
 export const dataState = (
   state: UsersState,
-  getUsersResult: GetUsersResult
+  users: IUser[]
 ): UsersState => {
   state.isLoading = false;
   state.error = null;
-  state.success = getUsersResult;
+  state.users = users;
   return state;
 };
 
 export const dataErrorState = (state: UsersState, error: Error): UsersState => {
   state.isLoading = false;
   state.error = error;
-  state.success = null;
+  state.users = null;
   return state;
 };
 
 export const clearState = (state: UsersState): UsersState => {
   state.isLoading = false;
   state.error = null;
-  state.success = null;
+  state.users = null;
   return state;
 };

@@ -15,6 +15,8 @@ import IUserRepository, {
 import UserRepository from "../../infrastructure/repository/UserRepository";
 import IUserRoleRepository, {INJECT_USER_ROLE_REPOSITORY} from "../../domain/gateway/IUserRoleRepository";
 import UserRoleRepository from "../../infrastructure/repository/UserRoleRepository";
+import IGroupRepository, {INJECT_GROUP_REPOSITORY} from "../../domain/gateway/IGroupRepository";
+import GroupRepository from "../../infrastructure/repository/GroupRepository";
 
 export function registerGateways(container: IContainer) {
   container.registerLazySingleton<IAuthService>(INJECT_AUTH_SERVICE, (c) => {
@@ -35,6 +37,13 @@ export function registerGateways(container: IContainer) {
       INJECT_USER_ROLE_REPOSITORY,
       (c) => {
         return new UserRoleRepository(c.resolve<IApiClient>(INJECT_API_CLIENT));
+      }
+  );
+
+  container.registerLazySingleton<IGroupRepository>(
+      INJECT_GROUP_REPOSITORY,
+      (c) => {
+        return new GroupRepository(c.resolve<IApiClient>(INJECT_API_CLIENT));
       }
   );
 }

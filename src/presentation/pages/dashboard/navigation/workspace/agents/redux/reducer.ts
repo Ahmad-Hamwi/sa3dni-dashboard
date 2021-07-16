@@ -9,6 +9,7 @@ import {
 } from "./states";
 import { GetUsersResult } from "../../../../../../../domain/interactor/user/GetUsersUseCase";
 import { TStore } from "../../../../../../store/store";
+import {IUser} from "../../../../../../../domain/entity/User";
 
 const usersSlice = createSlice({
   name: "users",
@@ -18,7 +19,7 @@ const usersSlice = createSlice({
     loadingActionReducer: (state: UsersState) => loadingState(state),
     dataSuccessActionReducer: (
       state: UsersState,
-      { payload }: PayloadAction<GetUsersResult>
+      { payload }: PayloadAction<IUser[]>
     ) => dataState(state, payload),
     dataErrorActionReducer: (
       state: UsersState,

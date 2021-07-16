@@ -1,16 +1,20 @@
-import {dataErrorActionReducer, dataSuccessActionReducer, loadingActionReducer} from "./reducer";
-import GetUsersUseCase from "../../../../../../../domain/interactor/user/GetUsersUseCase";
-import {resolve} from "../../../../../../../di/injection";
+import {
+  dataErrorActionReducer,
+  dataSuccessActionReducer,
+  loadingActionReducer,
+} from "./reducer";
+import { resolveRepository } from "../../../../../../../di/injection";
+import IUserRepository from "../../../../../../../domain/gateway/IUserRepository";
 
 export const getUsers = () => async (dispatch: any) => {
-    dispatch(loadingActionReducer());
+  dispatch(loadingActionReducer());
 
-    const getUsersUseCase = resolve<GetUsersUseCase>(GetUsersUseCase);
+  const userRepository: IUserRepository = resolveRepository.users();
 
-    try {
-        var result = await getUsersUseCase.execute()
-        dispatch(dataSuccessActionReducer(result));
-    } catch (e) {
-        dispatch(dataErrorActionReducer(e));
-    }
-}
+  try {
+    const users = await userRepository.getAll();
+    dispatch(dataSuccessActionReducer(users));
+  } catch (e) {
+    dispatch(dataErrorActionReducer(e));
+  }
+};
