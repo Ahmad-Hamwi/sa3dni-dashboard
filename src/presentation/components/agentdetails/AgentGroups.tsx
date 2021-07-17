@@ -37,6 +37,8 @@ export interface AgentGroupsProps {
 const AgentGroups: FC<AgentGroupsProps> = (props: AgentGroupsProps) => {
   const classes = useStyles();
 
+  console.log(props.groups);
+
   return (
     <div className={classes.content}>
       <div className={classes.title}>

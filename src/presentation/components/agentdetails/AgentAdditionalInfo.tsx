@@ -49,7 +49,7 @@ const AgentAdditionalInfo: FC<AgentAdditionalInfoProps> = (
   return (
     <div className={classes.root}>
       <div className={classes.title}>
-        <Typography variant="h6">Performance</Typography>
+        <Typography variant="h6">Additional Info</Typography>
       </div>
       <div className={classes.content}>
         <div className={classes.detailItem}>

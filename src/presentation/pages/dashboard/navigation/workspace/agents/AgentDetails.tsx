@@ -103,7 +103,7 @@ const AgentDetails: FC<AgentDetailsProps> = (props: AgentDetailsProps) => {
           <CircularProgress />
         </div>
       )}
-      {selectedUser && (
+      {!isSelectedUserLoading && selectedUser && (
         <Card variant="outlined" className={classes.card}>
           <div className={classes.cardContent}>
             <AgentBanner
@@ -114,10 +114,10 @@ const AgentDetails: FC<AgentDetailsProps> = (props: AgentDetailsProps) => {
               role={selectedUser.role}
             />
             <Divider />
-            {selectedUser.groups && (
+            {selectedUser.groups?.length !== 0 && (
               <AgentGroups groups={selectedUser.groups!} />
             )}
-            {selectedUser.groups && <Divider />}
+            {selectedUser.groups?.length !== 0 && <Divider />}
             <AgentPerformance
               totalChatAccepted={64}
               chatSatisfaction={"3/10"}
