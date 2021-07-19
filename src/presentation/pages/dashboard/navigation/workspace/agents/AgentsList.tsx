@@ -5,6 +5,8 @@ import {
   Theme,
   CircularProgress,
   Snackbar,
+  Fab,
+  Icon,
 } from "@material-ui/core";
 
 import AgentListItem from "../../../../../components/agents/AgentListItem";
@@ -22,6 +24,11 @@ import {
 import { Alert } from "@material-ui/lab";
 import { Spinner } from "../../../../../components/app/loader/Spinner";
 import { UserRole } from "../../../../../../domain/entity/UserRole";
+import { Add } from "@material-ui/icons";
+import {
+  InviteAgentDialog,
+  InviteAgentForm,
+} from "../../../../../components/agents/InviteAgentDialog";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,11 +36,15 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: 0,
     },
 
-    loadingContainer: {
+    margin: {
       position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
+      top: "100%",
+      left: "100%",
+      transform: "translate(-120%, -150%)",
+    },
+
+    extendedIcon: {
+      marginRight: theme.spacing(1),
     },
   })
 );
@@ -42,6 +53,7 @@ export default function AgentsList() {
   const classes = useStyles();
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   let snackBarMessage = "";
+  const [isInviteDialogOpen, setIsInviteDialogOpen] = useState(false);
 
   const {
     isUsersLoading,
@@ -75,12 +87,25 @@ export default function AgentsList() {
         "Something went wrong. " + changeRoleError.name + "has not changed.";
     }
 
+    setIsInviteDialogOpen(true);
+
     return () => {
       dispatch(clearChangeRoleReducer());
     };
   }, [changeRoleSuccess, changeRoleError]);
 
   const handleOnDeleteUser = (id: string) => {};
+
+  const handleOnInviteAgentFormSubmission = (
+    inviteForm: InviteAgentForm | null
+  ) => {
+    setIsInviteDialogOpen(false);
+
+    //if actually submitted, not dismissed.
+    if (inviteForm) {
+      // dispatch action.
+    }
+  };
 
   return (
     <Spinner loading={isUsersLoading}>
@@ -115,6 +140,20 @@ export default function AgentsList() {
           {snackBarMessage}
         </Alert>
       </Snackbar>
+      <Fab
+        variant="extended"
+        color="primary"
+        aria-label="add"
+        className={classes.margin}
+        onClick={() => setIsInviteDialogOpen(true)}
+      >
+        <Add className={classes.extendedIcon} />
+        Invite Agents
+      </Fab>
+      <InviteAgentDialog
+        open={isInviteDialogOpen}
+        handleOnSubmission={handleOnInviteAgentFormSubmission}
+      />
     </Spinner>
   );
 }
