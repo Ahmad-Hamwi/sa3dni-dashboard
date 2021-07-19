@@ -82,6 +82,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export interface AgentListItemProps {
   agent: IUser;
+  onRoleChanged: (id: string, role: UserRole) => void;
   onDelete: (id: string) => void;
 }
 
@@ -107,6 +108,10 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
     variant: "popper",
     popupId: "AGENT_LIST_ITEM_POPUP",
   });
+
+  const handleOnRoleChanged = (role: UserRole) => {
+    props.onRoleChanged(props.agent.id, role);
+  }
 
   const handleOnDelete = () => {
     props.onDelete(id);
@@ -139,6 +144,7 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
           <AgentOptionsMenu
             popupState={popUpState}
             selectedAgent={props.agent}
+            onRoleSelected={handleOnRoleChanged}
             onDelete={handleOnDelete}
           />
         </ListItemSecondaryAction>
@@ -151,6 +157,7 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
 type AgentOptionsMenuProps = {
   popupState: PopupState;
   selectedAgent: IUser;
+  onRoleSelected: (role: UserRole) => void;
   onDelete: () => void;
 };
 
@@ -158,13 +165,21 @@ const AgentOptionsMenu: FC<AgentOptionsMenuProps> = (props) => {
   const classes = useStyles();
 
   const handleOnChangeRoleClick = () => {
-    setChangeRoleDialogOpen(true);
-    props.popupState.close();
+    setChangeRoleDialogOpen(true); //opens change role dialog
+    props.popupState.close(); //closes menu
   };
 
   const handleOnDeleteClick = () => {
-    props.popupState.close();
-    props.onDelete();
+    props.popupState.close(); //closes menu
+    props.onDelete(); //callback
+  };
+
+  const handleOnRoleSelected = (role: UserRole | null) => {
+    setChangeRoleDialogOpen(false);
+    //if a role has actually been selected from list (not dismissed by clicking away from the dialog for example).
+    if (role) {
+      props.onRoleSelected(role);
+    }
   };
 
   // Change Role Dialog State
@@ -184,7 +199,7 @@ const AgentOptionsMenu: FC<AgentOptionsMenuProps> = (props) => {
       <ChangeRoleDialog
         open={isChangeRoleDialogOpen}
         selectedAgent={props.selectedAgent}
-        onDialogClosed={(_) => setChangeRoleDialogOpen(false)}
+        onRoleSelected={handleOnRoleSelected}
       />
     </>
   );
@@ -193,28 +208,21 @@ const AgentOptionsMenu: FC<AgentOptionsMenuProps> = (props) => {
 type ChangeRoleDialogProps = {
   open: boolean;
   selectedAgent: IUser;
-  onDialogClosed: (selectedRole: UserRole | null) => void;
+  onRoleSelected: (selectedRole: UserRole | null) => void;
 };
 
 const ChangeRoleDialog: FC<ChangeRoleDialogProps> = (props) => {
-  const dispatch = useDispatch();
-
   const handleUserRoleItemClicked = (role: UserRole | null) => {
-    // if a role has been selected
-    if (role) {
-      dispatch(changeSelectedUserRole(props.selectedAgent, role));
-    }
-
-    props.onDialogClosed(role);
+    props.onRoleSelected(role);
   };
 
   return (
     <Dialog
       onClose={() => handleUserRoleItemClicked(null)}
-      aria-labelledby="simple-dialog-title"
+      aria-labelledby="change-role-dialog"
       open={props.open}
     >
-      <DialogTitle id="simple-dialog-title">
+      <DialogTitle id="change-role-dialog">
         Change Role for: {props.selectedAgent.name}
       </DialogTitle>
       <List>

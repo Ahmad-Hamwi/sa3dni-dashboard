@@ -15,9 +15,13 @@ import {
 } from "../../../../../reducers/users/users_reducer";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { getUsers } from "../../../../../actions/users_actions";
+import {
+  changeSelectedUserRole,
+  getUsers,
+} from "../../../../../actions/users_actions";
 import { Alert } from "@material-ui/lab";
-import {Spinner} from "../../../../../components/app/loader/Spinner";
+import { Spinner } from "../../../../../components/app/loader/Spinner";
+import { UserRole } from "../../../../../../domain/entity/UserRole";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -58,6 +62,10 @@ export default function AgentsList() {
     }
   }, [UsersError]);
 
+  const handleOnRoleChanged = (id: string, role: UserRole) => {
+    dispatch(changeSelectedUserRole({ userId: id, newRole: role }));
+  };
+
   useEffect(() => {
     if (changeRoleSuccess) {
       snackBarMessage =
@@ -82,6 +90,7 @@ export default function AgentsList() {
             <AgentListItem
               key={agentItem.id}
               agent={agentItem}
+              onRoleChanged={handleOnRoleChanged}
               onDelete={handleOnDeleteUser}
             />
           ))}
