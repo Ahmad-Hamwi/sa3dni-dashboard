@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { getUsers } from "../../../../../actions/users_actions";
 import { Alert } from "@material-ui/lab";
+import {Spinner} from "../../../../../components/app/loader/Spinner";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -71,17 +72,18 @@ export default function AgentsList() {
     };
   }, [changeRoleSuccess, changeRoleError]);
 
+  const handleOnDeleteUser = (id: string) => {};
+
   return (
-    <>
-      {isUsersLoading && (
-        <div className={classes.loadingContainer}>
-          <CircularProgress />
-        </div>
-      )}
+    <Spinner loading={isUsersLoading}>
       <List className={classes.agentsList}>
         {users &&
           users.map((agentItem) => (
-            <AgentListItem key={agentItem.id} agent={agentItem} />
+            <AgentListItem
+              key={agentItem.id}
+              agent={agentItem}
+              onDelete={handleOnDeleteUser}
+            />
           ))}
       </List>
       <Snackbar
@@ -104,6 +106,6 @@ export default function AgentsList() {
           {snackBarMessage}
         </Alert>
       </Snackbar>
-    </>
+    </Spinner>
   );
 }
