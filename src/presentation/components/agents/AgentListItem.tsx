@@ -35,59 +35,8 @@ import {
 } from "material-ui-popup-state/hooks";
 import { PopupState } from "material-ui-popup-state/core";
 import { IUser } from "../../../domain/entity/User";
-import { useDispatch } from "react-redux";
-import { changeSelectedUserRole } from "../../actions/users_actions";
-
-const OnlineBadge = withStyles((theme: Theme) =>
-  createStyles({
-    badge: {
-      backgroundColor: "#44b700",
-      color: "#44b700",
-      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-      "&::after": {
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        borderRadius: "50%",
-        animation: "$ripple 1.2s infinite ease-in-out",
-        border: "1px solid currentColor",
-        content: '""',
-      },
-    },
-    "@keyframes ripple": {
-      "0%": {
-        transform: "scale(.8)",
-        opacity: 1,
-      },
-      "100%": {
-        transform: "scale(2.4)",
-        opacity: 0,
-      },
-    },
-  })
-)(Badge);
-
-const BusyBadge = withStyles((theme: Theme) =>
-  createStyles({
-    badge: {
-      backgroundColor: "#D93131",
-      color: "#D93131",
-      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-    },
-  })
-)(Badge);
-
-const OfflineBadge = withStyles((theme: Theme) =>
-  createStyles({
-    badge: {
-      backgroundColor: "#A8A8A8",
-      color: "#A8A8A8",
-      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-    },
-  })
-)(Badge);
+import { AgentRoleItem } from "./AgentRoleItem";
+import { AgentStatusBadge } from "./AgentStatusBadge";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -167,68 +116,13 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
         selected={agentIdFromQueryParams === id}
         to={path + Routes.PARAM_AGENT_ID + "=" + id}
       >
-        <ListItemIcon className={classes.listItemIcon}>
-          {userStatus === UserActiveStatus.ACTIVE ? (
-            <OnlineBadge
-              overlap="circle"
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              variant="dot"
-            >
-              {avatar}
-            </OnlineBadge>
-          ) : userStatus === UserActiveStatus.BUSY ? (
-            <BusyBadge
-              overlap="circle"
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              variant="dot"
-            >
-              {avatar}
-            </BusyBadge>
-          ) : userStatus === UserActiveStatus.OFFLINE ? (
-            <OfflineBadge
-              overlap="circle"
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              variant="dot"
-            >
-              {avatar}
-            </OfflineBadge>
-          ) : null}
-        </ListItemIcon>
+        <AgentStatusBadge status={userStatus}>{avatar}</AgentStatusBadge>
         <ListItemText
           className={classes.listItemText}
           primary={name}
           secondary={email}
         />
-        <Box
-          display="flex"
-          flexDirection="row"
-          mx={theme.spacing(1)}
-          alignItems="center"
-        >
-          {role === UserRole.OWNER ? (
-            <Star />
-          ) : role === UserRole.ADMIN ? (
-            <VerifiedUser />
-          ) : null}
-          <Typography className={classes.roleText}>
-            {role === UserRole.OWNER
-              ? "Owner"
-              : role === UserRole.ADMIN
-              ? "Admin"
-              : role === UserRole.AGENT
-              ? "Agent"
-              : null}
-          </Typography>
-        </Box>
+        <AgentRoleItem role={role} />
         <ListItemSecondaryAction>
           <IconButton
             edge="end"
