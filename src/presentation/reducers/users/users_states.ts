@@ -7,6 +7,8 @@ export interface UsersState {
   isSelectedUserLoading: boolean;
   selectedUserError?: Error | null;
   selectedUser?: IUser | null;
+  changeRoleSuccess?: IUser | null;
+  changeRoleError?: IUser | null;
 }
 
 export const usersInitialState: UsersState = {
@@ -19,13 +21,19 @@ export const usersLoadingState = (state: UsersState): UsersState => {
   return state;
 };
 
-export const usersSuccessState = (state: UsersState, users: IUser[]): UsersState => {
+export const usersSuccessState = (
+  state: UsersState,
+  users: IUser[]
+): UsersState => {
   state.isUsersLoading = false;
   state.users = users;
   return state;
 };
 
-export const usersErrorState = (state: UsersState, error: Error): UsersState => {
+export const usersErrorState = (
+  state: UsersState,
+  error: Error
+): UsersState => {
   state.isUsersLoading = false;
   state.UsersError = error;
   return state;
@@ -34,16 +42,44 @@ export const usersErrorState = (state: UsersState, error: Error): UsersState => 
 export const selectedUserLoadingState = (state: UsersState): UsersState => {
   state.isSelectedUserLoading = true;
   return state;
-}
+};
 
-export const selectedUserSuccessState = (state: UsersState, user: IUser): UsersState => {
+export const selectedUserSuccessState = (
+  state: UsersState,
+  user: IUser
+): UsersState => {
   state.isSelectedUserLoading = false;
   state.selectedUser = user;
   return state;
-}
+};
 
-export const selectedUserErrorState = (state: UsersState, error: Error): UsersState => {
+export const selectedUserErrorState = (
+  state: UsersState,
+  error: Error
+): UsersState => {
   state.isSelectedUserLoading = false;
   state.selectedUserError = error;
   return state;
-}
+};
+
+export const changeRoleSuccessState = (
+  state: UsersState,
+  affectedUser: IUser
+): UsersState => {
+  state.changeRoleSuccess = affectedUser;
+  return state;
+};
+
+export const changeRoleErrorState = (
+  state: UsersState,
+  notAffectedUser: IUser
+): UsersState => {
+  state.changeRoleError = notAffectedUser;
+  return state;
+};
+
+export const clearChangeRoleState = (state: UsersState): UsersState => {
+  state.changeRoleSuccess = null;
+  state.changeRoleError = null;
+  return state;
+};

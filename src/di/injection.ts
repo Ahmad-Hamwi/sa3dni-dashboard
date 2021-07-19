@@ -13,6 +13,9 @@ import IGroupRepository, {
 import IInvitationRepository, {
   INJECT_INVITATION_REPOSITORY,
 } from "../domain/gateway/IInvitationRepository";
+import IUserRoleRepository, {
+  INJECT_USER_ROLE_REPOSITORY,
+} from "../domain/gateway/IUserRoleRepository";
 
 let initialized = false;
 
@@ -35,6 +38,7 @@ export const resolveRepository = {
   groups: (): IGroupRepository => resolve(INJECT_GROUP_REPOSITORY),
   invitations: (): IInvitationRepository =>
     resolve(INJECT_INVITATION_REPOSITORY),
+  userRole: (): IUserRoleRepository => resolve(INJECT_USER_ROLE_REPOSITORY),
 };
 
 function register(container: IContainer) {
