@@ -56,11 +56,7 @@ export default function AgentsList() {
           users.map((agentItem) => (
             <AgentListItem
               key={agentItem.id}
-              id={agentItem.id}
-              name={agentItem.name}
-              email={agentItem.email}
-              role={agentItem.role}
-              status={agentItem.userStatus}
+              agent={agentItem}
             />
           ))}
       </List>

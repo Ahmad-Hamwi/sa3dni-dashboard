@@ -1,20 +1,25 @@
-import { FC } from "react";
+import React, { FC, useState } from "react";
 import {
+  Avatar,
+  Badge,
+  Box,
+  createStyles,
+  Dialog,
+  DialogTitle,
+  Divider,
+  IconButton,
+  List,
   ListItem,
   ListItemIcon,
-  Avatar,
-  createStyles,
-  makeStyles,
-  Theme,
-  ListItemText,
-  Box,
   ListItemSecondaryAction,
-  IconButton,
+  ListItemText,
+  makeStyles,
+  Menu,
+  MenuItem,
+  Theme,
   Typography,
   useTheme,
-  Divider,
   withStyles,
-  Badge,
 } from "@material-ui/core";
 
 import { MoreHoriz, Star, VerifiedUser } from "@material-ui/icons";
@@ -23,6 +28,13 @@ import qs from "qs";
 import { Routes } from "../../route/routes";
 import { UserActiveStatus } from "../../../domain/entity/UserActiveStatus";
 import { UserRole } from "../../../domain/entity/UserRole";
+import {
+  bindMenu,
+  bindTrigger,
+  usePopupState,
+} from "material-ui-popup-state/hooks";
+import { PopupState } from "material-ui-popup-state/core";
+import { IUser } from "../../../domain/entity/User";
 
 const OnlineBadge = withStyles((theme: Theme) =>
   createStyles({
@@ -110,15 +122,15 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "#D93131",
       boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
     },
+
+    popUpListItemWarning: {
+      color: theme.palette.error.dark,
+    },
   })
 );
 
 export interface AgentListItemProps {
-  id: String;
-  name: String;
-  email: String;
-  role: UserRole;
-  status: UserActiveStatus;
+  agent: IUser;
 }
 
 export interface QueryParams {
@@ -131,10 +143,17 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
   const { path } = useRouteMatch();
   const location = useLocation();
 
-  const avatar = <Avatar className={classes.avatar}>{props.name[0]}</Avatar>;
+  const { id, name, role, userStatus, email } = props.agent;
+
+  const avatar = <Avatar className={classes.avatar}>{name[0]}</Avatar>;
 
   const { agentId: agentIdFromQueryParams } = qs.parse(location.search, {
     ignoreQueryPrefix: true,
+  });
+
+  const popUpState = usePopupState({
+    variant: "popper",
+    popupId: "AGENT_LIST_ITEM_POPUP",
   });
 
   return (
@@ -143,11 +162,11 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
         button
         className={classes.listItemButton}
         component={Link}
-        selected={agentIdFromQueryParams === props.id}
-        to={path + Routes.PARAM_AGENT_ID + "=" + props.id}
+        selected={agentIdFromQueryParams === id}
+        to={path + Routes.PARAM_AGENT_ID + "=" + id}
       >
         <ListItemIcon className={classes.listItemIcon}>
-          {props.status === UserActiveStatus.ACTIVE ? (
+          {userStatus === UserActiveStatus.ACTIVE ? (
             <OnlineBadge
               overlap="circle"
               anchorOrigin={{
@@ -158,7 +177,7 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
             >
               {avatar}
             </OnlineBadge>
-          ) : props.status === UserActiveStatus.BUSY ? (
+          ) : userStatus === UserActiveStatus.BUSY ? (
             <BusyBadge
               overlap="circle"
               anchorOrigin={{
@@ -169,7 +188,7 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
             >
               {avatar}
             </BusyBadge>
-          ) : props.status === UserActiveStatus.OFFLINE ? (
+          ) : userStatus === UserActiveStatus.OFFLINE ? (
             <OfflineBadge
               overlap="circle"
               anchorOrigin={{
@@ -184,8 +203,8 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
         </ListItemIcon>
         <ListItemText
           className={classes.listItemText}
-          primary={props.name}
-          secondary={props.email}
+          primary={name}
+          secondary={email}
         />
         <Box
           display="flex"
@@ -193,25 +212,33 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
           mx={theme.spacing(1)}
           alignItems="center"
         >
-          {props.role === UserRole.OWNER ? (
+          {role === UserRole.OWNER ? (
             <Star />
-          ) : props.role === UserRole.ADMIN ? (
+          ) : role === UserRole.ADMIN ? (
             <VerifiedUser />
           ) : null}
           <Typography className={classes.roleText}>
-            {props.role === UserRole.OWNER
+            {role === UserRole.OWNER
               ? "Owner"
-              : props.role === UserRole.ADMIN
+              : role === UserRole.ADMIN
               ? "Admin"
-              : props.role === UserRole.AGENT
+              : role === UserRole.AGENT
               ? "Agent"
               : null}
           </Typography>
         </Box>
         <ListItemSecondaryAction>
-          <IconButton edge="end" aria-label="options">
+          <IconButton
+            edge="end"
+            aria-label="options"
+            {...bindTrigger(popUpState)}
+          >
             <MoreHoriz />
           </IconButton>
+          <AgentOptionsMenu
+            popupState={popUpState}
+            selectedAgent={props.agent}
+          />
         </ListItemSecondaryAction>
       </ListItem>
       <Divider />
@@ -219,4 +246,88 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
   );
 };
 
+type AgentOptionsMenuProps = {
+  popupState: PopupState;
+  selectedAgent: IUser;
+};
+
+const AgentOptionsMenu: FC<AgentOptionsMenuProps> = (props) => {
+  const classes = useStyles();
+
+  const handleOnChangeRoleClick = () => {
+    setChangeRoleDialogOpen(true);
+    props.popupState.close();
+  };
+
+  // Change Role Dialog State
+  const [isChangeRoleDialogOpen, setChangeRoleDialogOpen] = useState(false);
+
+  return (
+    <>
+      <Menu {...bindMenu(props.popupState)}>
+        <MenuItem onClick={handleOnChangeRoleClick}>Change Role</MenuItem>
+        <MenuItem
+          onClick={props.popupState.close}
+          className={classes.popUpListItemWarning}
+        >
+          Remove Agent
+        </MenuItem>
+      </Menu>
+      <ChangeRoleDialog
+        open={isChangeRoleDialogOpen}
+        selectedAgent={props.selectedAgent}
+        onDialogClosed={(_) => setChangeRoleDialogOpen(false)}
+      />
+    </>
+  );
+};
+
+type ChangeRoleDialogProps = {
+  open: boolean;
+  selectedAgent: IUser;
+  onDialogClosed: (selectedRole: UserRole | null) => void;
+};
+
+const ChangeRoleDialog: FC<ChangeRoleDialogProps> = (props) => {
+  const handleUserRoleItemClicked = (role: UserRole | null) => {
+    //redux for changing role...............
+    console.log("handling redux");
+
+    props.onDialogClosed(role);
+  };
+
+  return (
+    <Dialog
+      onClose={() => handleUserRoleItemClicked(null)}
+      aria-labelledby="simple-dialog-title"
+      open={props.open}
+    >
+      <DialogTitle id="simple-dialog-title">
+        Change Role for: {props.selectedAgent.name}
+      </DialogTitle>
+      <List>
+        <ListItem
+          selected={props.selectedAgent.role === UserRole.ADMIN}
+          button
+          onClick={() => handleUserRoleItemClicked(UserRole.ADMIN)}
+          key={UserRole.ADMIN}
+        >
+          <ListItemIcon>
+            <VerifiedUser />
+          </ListItemIcon>
+          <ListItemText primary={"Admin"} />
+        </ListItem>
+        <ListItem
+          selected={props.selectedAgent.role === UserRole.AGENT}
+          button
+          onClick={() => handleUserRoleItemClicked(UserRole.AGENT)}
+          key={UserRole.AGENT}
+        >
+          <ListItemIcon />
+          <ListItemText primary={"Agent"} />
+        </ListItem>
+      </List>
+    </Dialog>
+  );
+};
 export default AgentListItem;
