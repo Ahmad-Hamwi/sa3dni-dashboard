@@ -26,6 +26,7 @@ import { MoreHoriz, Star, VerifiedUser } from "@material-ui/icons";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import qs from "qs";
 import { Routes } from "../../route/routes";
+import { UserActiveStatus } from "../../../domain/entity/UserActiveStatus";
 import { UserRole } from "../../../domain/entity/UserRole";
 import {
   bindMenu,
@@ -196,9 +197,13 @@ type ChangeRoleDialogProps = {
 };
 
 const ChangeRoleDialog: FC<ChangeRoleDialogProps> = (props) => {
+  const dispatch = useDispatch();
+
   const handleUserRoleItemClicked = (role: UserRole | null) => {
-    //redux for changing role...............
-    console.log("handling redux");
+    // if a role has been selected
+    if (role) {
+      dispatch(changeSelectedUserRole(props.selectedAgent, role));
+    }
 
     props.onDialogClosed(role);
   };

@@ -4,15 +4,19 @@ import {
   makeStyles,
   Theme,
   CircularProgress,
+  Snackbar,
 } from "@material-ui/core";
 
 import AgentListItem from "../../../../../components/agents/AgentListItem";
 import { useDispatch, useSelector } from "react-redux";
-import { usersSelector } from "../../../../../reducers/users/users_reducer";
-import { useEffect } from "react";
+import {
+  clearChangeRoleReducer,
+  usersSelector,
+} from "../../../../../reducers/users/users_reducer";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { getUsers } from "../../../../../actions/users_actions";
-import { Spinner } from "../../../../../components/app/loader/Spinner";
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,8 +35,16 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function AgentsList() {
   const classes = useStyles();
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+  let snackBarMessage = "";
 
-  const { isUsersLoading, users, UsersError } = useSelector(usersSelector);
+  const {
+    isUsersLoading,
+    users,
+    UsersError,
+    changeRoleSuccess,
+    changeRoleError,
+  } = useSelector(usersSelector);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -45,22 +57,53 @@ export default function AgentsList() {
     }
   }, [UsersError]);
 
-  const handleOnDelete = (id: string) => {
-    // TODO: Call remove action
-  };
+  useEffect(() => {
+    if (changeRoleSuccess) {
+      snackBarMessage =
+        changeRoleSuccess.name + "role has been changed successfully";
+    } else if (changeRoleError) {
+      snackBarMessage =
+        "Something went wrong. " + changeRoleError.name + "has not changed.";
+    }
+
+    return () => {
+      dispatch(clearChangeRoleReducer());
+    };
+  }, [changeRoleSuccess, changeRoleError]);
 
   return (
-    <Spinner loading={isUsersLoading}>
+    <>
+      {isUsersLoading && (
+        <div className={classes.loadingContainer}>
+          <CircularProgress />
+        </div>
+      )}
       <List className={classes.agentsList}>
         {users &&
           users.map((agentItem) => (
-            <AgentListItem
-              key={agentItem.id}
-              agent={agentItem}
-              onDelete={handleOnDelete}
-            />
+            <AgentListItem key={agentItem.id} agent={agentItem} />
           ))}
       </List>
-    </Spinner>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        open={isSnackbarOpen}
+        autoHideDuration={3000}
+      >
+        <Alert
+          severity={
+            changeRoleSuccess
+              ? "success"
+              : changeRoleError
+              ? "error"
+              : undefined
+          }
+        >
+          {snackBarMessage}
+        </Alert>
+      </Snackbar>
+    </>
   );
 }
