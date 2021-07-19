@@ -81,6 +81,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export interface AgentListItemProps {
   agent: IUser;
+  onDelete: (id: string) => void;
 }
 
 export interface QueryParams {
@@ -105,6 +106,10 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
     variant: "popper",
     popupId: "AGENT_LIST_ITEM_POPUP",
   });
+
+  const handleOnDelete = () => {
+    props.onDelete(id);
+  };
 
   return (
     <>
@@ -133,6 +138,7 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
           <AgentOptionsMenu
             popupState={popUpState}
             selectedAgent={props.agent}
+            onDelete={handleOnDelete}
           />
         </ListItemSecondaryAction>
       </ListItem>
@@ -144,6 +150,7 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
 type AgentOptionsMenuProps = {
   popupState: PopupState;
   selectedAgent: IUser;
+  onDelete: () => void;
 };
 
 const AgentOptionsMenu: FC<AgentOptionsMenuProps> = (props) => {
@@ -154,6 +161,11 @@ const AgentOptionsMenu: FC<AgentOptionsMenuProps> = (props) => {
     props.popupState.close();
   };
 
+  const handleOnDeleteClick = () => {
+    props.popupState.close();
+    props.onDelete();
+  };
+
   // Change Role Dialog State
   const [isChangeRoleDialogOpen, setChangeRoleDialogOpen] = useState(false);
 
@@ -162,7 +174,7 @@ const AgentOptionsMenu: FC<AgentOptionsMenuProps> = (props) => {
       <Menu {...bindMenu(props.popupState)}>
         <MenuItem onClick={handleOnChangeRoleClick}>Change Role</MenuItem>
         <MenuItem
-          onClick={props.popupState.close}
+          onClick={handleOnDeleteClick}
           className={classes.popUpListItemWarning}
         >
           Remove Agent

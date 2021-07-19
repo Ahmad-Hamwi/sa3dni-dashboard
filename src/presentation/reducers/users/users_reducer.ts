@@ -14,6 +14,7 @@ import {
 } from "./users_states";
 import { TStore } from "../../store/store";
 import { IUser } from "../../../domain/entity/User";
+import { changeSelectedUserRole } from "../../actions/users_actions";
 
 const usersSlice = createSlice({
   name: "users",
@@ -44,18 +45,18 @@ const usersSlice = createSlice({
       { payload }: PayloadAction<Error>
     ) => selectedUserErrorState(state, payload),
 
-    //change role for a user
-    changeRoleSuccessReducer: (
-      state: UsersState,
-      { payload }: PayloadAction<IUser>
-    ) => changeRoleSuccessState(state, payload),
-
-    changeRoleErrorReducer: (
-      state: UsersState,
-      { payload }: PayloadAction<IUser>
-    ) => changeRoleErrorState(state, payload),
-
     clearChangeRoleReducer: (state: UsersState) => clearChangeRoleState(state),
+  },
+  extraReducers: {
+    [changeSelectedUserRole.fulfilled.type]: (
+      state: UsersState,
+      action: PayloadAction<IUser>
+    ) => {
+      changeRoleSuccessState(state, action.payload);
+    },
+    [changeSelectedUserRole.rejected.type]: (state: UsersState, { error }) => {
+      changeRoleErrorState(state, error);
+    },
   },
 });
 
@@ -66,8 +67,6 @@ export const {
   selectedUserLoadingReducer,
   selectedUserSuccessReducer,
   selectedUserErrorReducer,
-  changeRoleSuccessReducer,
-  changeRoleErrorReducer,
   clearChangeRoleReducer,
 } = usersSlice.actions;
 

@@ -13,7 +13,7 @@ import {
 } from "react-router-dom";
 import AgentsList from "./agents/AgentsList";
 import GroupsList from "./groups/GroupsList";
-import Invites from "./invites/Invites";
+import Invites from "./invites/InvitesList";
 import {Routes} from "../../../../route/routes";
 
 const useStyles = makeStyles((theme: Theme) => ({

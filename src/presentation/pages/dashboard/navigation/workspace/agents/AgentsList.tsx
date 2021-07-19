@@ -12,6 +12,7 @@ import { usersSelector } from "../../../../../reducers/users/users_reducer";
 import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { getUsers } from "../../../../../actions/users_actions";
+import { Spinner } from "../../../../../components/app/loader/Spinner";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -44,22 +45,22 @@ export default function AgentsList() {
     }
   }, [UsersError]);
 
+  const handleOnDelete = (id: string) => {
+    // TODO: Call remove action
+  };
+
   return (
-    <>
-      {isUsersLoading && (
-        <div className={classes.loadingContainer}>
-          <CircularProgress />
-        </div>
-      )}
+    <Spinner loading={isUsersLoading}>
       <List className={classes.agentsList}>
         {users &&
           users.map((agentItem) => (
             <AgentListItem
               key={agentItem.id}
               agent={agentItem}
+              onDelete={handleOnDelete}
             />
           ))}
       </List>
-    </>
+    </Spinner>
   );
 }
