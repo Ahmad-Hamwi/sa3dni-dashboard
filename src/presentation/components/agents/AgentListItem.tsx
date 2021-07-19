@@ -35,6 +35,8 @@ import {
 } from "material-ui-popup-state/hooks";
 import { PopupState } from "material-ui-popup-state/core";
 import { IUser } from "../../../domain/entity/User";
+import { useDispatch } from "react-redux";
+import { changeSelectedUserRole } from "../../actions/users_actions";
 
 const OnlineBadge = withStyles((theme: Theme) =>
   createStyles({
@@ -289,9 +291,13 @@ type ChangeRoleDialogProps = {
 };
 
 const ChangeRoleDialog: FC<ChangeRoleDialogProps> = (props) => {
+  const dispatch = useDispatch();
+
   const handleUserRoleItemClicked = (role: UserRole | null) => {
-    //redux for changing role...............
-    console.log("handling redux");
+    // if a role has been selected
+    if (role) {
+      dispatch(changeSelectedUserRole(props.selectedAgent, role));
+    }
 
     props.onDialogClosed(role);
   };
