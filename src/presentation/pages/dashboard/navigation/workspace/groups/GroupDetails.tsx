@@ -6,10 +6,16 @@ import {
   Avatar,
   Divider,
 } from "@material-ui/core";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import GroupBanner from "../../../../../components/groupdetails/GroupBanner";
 import GroupMembers from "../../../../../components/groupdetails/GroupMembers";
 import GroupPerformance from "../../../../../components/groupdetails/GroupPerfomance";
+import { IGroup } from "../../../../../../domain/entity/Group";
+import { useDispatch, useSelector } from "react-redux";
+import { groupsSelector } from "../../../../../reducers/groups/groups_reducers";
+import { getSelectedGroup } from "../../../../../actions/groups_actions";
+import { Spinner } from "../../../../../components/app/loader/Spinner";
+import { toast } from "react-hot-toast";
 
 const useStyles = makeStyles((theme: Theme) => ({
   loadingContainer: {
@@ -62,27 +68,41 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export interface GroupDetailsProps {
-  groupName: String;
+  group: IGroup;
 }
 
-const GroupDetails: FC<GroupDetailsProps> = (props: GroupDetailsProps) => {
+const GroupDetails: FC<GroupDetailsProps> = ({ group }: GroupDetailsProps) => {
   const classes = useStyles();
 
+  const dispatch = useDispatch();
+  const { isSelectedGroupLoading, selectedGroup, selectedGroupError } =
+    useSelector(groupsSelector);
+
+  useEffect(() => {
+    dispatch(getSelectedGroup(group.id));
+  }, [group, selectedGroup, dispatch]);
+
+  useEffect(() => {
+    if (selectedGroupError) toast.error(selectedGroupError.message);
+  }, [selectedGroupError]);
+
   return (
-    <>
-      <div className={classes.loadingContainer}>
-        <CircularProgress />
-      </div>
-      <Card variant="outlined" className={classes.card}>
-        <div className={classes.cardContent}>
-          <GroupBanner groupName={"General"} />
-          <Divider />
-          <GroupMembers users={[]} />
-          <Divider />
-          <GroupPerformance totalChatAccepted={64} chatSatisfaction={"3/10"} />
-        </div>
-      </Card>
-    </>
+    <Spinner loading={isSelectedGroupLoading}>
+      {group && (
+        <Card variant="outlined" className={classes.card}>
+          <div className={classes.cardContent}>
+            <GroupBanner groupName={group.name} />
+            <Divider />
+            <GroupMembers users={group.members} />
+            <Divider />
+            <GroupPerformance
+              totalChatAccepted={64}
+              chatSatisfaction={"3/10"}
+            />
+          </div>
+        </Card>
+      )}
+    </Spinner>
   );
 };
 

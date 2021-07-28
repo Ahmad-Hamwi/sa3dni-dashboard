@@ -9,6 +9,8 @@ import {
   Avatar,
 } from "@material-ui/core";
 import { FC } from "react";
+import { IUser } from "../../../domain/entity/User";
+import { UserActiveStatus } from "../../../domain/entity/UserActiveStatus";
 
 const OnlineBadge = withStyles((theme: Theme) =>
   createStyles({
@@ -75,46 +77,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export enum Status {
-  ONLINE,
-  BUSY,
-  OFFLINE,
-}
-
-export interface User {
-  name: String;
-  status: Status;
-}
-
 export interface GroupMembersProps {
-  users: User[];
+  users?: IUser[];
 }
 
-const GroupMembers: FC<GroupMembersProps> = (props: GroupMembersProps) => {
+const GroupMembers: FC<GroupMembersProps> = ({ users }: GroupMembersProps) => {
   const classes = useStyles();
-
-  const members: User[] = [
-    {
-      name: "Ahmad Hamwi",
-      status: Status.ONLINE,
-    },
-    {
-      name: "Mouaz Kassm",
-      status: Status.OFFLINE,
-    },
-    {
-      name: "Abdulrahman Tayara",
-      status: Status.BUSY,
-    },
-    {
-      name: "Mohammad Shatara",
-      status: Status.ONLINE,
-    },
-    {
-      name: "Mohamamad Nofal",
-      status: Status.BUSY,
-    },
-  ];
 
   return (
     <div className={classes.content}>
@@ -127,14 +95,14 @@ const GroupMembers: FC<GroupMembersProps> = (props: GroupMembersProps) => {
         className={classes.list}
         flexWrap="wrap"
       >
-        {members.map((member) => (
+        {users?.map((member) => (
           <Box
             display="flex"
             flexDirection="row"
             alignItems="center"
             className={classes.memberFlexItem}
           >
-            {member.status == Status.ONLINE ? (
+            {member.userStatus === UserActiveStatus.ACTIVE ? (
               <OnlineBadge
                 overlap="circle"
                 anchorOrigin={{
@@ -145,7 +113,7 @@ const GroupMembers: FC<GroupMembersProps> = (props: GroupMembersProps) => {
               >
                 <Avatar className={classes.avatar}>{member.name[0]}</Avatar>
               </OnlineBadge>
-            ) : member.status == Status.BUSY ? (
+            ) : member.userStatus === UserActiveStatus.BUSY ? (
               <BusyBadge
                 overlap="circle"
                 anchorOrigin={{
@@ -156,7 +124,7 @@ const GroupMembers: FC<GroupMembersProps> = (props: GroupMembersProps) => {
               >
                 <Avatar className={classes.avatar}>{member.name[0]}</Avatar>
               </BusyBadge>
-            ) : member.status == Status.OFFLINE ? (
+            ) : member.userStatus === UserActiveStatus.OFFLINE ? (
               <OfflineBadge
                 overlap="circle"
                 anchorOrigin={{

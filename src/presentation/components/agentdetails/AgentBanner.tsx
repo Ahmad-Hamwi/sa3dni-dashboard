@@ -11,6 +11,7 @@ import {
 import { VerifiedUser, Star } from "@material-ui/icons";
 import { FC } from "react";
 import {UserRole} from "../../../domain/entity/UserRole";
+import {UserActiveStatus} from "../../../domain/entity/UserActiveStatus";
 
 const OnlineBadge = withStyles((theme: Theme) =>
   createStyles({
@@ -129,7 +130,7 @@ export enum Status {
 }
 
 export interface AgentBannerProps {
-  status: Status;
+  status: UserActiveStatus;
   username: string;
   jobTitle: string;
   email: string;
@@ -143,7 +144,7 @@ const AgentBanner: FC<AgentBannerProps> = (props: AgentBannerProps) => {
 
   return (
     <div className={classes.banner}>
-      {props.status === Status.ONLINE ? (
+      {props.status === UserActiveStatus.ACTIVE ? (
         <OnlineBadge
           overlap="circle"
           anchorOrigin={{
@@ -154,7 +155,7 @@ const AgentBanner: FC<AgentBannerProps> = (props: AgentBannerProps) => {
         >
           {avatar}
         </OnlineBadge>
-      ) : props.status === Status.BUSY ? (
+      ) : props.status === UserActiveStatus.BUSY ? (
         <BusyBadge
           overlap="circle"
           anchorOrigin={{
@@ -165,7 +166,7 @@ const AgentBanner: FC<AgentBannerProps> = (props: AgentBannerProps) => {
         >
           {avatar}
         </BusyBadge>
-      ) : props.status === Status.OFFLINE ? (
+      ) : props.status === UserActiveStatus.OFFLINE ? (
         <OfflineBadge
           overlap="circle"
           anchorOrigin={{

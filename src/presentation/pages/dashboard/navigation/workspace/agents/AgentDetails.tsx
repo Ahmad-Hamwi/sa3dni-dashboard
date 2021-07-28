@@ -3,7 +3,6 @@ import {
   Card,
   makeStyles,
   Theme,
-  Avatar,
   Divider,
 } from "@material-ui/core";
 import { FC, useEffect } from "react";
@@ -13,7 +12,6 @@ import AgentPerformance from "../../../../../components/agentdetails/AgentPerfor
 import AgentAddtionalInfo from "../../../../../components/agentdetails/AgentAdditionalInfo";
 import {
   getSelectedUser,
-  getUsers,
 } from "../../../../../actions/users_actions";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,12 +67,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export enum Status {
-  ONLINE,
-  BUSY,
-  OFFLINE,
-}
-
 export interface AgentDetailsProps {
   selectedAgentId: string;
 }
@@ -107,7 +99,7 @@ const AgentDetails: FC<AgentDetailsProps> = (props: AgentDetailsProps) => {
         <Card variant="outlined" className={classes.card}>
           <div className={classes.cardContent}>
             <AgentBanner
-              status={Status.BUSY}
+              status={selectedUser.userStatus}
               username={selectedUser.name}
               jobTitle={selectedUser?.jobTitle!}
               email={selectedUser?.email!}
