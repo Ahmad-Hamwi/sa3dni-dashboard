@@ -89,8 +89,6 @@ export default function AgentsList() {
         "Something went wrong. " + changeRoleError.name + "has not changed.";
     }
 
-    setIsInviteDialogOpen(true);
-
     return () => {
       dispatch(clearChangeRoleReducer());
     };
