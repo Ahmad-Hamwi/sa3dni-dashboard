@@ -15,7 +15,8 @@ import {
 import { MoreHoriz } from "@material-ui/icons";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import qs from "qs";
-import {Routes} from "../../route/routes";
+import { Routes } from "../../route/routes";
+import { IGroup } from "../../../domain/entity/Group";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -47,15 +48,16 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export interface GroupListItemProps {
-  id: number;
-  groupName: String;
+  group: IGroup;
 }
 
 export interface QueryParams {
   groupId: number;
 }
 
-const GroupListItem: FC<GroupListItemProps> = (props: GroupListItemProps) => {
+const GroupListItem: FC<GroupListItemProps> = ({
+  group,
+}: GroupListItemProps) => {
   const classes = useStyles();
   const { path } = useRouteMatch();
   const location = useLocation();
@@ -70,17 +72,13 @@ const GroupListItem: FC<GroupListItemProps> = (props: GroupListItemProps) => {
         button
         className={classes.listItemButton}
         component={Link}
-        selected={groupIdFromQueryParams === props.id.toString()}
-        to={path + Routes.PARAM_GROUP_ID + "=" + props.id}
+        selected={groupIdFromQueryParams === group.id.toString()}
+        to={path + Routes.PARAM_GROUP_ID + "=" + group.id}
       >
         <ListItemIcon className={classes.listItemIcon}>
-          <Avatar className={classes.avatar}>{props.groupName[0]}</Avatar>
+          <Avatar className={classes.avatar}>{group.name[0]}</Avatar>
         </ListItemIcon>
-        <ListItemText
-          className={classes.listItemText}
-          primary={props.groupName}
-        />
-
+        <ListItemText className={classes.listItemText} primary={group.name} />
         <ListItemSecondaryAction>
           <IconButton edge="end" aria-label="options">
             <MoreHoriz />

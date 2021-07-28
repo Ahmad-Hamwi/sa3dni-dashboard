@@ -7,6 +7,16 @@ import {
 } from "@material-ui/core";
 
 import GroupListItem from "../../../../../components/groups/GroupsListItem";
+import { useDispatch, useSelector } from "react-redux";
+import { groupsSelector } from "../../../../../reducers/groups/groups_reducers";
+import {
+  groupsErrorState,
+  GroupsState,
+} from "../../../../../reducers/groups/groups_states";
+import { Spinner } from "../../../../../components/app/loader/Spinner";
+import { useEffect } from "react";
+import { getGroups } from "../../../../../actions/groups_actions";
+import { toast } from "react-hot-toast";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,37 +36,25 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function GroupsList() {
   const classes = useStyles();
 
-  const groups = [
-    {
-      id: 1,
-      groupName: "General",
-    },
+  const dispatch = useDispatch();
+  const { isGroupsLoading, groupsError, groups } = useSelector(groupsSelector);
 
-    {
-      id: 2,
-      groupName: "Misc",
-    },
+  useEffect(() => {
+    if (groups) return;
+    dispatch(getGroups());
+  }, [groups, dispatch]);
 
-    {
-      id: 3,
-      groupName: "Some Other Group",
-    },
-  ];
+  useEffect(() => {
+    if (groupsError) toast.error(groupsError.message);
+  }, [groupsError]);
 
   return (
-    <>
-      <div className={classes.loadingContainer}>
-        <CircularProgress />
-      </div>
+    <Spinner loading={isGroupsLoading}>
       <List className={classes.groupsList}>
-        {groups.map((groupItem) => (
-          <GroupListItem
-            key={groupItem.id}
-            id={groupItem.id}
-            groupName={groupItem.groupName}
-          />
+        {groups?.map((groupItem) => (
+          <GroupListItem key={groupItem.id} group={groupItem} />
         ))}
       </List>
-    </>
+    </Spinner>
   );
 }

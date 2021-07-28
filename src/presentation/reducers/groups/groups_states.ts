@@ -2,7 +2,7 @@ import { IGroup } from "../../../domain/entity/Group";
 
 export interface GroupsState {
     isGroupsLoading: boolean;
-    GroupsError?: Error | null;
+    groupsError?: Error | null;
     groups?: IGroup[] | null;
     isSelectedGroupLoading: boolean;
     selectedGroupError?: Error | null;
@@ -33,7 +33,7 @@ export const groupsErrorState = (
     error: Error
 ): GroupsState => {
     state.isGroupsLoading = false;
-    state.GroupsError = error;
+    state.groupsError = error;
     return state;
 };
 

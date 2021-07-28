@@ -12,6 +12,7 @@ const InvitesList = () => {
   const { isLoading, invitations } = useSelector(invitationsSelector);
 
   useEffect(() => {
+    if (invitations) return;
     dispatch(fetchInvitations());
   }, [dispatch]);
 
@@ -25,11 +26,7 @@ const InvitesList = () => {
       );
     }) || [];
 
-  return (
-    <Spinner loading={isLoading}>
-      {invitationsList}
-    </Spinner>
-  );
+  return <Spinner loading={isLoading}>{invitationsList}</Spinner>;
 };
 
 export default InvitesList;
