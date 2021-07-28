@@ -24,14 +24,11 @@ const usersSlice = createSlice({
   name: "users",
   initialState: usersInitialState,
   reducers: {
-    usersLoadingReducer: (state: UsersState) => usersLoadingState(state),
-
-    selectedUserLoadingReducer: (state: UsersState) =>
-      selectedUserLoadingState(state),
-
     clearChangeRoleReducer: (state: UsersState) => clearChangeRoleState(state),
   },
   extraReducers: {
+    [getUsers.pending.type]: (state: UsersState) => usersLoadingState(state),
+
     [getUsers.fulfilled.type]: (
       state: UsersState,
       { payload }: PayloadAction<IUser[]>
@@ -41,6 +38,8 @@ const usersSlice = createSlice({
       state: UsersState,
       { payload }: PayloadAction<Error>
     ) => usersErrorState(state, payload),
+
+    [getSelectedUser.pending.type]: (state) => selectedUserLoadingState(state),
 
     [getSelectedUser.fulfilled.type]: (
       state: UsersState,
@@ -65,8 +64,6 @@ const usersSlice = createSlice({
 });
 
 export const {
-  usersLoadingReducer,
-  selectedUserLoadingReducer,
   clearChangeRoleReducer,
 } = usersSlice.actions;
 

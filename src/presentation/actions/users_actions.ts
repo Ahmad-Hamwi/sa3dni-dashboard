@@ -1,7 +1,3 @@
-import {
-  usersLoadingReducer,
-  selectedUserLoadingReducer,
-} from "../reducers/users/users_reducer";
 import { resolveRepository } from "../../di/injection";
 import IUserRepository from "../../domain/gateway/IUserRepository";
 import { UserRole } from "../../domain/entity/UserRole";
@@ -12,7 +8,6 @@ const getUsersAction = createAction("users/getUsers");
 export const getUsers = createAsyncThunk(
   getUsersAction.type,
   async (_, thunkAPI) => {
-    thunkAPI.dispatch(usersLoadingReducer());
     const userRepository: IUserRepository = resolveRepository.users();
     return userRepository.getAll();
   }
@@ -21,7 +16,6 @@ export const getUsers = createAsyncThunk(
 export const getSelectedUser = createAsyncThunk(
   "users/getSelectedUser",
   async (selectedUserId: string, thunkAPI) => {
-    thunkAPI.dispatch(selectedUserLoadingReducer());
     const userRepository: IUserRepository = resolveRepository.users();
     return userRepository.get(selectedUserId);
   }
