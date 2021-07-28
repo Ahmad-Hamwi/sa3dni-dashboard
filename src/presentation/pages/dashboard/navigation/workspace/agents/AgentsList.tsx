@@ -65,8 +65,9 @@ export default function AgentsList() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (users) return;
     dispatch(getUsers());
-  }, [dispatch]);
+  }, [users, dispatch]);
 
   useEffect(() => {
     if (UsersError) {
