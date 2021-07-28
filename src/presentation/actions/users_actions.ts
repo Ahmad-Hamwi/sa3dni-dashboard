@@ -1,8 +1,6 @@
 import {
   usersLoadingReducer,
   selectedUserLoadingReducer,
-  selectedUserSuccessReducer,
-  selectedUserErrorReducer,
 } from "../reducers/users/users_reducer";
 import { resolveRepository } from "../../di/injection";
 import IUserRepository from "../../domain/gateway/IUserRepository";
@@ -20,19 +18,14 @@ export const getUsers = createAsyncThunk(
   }
 );
 
-export const getSelectedUser =
-  (selectedUserId: string) => async (dispatch: any) => {
-    dispatch(selectedUserLoadingReducer());
-
+export const getSelectedUser = createAsyncThunk(
+  "users/getSelectedUser",
+  async (selectedUserId: string, thunkAPI) => {
+    thunkAPI.dispatch(selectedUserLoadingReducer());
     const userRepository: IUserRepository = resolveRepository.users();
-
-    try {
-      const selectedUser = await userRepository.get(selectedUserId);
-      dispatch(selectedUserSuccessReducer(selectedUser));
-    } catch (e) {
-      dispatch(selectedUserErrorReducer(e));
-    }
-  };
+    return userRepository.get(selectedUserId);
+  }
+);
 
 export type ChangeUserRoleArgs = {
   userId: string;
