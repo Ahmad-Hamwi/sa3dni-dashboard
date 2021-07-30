@@ -28,6 +28,19 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: "column",
     },
 
+    emailInput: {
+      // "&..MuiFilledInput-root": {
+      //   borderBottomRightRadius: theme.spacing(0.5),
+      //   borderBottomLeftRadius: theme.spacing(0.5),
+      // },
+      "&.MuiFilledInput-underline:before": {
+        borderBottom: 0,
+      },
+      "&.MuiFilledInput-underline:hover": {
+        borderBottom: 0,
+      },
+    },
+
     adminSection: {
       marginLeft: theme.spacing(3),
       display: "flex",
@@ -128,6 +141,7 @@ export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
           <Box className={classes.emailSection}>
             <Typography variant={"h6"}>Email</Typography>
             <TextField
+              className={classes.emailInput}
               label="Email address to invite"
               variant="filled"
               onChange={handleOnEmailChanged}

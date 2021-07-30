@@ -84,14 +84,24 @@ const WorkspaceInfoSection = () => {
             component={
               selectedAgentId === undefined
                 ? () => <></>
-                : () => <AgentDetails selectedAgentId={selectedAgentId.toString()} />
+                : () => (
+                    <AgentDetails
+                      selectedAgentId={selectedAgentId.toString()}
+                    />
+                  )
             }
           />
           <Route path={path + Routes.INVITES} render={() => <></>} />
           <Route
             path={path + Routes.GROUPS}
             component={
-              selectedGroupId === undefined ? () => <></> : GroupDetails
+              selectedGroupId === undefined
+                ? () => <></>
+                : () => (
+                    <GroupDetails
+                      selectedGroupId={selectedGroupId.toString()}
+                    />
+                  )
             }
           />
         </Switch>

@@ -68,10 +68,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export interface GroupDetailsProps {
-  group: IGroup;
+  selectedGroupId: string;
 }
 
-const GroupDetails: FC<GroupDetailsProps> = ({ group }: GroupDetailsProps) => {
+const GroupDetails: FC<GroupDetailsProps> = ({ selectedGroupId }: GroupDetailsProps) => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
@@ -79,8 +79,8 @@ const GroupDetails: FC<GroupDetailsProps> = ({ group }: GroupDetailsProps) => {
     useSelector(groupsSelector);
 
   useEffect(() => {
-    dispatch(getSelectedGroup(group.id));
-  }, [group, selectedGroup, dispatch]);
+    dispatch(getSelectedGroup(selectedGroupId));
+  }, [selectedGroupId, dispatch]);
 
   useEffect(() => {
     if (selectedGroupError) toast.error(selectedGroupError.message);
@@ -88,12 +88,12 @@ const GroupDetails: FC<GroupDetailsProps> = ({ group }: GroupDetailsProps) => {
 
   return (
     <Spinner loading={isSelectedGroupLoading}>
-      {group && (
+      {selectedGroup && (
         <Card variant="outlined" className={classes.card}>
           <div className={classes.cardContent}>
-            <GroupBanner groupName={group.name} />
+            <GroupBanner groupName={selectedGroup.name} />
             <Divider />
-            <GroupMembers users={group.members} />
+            <GroupMembers users={selectedGroup.members} />
             <Divider />
             <GroupPerformance
               totalChatAccepted={64}
