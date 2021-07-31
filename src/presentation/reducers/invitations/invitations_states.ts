@@ -1,9 +1,13 @@
 import { IInvitation } from "../../../domain/entity/Invitation";
+import {InvitationResult} from "../../../domain/gateway/IInvitationRepository";
 
 export interface InvitationsState {
   invitations?: IInvitation[];
   isLoading: boolean;
   error?: Error;
+  isInviting?: boolean;
+  inviteResults?: InvitationResult[],
+  invitationErrors?: Error[],
 }
 
 export const invitationsInitialState: InvitationsState = {

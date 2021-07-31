@@ -29,6 +29,11 @@ import {
   InviteAgentDialog,
   InviteAgentForm,
 } from "../../../../../components/agents/InviteAgentDialog";
+import {
+  fetchInvitations,
+  inviteUser,
+} from "../../../../../actions/invitations_actions";
+import {clearInviteUserState, invitationsSelector} from "../../../../../reducers/invitations/invitations_reducer";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -65,6 +70,7 @@ export default function AgentsList() {
     changeRoleSuccess,
     changeRoleError,
   } = useSelector(usersSelector);
+
   const dispatch = useDispatch();
 
   //...................User dispatch and side effects............................
@@ -87,13 +93,12 @@ export default function AgentsList() {
       setSnackbarState({
         open: true,
         snackBarMessage:
-            changeRoleSuccess.name + "role has been changed successfully",
+          changeRoleSuccess.name + "role has been changed successfully.",
       });
     } else if (changeRoleError) {
       setSnackbarState({
         open: true,
-        snackBarMessage:
-            "Something went wrong. Role has not changed.",
+        snackBarMessage: "Something went wrong. Role has not changed.",
       });
     }
     return () => {
@@ -116,9 +121,32 @@ export default function AgentsList() {
 
     //if actually submitted, not dismissed.
     if (inviteForm) {
-      // dispatch action.
+      dispatch(inviteUser(inviteForm));
     }
   };
+
+  const { inviteResults, invitationErrors } = useSelector(invitationsSelector);
+
+  useEffect(() => {
+    if (inviteResults) {
+      setSnackbarState({
+        open: true,
+        snackBarMessage: "Invitation sent successfully.",
+      });
+
+      dispatch(fetchInvitations());
+
+    } else if (invitationErrors) {
+      setSnackbarState({
+        open: true,
+        snackBarMessage: "Something went wrong, Error sending invitation.",
+      });
+    }
+
+    return () => {
+      dispatch(clearInviteUserState());
+    };
+  }, [inviteResults, invitationErrors]);
 
   const AgentsList = () => {
     return (
@@ -145,17 +173,8 @@ export default function AgentsList() {
         }}
         open={snackbarState.open}
         autoHideDuration={3000}
-      >
-        <Alert
-          severity={
-            changeRoleSuccess
-              ? "success"
-              : "error"
-          }
-        >
-          {snackbarState.snackBarMessage}
-        </Alert>
-      </Snackbar>
+        message={snackbarState.snackBarMessage}
+      />
     );
   };
 
