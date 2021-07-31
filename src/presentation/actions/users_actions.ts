@@ -34,6 +34,8 @@ export const changeSelectedUserRole = createAsyncThunk<any, ChangeUserRoleArgs>(
 
     const userRepository: IUserRepository = resolveRepository.users();
 
+    console.log("calling the repo");
+
     const result = await userRoleRepository.update(args.userId, args.newRole);
 
     if (result) {

@@ -52,8 +52,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function AgentsList() {
   const classes = useStyles();
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-  let snackBarMessage = "";
+  const [snackbarState, setSnackbarState] = useState({
+    open: false,
+    snackBarMessage: "",
+  });
   const [isInviteDialogOpen, setIsInviteDialogOpen] = useState(false);
 
   const {
@@ -64,6 +66,8 @@ export default function AgentsList() {
     changeRoleError,
   } = useSelector(usersSelector);
   const dispatch = useDispatch();
+
+  //...................User dispatch and side effects............................
 
   useEffect(() => {
     if (users) return;
@@ -76,23 +80,32 @@ export default function AgentsList() {
     }
   }, [UsersError]);
 
-  const handleOnRoleChanged = (id: string, role: UserRole) => {
-    dispatch(changeSelectedUserRole({ userId: id, newRole: role }));
-  };
+  //..................Change Role State and side effects .....................
 
   useEffect(() => {
     if (changeRoleSuccess) {
-      snackBarMessage =
-        changeRoleSuccess.name + "role has been changed successfully";
+      setSnackbarState({
+        open: true,
+        snackBarMessage:
+            changeRoleSuccess.name + "role has been changed successfully",
+      });
     } else if (changeRoleError) {
-      snackBarMessage =
-        "Something went wrong. " + changeRoleError.name + "has not changed.";
+      setSnackbarState({
+        open: true,
+        snackBarMessage:
+            "Something went wrong. Role has not changed.",
+      });
     }
-
     return () => {
       dispatch(clearChangeRoleReducer());
     };
-  }, [changeRoleSuccess, changeRoleError]);
+  }, [dispatch, changeRoleSuccess, changeRoleError]);
+
+  //......................event handlers.....................................
+
+  const handleOnRoleChanged = (id: string, role: UserRole) => {
+    dispatch(changeSelectedUserRole({ userId: id, newRole: role }));
+  };
 
   const handleOnDeleteUser = (id: string) => {};
 
@@ -107,8 +120,8 @@ export default function AgentsList() {
     }
   };
 
-  return (
-    <Spinner loading={isUsersLoading}>
+  const AgentsList = () => {
+    return (
       <List className={classes.agentsList}>
         {users &&
           users.map((agentItem) => (
@@ -120,26 +133,34 @@ export default function AgentsList() {
             />
           ))}
       </List>
+    );
+  };
+
+  const AgentsSnackbar = () => {
+    return (
       <Snackbar
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "left",
         }}
-        open={isSnackbarOpen}
+        open={snackbarState.open}
         autoHideDuration={3000}
       >
         <Alert
           severity={
             changeRoleSuccess
               ? "success"
-              : changeRoleError
-              ? "error"
-              : undefined
+              : "error"
           }
         >
-          {snackBarMessage}
+          {snackbarState.snackBarMessage}
         </Alert>
       </Snackbar>
+    );
+  };
+
+  const InviteAgentsFab = () => {
+    return (
       <Fab
         variant="extended"
         color="primary"
@@ -150,6 +171,14 @@ export default function AgentsList() {
         <Add className={classes.extendedIcon} />
         Invite Agents
       </Fab>
+    );
+  };
+
+  return (
+    <Spinner loading={isUsersLoading}>
+      <AgentsList />
+      <AgentsSnackbar />
+      <InviteAgentsFab />
       <InviteAgentDialog
         open={isInviteDialogOpen}
         handleOnSubmission={handleOnInviteAgentFormSubmission}
