@@ -127,10 +127,10 @@ export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
   const [remainingGroups, setRemainingGroups] = useState<IGroup[]>([]);
 
   const dispatch = useDispatch();
-  const { groups, groupsError, isGroupsLoading } = useSelector(groupsSelector);
+  const { groups, groupsError } = useSelector(groupsSelector);
 
   useEffect(() => {
-    if (!groups) dispatch(getGroups);
+    if (!groups) dispatch(getGroups());
   }, [groups, dispatch]);
 
   const addGroupToSelected = (group: IGroup) => {
