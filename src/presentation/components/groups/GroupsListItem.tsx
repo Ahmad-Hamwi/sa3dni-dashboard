@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
 
     listItemButton: {
-      "&:hover": {
+      "&.MuiListItem-root.Mui-selected, .MuiListItem-root.Mui-selected:hover": {
         backgroundColor: theme.palette.secondary.main,
       },
     },
@@ -76,7 +76,7 @@ const GroupListItem: FC<GroupListItemProps> = ({
         to={path + Routes.PARAM_GROUP_ID + "=" + group.id}
       >
         <ListItemIcon className={classes.listItemIcon}>
-          <Avatar className={classes.avatar}>{group.name[0]}</Avatar>
+          <Avatar className={classes.avatar}>{group.name[0].toUpperCase()}</Avatar>
         </ListItemIcon>
         <ListItemText className={classes.listItemText} primary={group.name} />
         <ListItemSecondaryAction>

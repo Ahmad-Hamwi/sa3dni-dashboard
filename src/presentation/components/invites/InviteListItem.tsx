@@ -38,7 +38,7 @@ const InviteListItem: FunctionComponent<InviteListItemProps> = (props) => {
 
   return (
     <ListItem className={classes.listItem}>
-      <Avatar className={classes.avatar}>{props.invitation.email[0]}</Avatar>
+      <Avatar className={classes.avatar}>{props.invitation.email[0].toUpperCase()}</Avatar>
       <ListItemText
         className={classes.title}
         primary={props.invitation.email}

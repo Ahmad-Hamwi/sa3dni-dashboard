@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
 
     IconSelected: {
-      color: "black",
+      color: theme.palette.primary.main,
     },
   })
 );
@@ -62,7 +62,7 @@ const DrawerListItems = () => {
           <ListItemIcon>
             <Chat
               className={
-                location.pathname === path + Routes.CHATS
+                  location.pathname.includes(path + Routes.CHATS)
                   ? classes.IconSelected
                   : undefined
               }
@@ -84,7 +84,7 @@ const DrawerListItems = () => {
           <ListItemIcon>
             <SupervisorAccount
               className={
-                location.pathname === path + Routes.WORKSPACE
+                location.pathname.includes(path + Routes.WORKSPACE)
                   ? classes.IconSelected
                   : undefined
               }

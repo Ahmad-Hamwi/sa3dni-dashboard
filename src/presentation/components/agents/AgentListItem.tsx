@@ -63,9 +63,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
 
     listItemButton: {
-      "&:hover": {
+      height: theme.spacing(8),
+      "&.MuiListItem-root.Mui-selected, .MuiListItem-root.Mui-selected:hover": {
         backgroundColor: theme.palette.secondary.main,
-      },
+      }
     },
 
     busyBadge: {
@@ -98,7 +99,7 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
 
   const { id, name, role, userStatus, email } = props.agent;
 
-  const avatar = <Avatar className={classes.avatar}>{name[0]}</Avatar>;
+  const avatar = <Avatar className={classes.avatar}>{name[0].toUpperCase()}</Avatar>;
 
   const { agentId: agentIdFromQueryParams } = qs.parse(location.search, {
     ignoreQueryPrefix: true,

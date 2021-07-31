@@ -111,7 +111,7 @@ const GroupMembers: FC<GroupMembersProps> = ({ users }: GroupMembersProps) => {
                 }}
                 variant="dot"
               >
-                <Avatar className={classes.avatar}>{member.name[0]}</Avatar>
+                <Avatar className={classes.avatar}>{member.name[0].toUpperCase()}</Avatar>
               </OnlineBadge>
             ) : member.userStatus === UserActiveStatus.BUSY ? (
               <BusyBadge
