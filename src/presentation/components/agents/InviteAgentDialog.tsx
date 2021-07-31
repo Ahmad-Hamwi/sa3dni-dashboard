@@ -106,25 +106,28 @@ export type InviteAgentDialogProps = {
 export interface InviteAgentForm {
   email: string;
   isAdmin: boolean;
-  groupIds: string[];
+  groups: IGroup[];
 }
+
+type SelectionState = {
+  selectedGroups: IGroup[];
+  remainingGroups: IGroup[];
+};
 
 export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
   const classes = useStyles();
 
-  const [form, setForm] = useState<InviteAgentForm>({
-    email: "",
-    isAdmin: false,
-    groupIds: [],
+  const [email, setEmail] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [selection, setSelection] = useState<SelectionState>({
+    selectedGroups: [],
+    remainingGroups: [],
   });
 
   const groupsPopUpState = usePopupState({
     variant: "popper",
     popupId: "GROUPS_POPUP",
   });
-
-  const [selectedGroups, setSelectedGroups] = useState<IGroup[]>([]);
-  const [remainingGroups, setRemainingGroups] = useState<IGroup[]>([]);
 
   const dispatch = useDispatch();
   const { groups, groupsError } = useSelector(groupsSelector);
@@ -134,17 +137,21 @@ export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
   }, [groups, dispatch]);
 
   const addGroupToSelected = (group: IGroup) => {
-    setSelectedGroups((groupsBefore) => {
-      return [...groupsBefore, group];
+    setSelection((prevState) => {
+      return {
+        remainingGroups: prevState.remainingGroups.filter(
+          (itrGroup: IGroup) => itrGroup.id !== group.id
+        ),
+        selectedGroups: [...prevState.selectedGroups, group],
+      };
     });
-    setRemainingGroups(
-      remainingGroups.filter((itrGroup) => itrGroup.id !== group.id)
-    );
   };
 
   useEffect(() => {
     if (groups) {
-      setRemainingGroups(groups);
+      setSelection((prev) => {
+        return { ...prev, remainingGroups: groups };
+      });
 
       groups.forEach((group) => {
         if (group.isGeneral) {
@@ -156,15 +163,11 @@ export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
   }, [groups, groupsError]);
 
   const handleOnEmailChanged = (event: ChangeEvent<HTMLInputElement>) => {
-    setForm((prevState) => {
-      return { ...prevState, email: event.target.value };
-    });
+    setEmail(event.target.value);
   };
 
   const handleAdminCheck = (event: ChangeEvent<HTMLInputElement>) => {
-    setForm((prevState) => {
-      return { ...prevState, isAdmin: event.target.checked };
-    });
+    setIsAdmin(event.target.checked);
   };
 
   const handleClose = () => {
@@ -172,7 +175,11 @@ export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
   };
 
   const handleFormSubmission = () => {
-    props.handleOnSubmission(form);
+    props.handleOnSubmission({
+      email: email,
+      isAdmin: isAdmin,
+      groups: selection.selectedGroups
+    });
   };
 
   const handleOnGroupSelectedFromMenu = (group: IGroup) => {};
@@ -195,7 +202,7 @@ export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
               onChange={handleOnEmailChanged}
               size={"small"}
             >
-              {form.email}
+              {email}
             </TextField>
           </Box>
           <Box className={classes.adminSection}>
@@ -203,7 +210,7 @@ export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
             <div className={classes.adminCheckBoxConatiner}>
               <Checkbox
                 className={classes.adminCheckBox}
-                checked={form.isAdmin}
+                checked={isAdmin}
                 onChange={handleAdminCheck}
                 color="primary"
               />
@@ -217,7 +224,7 @@ export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
               {groups?.map((group) => {
                 return <FlexItemGroup group={group} />;
               })}
-              {remainingGroups.length !== 0 && (
+              {selection.remainingGroups.length !== 0 && (
                 <>
                   <Button
                     {...bindTrigger(groupsPopUpState)}
@@ -227,7 +234,7 @@ export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
                   </Button>
                   <ListOfGroupsPopUpMenu
                     popupState={groupsPopUpState}
-                    groups={remainingGroups}
+                    groups={selection.remainingGroups}
                     onGroupSelected={handleOnGroupSelectedFromMenu}
                   />
                 </>
