@@ -1,6 +1,7 @@
 import { Typography, Box, Card, Theme, makeStyles } from "@material-ui/core";
 import { FC } from "react";
-import {IGroup} from "../../../domain/entity/Group";
+import { IGroup } from "../../../domain/entity/Group";
+import FlexItemGroup from "../groups/FlexItemGroup";
 
 const useStyles = makeStyles((theme: Theme) => ({
   content: {
@@ -13,20 +14,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
   title: {
     margin: theme.spacing(1),
-  },
-
-  groupFlexItem: {
-    marginLeft: theme.spacing(0.5),
-    marginRight: theme.spacing(0.5),
-    marginTop: theme.spacing(0.5),
-    marginBottom: theme.spacing(0.5),
-    background: theme.palette.primary.main,
-    borderWidth: "1px",
-    border: "1px solid #707070",
-    borderRadius: theme.spacing(0.5),
-    color: theme.palette.primary.contrastText,
-    padding: `${theme.spacing(0.5)}px ${theme.spacing(1.5)}px`,
-    fontWeight: 500,
   },
 }));
 
@@ -51,9 +38,7 @@ const AgentGroups: FC<AgentGroupsProps> = (props: AgentGroupsProps) => {
         flexWrap="wrap"
       >
         {props.groups.map((group) => (
-          <Typography className={classes.groupFlexItem}>
-            {group.name}
-          </Typography>
+          <FlexItemGroup group={group} />
         ))}
       </Box>
     </div>

@@ -12,8 +12,16 @@ import {
   Theme,
   Typography,
 } from "@material-ui/core";
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { Send } from "@material-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { groupsSelector } from "../../reducers/groups/groups_reducers";
+import { getGroups } from "../../actions/groups_actions";
+import { toast } from "react-hot-toast";
+import FlexItemGroup from "../groups/FlexItemGroup";
+import { bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
+import ListOfGroupsPopUpMenu from "../groups/ListOfGroupsPopUpMenu";
+import { IGroup } from "../../../domain/entity/Group";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -76,6 +84,7 @@ const useStyles = makeStyles((theme: Theme) =>
     addGroupContainer: {
       display: "flex",
       alignItems: "center",
+      paddingLeft: theme.spacing(0.5),
       borderRadius: theme.spacing(0.5),
       backgroundColor: "rgb(232, 232, 232)",
       height: theme.spacing(6),
@@ -83,7 +92,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
 
     addGroupText: {
-      marginLeft: theme.spacing(2),
+      marginLeft: theme.spacing(1),
       color: theme.palette.text.hint,
     },
   })
@@ -109,6 +118,43 @@ export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
     groupIds: [],
   });
 
+  const groupsPopUpState = usePopupState({
+    variant: "popper",
+    popupId: "GROUPS_POPUP",
+  });
+
+  const [selectedGroups, setSelectedGroups] = useState<IGroup[]>([]);
+  const [remainingGroups, setRemainingGroups] = useState<IGroup[]>([]);
+
+  const dispatch = useDispatch();
+  const { groups, groupsError, isGroupsLoading } = useSelector(groupsSelector);
+
+  useEffect(() => {
+    if (!groups) dispatch(getGroups);
+  }, [groups, dispatch]);
+
+  const addGroupToSelected = (group: IGroup) => {
+    setSelectedGroups((groupsBefore) => {
+      return [...groupsBefore, group];
+    });
+    setRemainingGroups(
+      remainingGroups.filter((itrGroup) => itrGroup.id !== group.id)
+    );
+  };
+
+  useEffect(() => {
+    if (groups) {
+      setRemainingGroups(groups);
+
+      groups.forEach((group) => {
+        if (group.isGeneral) {
+          addGroupToSelected(group);
+        }
+      });
+    }
+    if (groupsError) toast(groupsError.message);
+  }, [groups, groupsError]);
+
   const handleOnEmailChanged = (event: ChangeEvent<HTMLInputElement>) => {
     setForm((prevState) => {
       return { ...prevState, email: event.target.value };
@@ -128,6 +174,8 @@ export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
   const handleFormSubmission = () => {
     props.handleOnSubmission(form);
   };
+
+  const handleOnGroupSelectedFromMenu = (group: IGroup) => {};
 
   return (
     <Dialog
@@ -166,9 +214,24 @@ export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
           <Box className={classes.emailSection}>
             <Typography variant={"h6"}>Group</Typography>
             <Box className={classes.addGroupContainer}>
-              <Typography className={classes.addGroupText}>
-                Add Group
-              </Typography>
+              {groups?.map((group) => {
+                return <FlexItemGroup group={group} />;
+              })}
+              {remainingGroups.length !== 0 && (
+                <>
+                  <Button
+                    {...bindTrigger(groupsPopUpState)}
+                    className={classes.addGroupText}
+                  >
+                    Add Group
+                  </Button>
+                  <ListOfGroupsPopUpMenu
+                    popupState={groupsPopUpState}
+                    groups={remainingGroups}
+                    onGroupSelected={handleOnGroupSelectedFromMenu}
+                  />
+                </>
+              )}
             </Box>
           </Box>
         </Box>
