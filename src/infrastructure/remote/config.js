@@ -5,6 +5,7 @@ export const API_CONFIG = {
 export const API_ENDPOINTS = {
   login: "login",
   register: "register",
+  registerAgent: "registerAgent",
 
   me: "me",
   user: "users/:id",

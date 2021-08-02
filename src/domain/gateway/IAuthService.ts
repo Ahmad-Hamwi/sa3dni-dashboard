@@ -8,10 +8,20 @@ export default interface IAuthService {
 
   register(params: RegisterParams): Promise<{}>;
 
+  registerAgent(params: RegisterAgentParams): Promise<{}>;
+
   saveToken(token: string): Promise<void>;
 }
 
 export type LoginResult = {
   user: User;
   token: string;
+};
+
+//It hurts to put this here
+export type RegisterAgentParams = {
+  email: string;
+  password: string;
+  name: string;
+  phoneNumber: string;
 };

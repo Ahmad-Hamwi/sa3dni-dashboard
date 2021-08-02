@@ -1,4 +1,7 @@
-import IAuthService, { LoginResult } from "../../domain/gateway/IAuthService";
+import IAuthService, {
+  LoginResult,
+  RegisterAgentParams,
+} from "../../domain/gateway/IAuthService";
 import { RegisterParams } from "../../domain/interactor/auth/RegisterUseCase";
 import IAppCache from "../local/cache/IAppCache";
 
@@ -24,6 +27,18 @@ export default class AuthService implements IAuthService {
       user: mapToEntity(response.data.data.user)!,
       token: response.data.data.token,
     };
+  }
+
+  async registerAgent(params: RegisterAgentParams): Promise<{}> {
+    return await this.api.post<BaseResponse<{}>>(
+      API_ENDPOINTS.registerAgent,
+      {
+        email: params.email,
+        password: params.password,
+        fullName: params.name,
+        phoneNumber: params.phoneNumber,
+      }
+    );
   }
 
   async register(params: RegisterParams): Promise<{}> {

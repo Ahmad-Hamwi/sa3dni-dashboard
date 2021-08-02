@@ -16,6 +16,7 @@ import IInvitationRepository, {
 import IUserRoleRepository, {
   INJECT_USER_ROLE_REPOSITORY,
 } from "../domain/gateway/IUserRoleRepository";
+import IAuthService, {INJECT_AUTH_SERVICE} from "../domain/gateway/IAuthService";
 
 let initialized = false;
 
@@ -40,6 +41,10 @@ export const resolveRepository = {
     resolve(INJECT_INVITATION_REPOSITORY),
   userRole: (): IUserRoleRepository => resolve(INJECT_USER_ROLE_REPOSITORY),
 };
+
+export const resolveService = {
+  authService: (): IAuthService => resolve(INJECT_AUTH_SERVICE)
+}
 
 function register(container: IContainer) {
   registerCache(container);

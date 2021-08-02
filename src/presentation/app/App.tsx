@@ -13,6 +13,7 @@ import AuthenticatedRoute from "../route/AuthenticatedRoute";
 
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
+const Join = lazy(() => import("../pages/Join"));
 const Dashboard = lazy(() => import("../pages/dashboard/Dashboard"));
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
               <Redirect to={Routes.DASHBOARD} />
             </Route>
             <Route path={Routes.REGISTER_OWNER} component={Register} />
+            <Route path={Routes.REGISTER_AGENT} component={Join} />
             <Route path={Routes.LOGIN} component={Login} />
             <AuthenticatedRoute path={Routes.DASHBOARD} component={Dashboard}/>
           </Switch>

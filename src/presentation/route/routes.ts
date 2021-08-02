@@ -1,6 +1,7 @@
 export const Routes = {
   BASE: "/",
   REGISTER_OWNER: "/register",
+  REGISTER_AGENT: "/join",
   LOGIN: "/login",
   DASHBOARD: "/dashboard",
   CHATS: "/chats",

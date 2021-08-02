@@ -16,13 +16,7 @@ export const register = (params: RegisterParams) => async (dispatch: any) => {
   const registerUseCase = resolve<RegisterUseCase>(RegisterUseCase);
 
   try {
-    const { success } = await registerUseCase.execute({
-      email: params.email,
-      password: params.password,
-      fullName: params.fullName,
-      phoneNumber: params.phoneNumber,
-      companyName: params.companyName,
-    });
+    const { success } = await registerUseCase.execute(params);
 
     dispatch(setRegisterSuccess());
   } catch (e) {

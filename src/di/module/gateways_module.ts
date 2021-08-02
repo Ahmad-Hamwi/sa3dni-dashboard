@@ -27,7 +27,8 @@ import IInvitationRepository, {
 import InvitationRepository from "../../infrastructure/repository/InvitationRepository";
 
 export function registerGateways(container: IContainer) {
-  container.registerLazySingleton<IAuthService>(INJECT_AUTH_SERVICE, (c) => {
+  container.registerLazySingleton<IAuthService>(INJECT_AUTH_SERVICE,
+      (c) => {
     return new AuthService(
       c.resolve<IAppCache>(INJECT_APP_CACHE),
       c.resolve<IApiClient>(INJECT_API_CLIENT)
