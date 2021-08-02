@@ -93,7 +93,7 @@ export default function AgentsList() {
       setSnackbarState({
         open: true,
         snackBarMessage:
-          changeRoleSuccess.name + "role has been changed successfully.",
+          changeRoleSuccess.name + " role has been changed successfully.",
       });
     } else if (changeRoleError) {
       setSnackbarState({

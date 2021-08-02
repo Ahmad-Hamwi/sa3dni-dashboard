@@ -3,16 +3,16 @@ import { IGroup } from "./Group";
 import { UserActiveStatus } from "./UserActiveStatus";
 
 export default class User implements IUser {
-  private readonly _id: string;
-  private readonly _companyId: string;
-  private readonly _name: string;
-  private readonly _email: string;
-  private readonly _phoneNumber: string;
-  private readonly _jobTitle: string;
-  private readonly _userStatus: UserActiveStatus;
-  private readonly _role: UserRole;
-  private readonly _groupIds: string[];
-  private readonly _groups: IGroup[] | undefined;
+  private _id: string;
+  private _companyId: string;
+  private _name: string;
+  private _email: string;
+  private _phoneNumber: string;
+  private _jobTitle: string;
+  private _userStatus: UserActiveStatus;
+  private _role: UserRole;
+  private _groupIds: string[];
+  private _groups: IGroup[] | undefined;
 
   constructor(params: UserData) {
     this._id = params.id;
@@ -65,6 +65,47 @@ export default class User implements IUser {
 
   get groups(): IGroup[] | undefined {
     return this._groups;
+  }
+
+
+  set id(value: string) {
+    this._id = value;
+  }
+
+  set companyId(value: string) {
+    this._companyId = value;
+  }
+
+  set name(value: string) {
+    this._name = value;
+  }
+
+  set email(value: string) {
+    this._email = value;
+  }
+
+  set phoneNumber(value: string) {
+    this._phoneNumber = value;
+  }
+
+  set jobTitle(value: string) {
+    this._jobTitle = value;
+  }
+
+  set userStatus(value: UserActiveStatus) {
+    this._userStatus = value;
+  }
+
+  set role(value: UserRole) {
+    this._role = value;
+  }
+
+  set groupIds(value: string[]) {
+    this._groupIds = value;
+  }
+
+  set groups(value: IGroup[] | undefined) {
+    this._groups = value;
   }
 }
 
