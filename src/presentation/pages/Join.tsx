@@ -152,7 +152,7 @@ const Join = () => {
                 </Box>
               </form>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            <Box display="flex" justifyContent="center">
               <Button variant="contained" color="primary" onClick={handleClick}>
                 Join Workspace
               </Button>
