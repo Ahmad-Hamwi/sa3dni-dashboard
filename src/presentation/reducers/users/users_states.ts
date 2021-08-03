@@ -2,7 +2,7 @@ import { IUser } from "../../../domain/entity/User";
 
 export interface UsersState {
   isUsersLoading: boolean;
-  UsersError?: Error | null;
+  usersError?: Error | null;
   users?: IUser[] | null;
   isSelectedUserLoading: boolean;
   selectedUserError?: Error | null;
@@ -35,7 +35,7 @@ export const usersErrorState = (
   error: Error
 ): UsersState => {
   state.isUsersLoading = false;
-  state.UsersError = error;
+  state.usersError = error;
   return state;
 };
 

@@ -1,7 +1,7 @@
 import { IGroup } from "../../../domain/entity/Group";
 import React, { FC } from "react";
 import { bindMenu } from "material-ui-popup-state/hooks";
-import { Menu, MenuItem } from "@material-ui/core";
+import {Fade, Menu, MenuItem} from "@material-ui/core";
 import { PopupState } from "material-ui-popup-state/es/core";
 
 export type ListOfGroupsPopUpMenuProps = {
@@ -17,7 +17,7 @@ const ListOfGroupsPopUpMenu: FC<ListOfGroupsPopUpMenuProps> = (props) => {
   };
 
   return (
-    <Menu {...bindMenu(props.popupState)}>
+    <Menu {...bindMenu(props.popupState)} TransitionComponent={Fade}>
       {props.groups?.map((group) => (
         <MenuItem onClick={() => handleOnChangeRoleClick(group)}>
           {group.name}

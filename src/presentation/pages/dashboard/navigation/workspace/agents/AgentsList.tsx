@@ -28,7 +28,7 @@ import { Add } from "@material-ui/icons";
 import {
   InviteAgentDialog,
   InviteAgentForm,
-} from "../../../../../components/agents/InviteAgentDialog";
+} from "./InviteAgentDialog";
 import {
   fetchInvitations,
   inviteUser,
@@ -66,7 +66,7 @@ export default function AgentsList() {
   const {
     isUsersLoading,
     users,
-    UsersError,
+    usersError,
     changeRoleSuccess,
     changeRoleError,
   } = useSelector(usersSelector);
@@ -81,10 +81,10 @@ export default function AgentsList() {
   }, [users, dispatch]);
 
   useEffect(() => {
-    if (UsersError) {
-      toast.error(UsersError.message);
+    if (usersError) {
+      toast.error(usersError.message);
     }
-  }, [UsersError]);
+  }, [usersError]);
 
   //..................Change Role State and side effects .....................
 

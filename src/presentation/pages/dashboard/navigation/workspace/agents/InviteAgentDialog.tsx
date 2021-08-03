@@ -15,13 +15,13 @@ import {
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import { Send } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { groupsSelector } from "../../reducers/groups/groups_reducers";
-import { getGroups } from "../../actions/groups_actions";
+import { groupsSelector } from "../../../../../reducers/groups/groups_reducers";
+import { getGroups } from "../../../../../actions/groups_actions";
 import { toast } from "react-hot-toast";
-import FlexItemGroup from "../groups/FlexItemGroup";
+import FlexItemGroup from "../../../../../components/groups/FlexItemGroup";
 import { bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import ListOfGroupsPopUpMenu from "../groups/ListOfGroupsPopUpMenu";
-import { IGroup } from "../../../domain/entity/Group";
+import ListOfGroupsPopUpMenu from "../../../../../components/groups/ListOfGroupsPopUpMenu";
+import { IGroup } from "../../../../../../domain/entity/Group";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -64,6 +64,8 @@ const useStyles = makeStyles((theme: Theme) =>
       width: theme.spacing(6),
       height: theme.spacing(6),
       backgroundColor: "rgb(232, 232, 232)",
+      overflowX: "auto",
+      overflowY: "hidden",
     },
 
     adminCheckBox: {
@@ -182,7 +184,9 @@ export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
     });
   };
 
-  const handleOnGroupSelectedFromMenu = (group: IGroup) => {};
+  const handleOnGroupSelectedFromMenu = (group: IGroup) => {
+    addGroupToSelected(group);
+  };
 
   return (
     <Dialog
@@ -221,7 +225,7 @@ export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
           <Box className={classes.emailSection}>
             <Typography variant={"h6"}>Group</Typography>
             <Box className={classes.addGroupContainer}>
-              {groups?.map((group) => {
+              {selection.selectedGroups?.map((group) => {
                 return <FlexItemGroup group={group} />;
               })}
               {selection.remainingGroups.length !== 0 && (
