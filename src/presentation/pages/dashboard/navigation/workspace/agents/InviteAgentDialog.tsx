@@ -64,8 +64,6 @@ const useStyles = makeStyles((theme: Theme) =>
       width: theme.spacing(6),
       height: theme.spacing(6),
       backgroundColor: "rgb(232, 232, 232)",
-      overflowX: "auto",
-      overflowY: "hidden",
     },
 
     adminCheckBox: {
@@ -87,14 +85,23 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       alignItems: "center",
       paddingLeft: theme.spacing(0.5),
+      paddingRight: theme.spacing(0.5),
       borderRadius: theme.spacing(0.5),
       backgroundColor: "rgb(232, 232, 232)",
       height: theme.spacing(6),
       width: "100%",
     },
 
+    flexWrapper: {
+      borderRadius: theme.spacing(0.5),
+      backgroundColor: "rgb(232, 232, 232)",
+      overflowX: "auto",
+      overflowY: "hidden",
+    },
+
     addGroupText: {
       marginLeft: theme.spacing(1),
+      whiteSpace: "nowrap",
       color: theme.palette.text.hint,
     },
   })
@@ -180,7 +187,7 @@ export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
     props.handleOnSubmission({
       email: email,
       isAdmin: isAdmin,
-      groups: selection.selectedGroups
+      groups: selection.selectedGroups,
     });
   };
 
@@ -224,25 +231,27 @@ export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
         <Box className={classes.secondSection}>
           <Box className={classes.emailSection}>
             <Typography variant={"h6"}>Group</Typography>
-            <Box className={classes.addGroupContainer}>
-              {selection.selectedGroups?.map((group) => {
-                return <FlexItemGroup group={group} />;
-              })}
-              {selection.remainingGroups.length !== 0 && (
-                <>
-                  <Button
-                    {...bindTrigger(groupsPopUpState)}
-                    className={classes.addGroupText}
-                  >
-                    Add Group
-                  </Button>
-                  <ListOfGroupsPopUpMenu
-                    popupState={groupsPopUpState}
-                    groups={selection.remainingGroups}
-                    onGroupSelected={handleOnGroupSelectedFromMenu}
-                  />
-                </>
-              )}
+            <Box className={classes.flexWrapper}>
+              <Box className={classes.addGroupContainer}>
+                {selection.selectedGroups?.map((group) => {
+                  return <FlexItemGroup group={group} />;
+                })}
+                {selection.remainingGroups.length !== 0 && (
+                  <>
+                    <Button
+                      {...bindTrigger(groupsPopUpState)}
+                      className={classes.addGroupText}
+                    >
+                      Add Group
+                    </Button>
+                    <ListOfGroupsPopUpMenu
+                      popupState={groupsPopUpState}
+                      groups={selection.remainingGroups}
+                      onGroupSelected={handleOnGroupSelectedFromMenu}
+                    />
+                  </>
+                )}
+              </Box>
             </Box>
           </Box>
         </Box>

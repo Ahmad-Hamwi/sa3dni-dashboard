@@ -39,11 +39,17 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       alignItems: "center",
       paddingLeft: theme.spacing(0.5),
+      paddingRight: theme.spacing(0.5),
       borderRadius: theme.spacing(0.5),
       backgroundColor: "rgb(232, 232, 232)",
       height: theme.spacing(8),
       width: 400,
       marginTop: theme.spacing(2),
+    },
+
+    flexWrapper: {
+      borderRadius: theme.spacing(0.5),
+      backgroundColor: "rgb(232, 232, 232)",
       overflowX: "auto",
       overflowY: "hidden",
     },
@@ -54,6 +60,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
     addUserText: {
       marginLeft: theme.spacing(1),
+      whiteSpace: "nowrap",
       color: theme.palette.text.hint,
     },
   })
