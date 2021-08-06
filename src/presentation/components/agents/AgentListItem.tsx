@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: theme.spacing(8),
       "&.MuiListItem-root.Mui-selected, .MuiListItem-root.Mui-selected:hover": {
         backgroundColor: theme.palette.secondary.main,
-      }
+      },
     },
 
     busyBadge: {
@@ -85,6 +85,7 @@ export interface AgentListItemProps {
   agent: IUser;
   onRoleChanged: (id: string, role: UserRole) => void;
   onDelete: (id: string) => void;
+  isCurrentUser: boolean;
 }
 
 export interface QueryParams {
@@ -99,7 +100,9 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
 
   const { id, name, role, userStatus, email } = props.agent;
 
-  const avatar = <Avatar className={classes.avatar}>{name[0].toUpperCase()}</Avatar>;
+  const avatar = (
+    <Avatar className={classes.avatar}>{name[0].toUpperCase()}</Avatar>
+  );
 
   const { agentId: agentIdFromQueryParams } = qs.parse(location.search, {
     ignoreQueryPrefix: true,
@@ -112,7 +115,7 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
 
   const handleOnRoleChanged = (role: UserRole) => {
     props.onRoleChanged(props.agent.id, role);
-  }
+  };
 
   const handleOnDelete = () => {
     props.onDelete(id);
@@ -135,19 +138,23 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
         />
         <AgentRoleItem role={role} />
         <ListItemSecondaryAction>
-          <IconButton
-            edge="end"
-            aria-label="options"
-            {...bindTrigger(popUpState)}
-          >
-            <MoreHoriz />
-          </IconButton>
-          <AgentOptionsMenu
-            popupState={popUpState}
-            selectedAgent={props.agent}
-            onRoleSelected={handleOnRoleChanged}
-            onDelete={handleOnDelete}
-          />
+          {!props.isCurrentUser && (
+            <>
+              <IconButton
+                edge="end"
+                aria-label="options"
+                {...bindTrigger(popUpState)}
+              >
+                <MoreHoriz />
+              </IconButton>
+              <AgentOptionsMenu
+                popupState={popUpState}
+                selectedAgent={props.agent}
+                onRoleSelected={handleOnRoleChanged}
+                onDelete={handleOnDelete}
+              />
+            </>
+          )}
         </ListItemSecondaryAction>
       </ListItem>
       <Divider />

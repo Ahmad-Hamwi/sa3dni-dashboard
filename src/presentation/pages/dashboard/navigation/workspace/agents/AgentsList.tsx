@@ -25,15 +25,16 @@ import { Alert } from "@material-ui/lab";
 import { Spinner } from "../../../../../components/app/loader/Spinner";
 import { UserRole } from "../../../../../../domain/entity/UserRole";
 import { Add } from "@material-ui/icons";
-import {
-  InviteAgentDialog,
-  InviteAgentForm,
-} from "./InviteAgentDialog";
+import { InviteAgentDialog, InviteAgentForm } from "./InviteAgentDialog";
 import {
   fetchInvitations,
   inviteUser,
 } from "../../../../../actions/invitations_actions";
-import {clearInviteUserState, invitationsSelector} from "../../../../../reducers/invitations/invitations_reducer";
+import {
+  clearInviteUserState,
+  invitationsSelector,
+} from "../../../../../reducers/invitations/invitations_reducer";
+import { authSelector } from "../../../../../reducers/app/auth/auth_reducer";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -70,6 +71,8 @@ export default function AgentsList() {
     changeRoleSuccess,
     changeRoleError,
   } = useSelector(usersSelector);
+
+  const { user } = useSelector(authSelector);
 
   const dispatch = useDispatch();
 
@@ -135,7 +138,6 @@ export default function AgentsList() {
       });
 
       dispatch(fetchInvitations());
-
     } else if (invitationErrors) {
       setSnackbarState({
         open: true,
@@ -158,6 +160,7 @@ export default function AgentsList() {
               agent={agentItem}
               onRoleChanged={handleOnRoleChanged}
               onDelete={handleOnDeleteUser}
+              isCurrentUser={agentItem.id === user?.id}
             />
           ))}
       </List>
