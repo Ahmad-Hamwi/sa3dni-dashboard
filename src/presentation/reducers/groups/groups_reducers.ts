@@ -8,10 +8,17 @@ import {
   selectedGroupLoadingState,
   selectedGroupSuccessState,
   selectedGroupErrorState,
+  creatingGroupState,
+  createGroupErrorState,
+  createGroupSuccessState,
 } from "./groups_states";
 import { TStore } from "../../store/store";
 import { IGroup } from "../../../domain/entity/Group";
-import {getGroups, getSelectedGroup} from "../../actions/groups_actions";
+import {
+  createGroup,
+  getGroups,
+  getSelectedGroup,
+} from "../../actions/groups_actions";
 
 const groupsSlice = createSlice({
   name: "groups",
@@ -42,6 +49,19 @@ const groupsSlice = createSlice({
       state: GroupsState,
       { payload }: PayloadAction<Error>
     ) => selectedGroupErrorState(state, payload),
+
+    [createGroup.pending.type]: (state: GroupsState) =>
+      creatingGroupState(state),
+
+    [createGroup.rejected.type]: (
+      state: GroupsState,
+      { payload }: PayloadAction<Error>
+    ) => createGroupErrorState(state, payload),
+
+    [createGroup.fulfilled.type]: (
+      state: GroupsState,
+      { payload }: PayloadAction<IGroup>
+    ) => createGroupSuccessState(state, payload),
   },
 });
 

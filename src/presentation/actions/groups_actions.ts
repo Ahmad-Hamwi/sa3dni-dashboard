@@ -16,3 +16,15 @@ export const getSelectedGroup = createAsyncThunk(
     return groupRepository.get(selectedGroupId);
   }
 );
+
+export interface createGroupArgs {
+  name: string;
+  members: string[];
+}
+
+export const createGroup = createAsyncThunk(
+  "groups/createGroup",
+  async (args: createGroupArgs, thunkAPI) => {
+    return resolveRepository.groups().create(args);
+  }
+);

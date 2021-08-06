@@ -16,7 +16,7 @@ import {
 } from "../../../../../reducers/groups/groups_states";
 import { Spinner } from "../../../../../components/app/loader/Spinner";
 import { useEffect, useState } from "react";
-import { getGroups } from "../../../../../actions/groups_actions";
+import { createGroup, getGroups } from "../../../../../actions/groups_actions";
 import { toast } from "react-hot-toast";
 import { Add } from "@material-ui/icons";
 import CreateGroupDialog, { CreateGroupForm } from "./CreateGroupDialog";
@@ -72,6 +72,12 @@ export default function GroupsList() {
 
     //if actually submitted, not dismissed.
     if (createForm) {
+      dispatch(
+        createGroup({
+          name: createForm.name,
+          members: createForm.users.map((user) => user.id),
+        })
+      );
     }
   };
 
