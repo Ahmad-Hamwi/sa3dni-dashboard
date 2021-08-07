@@ -104,7 +104,7 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
     <Avatar className={classes.avatar}>{name[0].toUpperCase()}</Avatar>
   );
 
-  const { agentId: agentIdFromQueryParams } = qs.parse(location.search, {
+  const { [Routes.PARAM_AGENT_ID]: agentIdFromQueryParams } = qs.parse(location.search, {
     ignoreQueryPrefix: true,
   });
 
@@ -128,7 +128,7 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
         className={classes.listItemButton}
         component={Link}
         selected={agentIdFromQueryParams === id}
-        to={path + Routes.PARAM_AGENT_ID + "=" + id}
+        to={path + "?" + Routes.PARAM_AGENT_ID + "=" + id}
       >
         <AgentStatusBadge status={userStatus}>{avatar}</AgentStatusBadge>
         <ListItemText

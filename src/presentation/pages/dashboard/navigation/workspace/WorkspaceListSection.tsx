@@ -18,7 +18,10 @@ import {Routes} from "../../../../route/routes";
 
 const useStyles = makeStyles((theme: Theme) => ({
   tabBar: {
-    // width: "60%",
+    "&.MuiPaper-outlined": {
+      border: "0px",
+      borderBottom: "1px solid rgba(0, 0, 0, 0.12)"
+    }
   },
 
   listSection: {

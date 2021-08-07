@@ -18,6 +18,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: "center",
     alignItems: "center",
     height: theme.spacing(6) + 2,
+    "&.MuiPaper-outlined": {
+      border: "0px",
+      borderBottom: "1px solid rgba(0, 0, 0, 0.12)"
+    }
   },
 
   infoTopBarText: {
@@ -35,14 +39,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     minWidth: 640,
   },
 }));
-
-interface SelectedAgentQP {
-  agentId: number;
-}
-
-interface SelectedGroupQP {
-  groupId: number;
-}
 
 const WorkspaceInfoSection = () => {
   const classes = useStyles();

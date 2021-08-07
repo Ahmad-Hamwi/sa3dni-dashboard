@@ -9,6 +9,7 @@ export const Routes = {
   AGENTS: "/agents",
   INVITES: "/invites",
   GROUPS: "/groups",
-  PARAM_AGENT_ID: "?agentId",
-  PARAM_GROUP_ID: "?groupId",
+  PARAM_AGENT_ID: "agentId",
+  PARAM_GROUP_ID: "groupId",
+  PARAM_CHAT_ID: "chatId",
 };

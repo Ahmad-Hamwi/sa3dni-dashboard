@@ -62,9 +62,12 @@ const GroupListItem: FC<GroupListItemProps> = ({
   const { path } = useRouteMatch();
   const location = useLocation();
 
-  const { groupId: groupIdFromQueryParams } = qs.parse(location.search, {
-    ignoreQueryPrefix: true,
-  });
+  const { [Routes.PARAM_GROUP_ID]: groupIdFromQueryParams } = qs.parse(
+    location.search,
+    {
+      ignoreQueryPrefix: true,
+    }
+  );
 
   return (
     <>
@@ -73,10 +76,12 @@ const GroupListItem: FC<GroupListItemProps> = ({
         className={classes.listItemButton}
         component={Link}
         selected={groupIdFromQueryParams === group.id.toString()}
-        to={path + Routes.PARAM_GROUP_ID + "=" + group.id}
+        to={path + "?" + Routes.PARAM_GROUP_ID + "=" + group.id}
       >
         <ListItemIcon className={classes.listItemIcon}>
-          <Avatar className={classes.avatar}>{group.name[0].toUpperCase()}</Avatar>
+          <Avatar className={classes.avatar}>
+            {group.name[0].toUpperCase()}
+          </Avatar>
         </ListItemIcon>
         <ListItemText className={classes.listItemText} primary={group.name} />
         <ListItemSecondaryAction>
