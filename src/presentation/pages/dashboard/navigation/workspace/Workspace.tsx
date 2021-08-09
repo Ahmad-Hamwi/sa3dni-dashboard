@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 
 const useStyles = makeStyles((theme: Theme) => ({
   verticalDivider: {
-    height: `calc(100vh - ${theme.spacing(6)}px)`,
+    height: `calc(100vh - ${theme.spacing(6)-2}px)`,
   },
 }));
 

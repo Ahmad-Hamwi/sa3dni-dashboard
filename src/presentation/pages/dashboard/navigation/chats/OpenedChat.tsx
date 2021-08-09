@@ -22,6 +22,14 @@ const useStyles = makeStyles((theme) =>
       fontWeight: 500,
     },
 
+    content: {
+      paddingBottom: theme.spacing(4),
+      paddingLeft: theme.spacing(4),
+      paddingRight: theme.spacing(4),
+      overflowY: "auto",
+      maxHeight: `calc(100vh - ${theme.spacing(12)}px)`,
+    },
+
     messageList: {
       display: "Flex",
       flexDirection: "column",
@@ -81,12 +89,12 @@ const OpenedChat = () => {
     },
     {
       senderName: "Customer1",
-      message: "  This is the most valuable message ever created, and it is actually long, and I'm testing this because its long, it is extremely long that I should be considering a max width for the text box itself, but now it has descended to another row, what a shame! I guess i  need to be making some tweeks in the css design.",
+      message:
+        "  This is the most valuable message ever created, and it is actually long, and I'm testing this because its long, it is extremely long that I should be considering a max width for the text box itself, but now it has descended to another row, what a shame! I guess i  need to be making some tweeks in the css design.",
       isSelf: false,
       isConcatenated: true,
       isEvent: true,
     },
-
   ];
 
   const MessageList = () => {
@@ -112,7 +120,7 @@ const OpenedChat = () => {
       >
         <Typography className={classes.infoTopBarText}>Customer</Typography>
       </AppBar>
-      <Box mx={4} mb={4}>
+      <Box className={classes.content}>
         <MessageList />
         <MessageInput />
       </Box>

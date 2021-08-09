@@ -24,13 +24,12 @@ const useStyles = makeStyles((theme: Theme) =>
       zIndex: theme.zIndex.drawer + 1,
     },
     drawer: {
+      paddingTop: theme.spacing(6),
       width: theme.spacing(8) + 1,
       "& .MuiPaper-root": {
         width: theme.spacing(8) + 1,
+        position: "inherit",
       },
-    },
-    toolbar: {
-      minHeight: theme.spacing(6),
     },
     drawerItem: {
       width: theme.spacing(6),
@@ -51,7 +50,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
 
     main: {
-      flexGrow: 1,
+      paddingTop: theme.spacing(6) - 2,
+      maxHeight: `100vh`,
     },
   })
 );
@@ -78,13 +78,9 @@ const DashboardDrawerAndAppBar: React.FC<DashboardDrawerAndAppBarProps> = ({
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" className={classes.drawer}>
-        <div className={classes.toolbar} />
         <DrawerListItems />
       </Drawer>
-      <div className={classes.main}>
-        <div className={classes.toolbar} />
-        {children}
-      </div>
+      <div className={classes.main}>{children}</div>
     </div>
   );
 };
