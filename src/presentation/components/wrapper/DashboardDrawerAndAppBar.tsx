@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
 
     main: {
+      flexGrow: 1,
       paddingTop: theme.spacing(6) - 2,
       maxHeight: `100vh`,
     },
