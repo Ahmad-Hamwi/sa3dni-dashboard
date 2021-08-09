@@ -1,10 +1,11 @@
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, createStyles, Typography } from "@material-ui/core";
+import { Box, createStyles, Paper, Typography } from "@material-ui/core";
 import { Routes } from "../../../../route/routes";
 import AppBar from "@material-ui/core/AppBar";
 import EventMessage from "../../../../components/messages/EventMessage";
 import TextMessage from "../../../../components/messages/TextMessage";
 import { Event } from "@material-ui/icons";
+import MessageInput from "../../../../components/chats/MessageInput";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -23,6 +24,10 @@ const useStyles = makeStyles((theme) =>
     },
 
     content: {
+      height: "100%",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
       paddingBottom: theme.spacing(4),
       paddingLeft: theme.spacing(4),
       paddingRight: theme.spacing(4),
@@ -72,14 +77,14 @@ const OpenedChat = () => {
       isConcatenated: true,
       isEvent: false,
     },
-    {
-      senderName: "Abdulrahman Tayara",
-      message:
-        "This is the most valuable message ever created, and it is actually long, and I'm testing this because its long, it is extremely long that I should be considering a max width for the text box itself, but now it has descended to another row, what a shame! I guess i  need to be making some tweeks in the css design.",
-      isSelf: true,
-      isConcatenated: true,
-      isEvent: false,
-    },
+    // {
+    //   senderName: "Abdulrahman Tayara",
+    //   message:
+    //     "This is the most valuable message ever created, and it is actually long, and I'm testing this because its long, it is extremely long that I should be considering a max width for the text box itself, but now it has descended to another row, what a shame! I guess i  need to be making some tweeks in the css design.",
+    //   isSelf: true,
+    //   isConcatenated: true,
+    //   isEvent: false,
+    // },
     {
       senderName: "Customer1",
       message: "Thank you very much!",
@@ -87,14 +92,14 @@ const OpenedChat = () => {
       isConcatenated: false,
       isEvent: true,
     },
-    {
-      senderName: "Customer1",
-      message:
-        "  This is the most valuable message ever created, and it is actually long, and I'm testing this because its long, it is extremely long that I should be considering a max width for the text box itself, but now it has descended to another row, what a shame! I guess i  need to be making some tweeks in the css design.",
-      isSelf: false,
-      isConcatenated: true,
-      isEvent: true,
-    },
+    // {
+    //   senderName: "Customer1",
+    //   message:
+    //     "  This is the most valuable message ever created, and it is actually long, and I'm testing this because its long, it is extremely long that I should be considering a max width for the text box itself, but now it has descended to another row, what a shame! I guess i  need to be making some tweeks in the css design.",
+    //   isSelf: false,
+    //   isConcatenated: true,
+    //   isEvent: true,
+    // },
   ];
 
   const MessageList = () => {
@@ -107,9 +112,7 @@ const OpenedChat = () => {
       </Box>
     );
   };
-  const MessageInput = () => {
-    return <></>;
-  };
+
   return (
     <Box flexDirection={"column"} width={"60%"}>
       <AppBar
@@ -122,7 +125,7 @@ const OpenedChat = () => {
       </AppBar>
       <Box className={classes.content}>
         <MessageList />
-        <MessageInput />
+        <MessageInput onMessageSend={(messageToBeSent) => {}} />
       </Box>
     </Box>
   );
