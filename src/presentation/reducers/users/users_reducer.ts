@@ -10,12 +10,12 @@ import {
   selectedUserErrorState,
   changeRoleSuccessState,
   changeRoleErrorState,
-  clearChangeRoleState,
+  clearChangeRoleState, deleteUserSuccessState, deleteUserErrorState,
 } from "./users_states";
 import { TStore } from "../../store/store";
 import { IUser } from "../../../domain/entity/User";
 import {
-  changeSelectedUserRole,
+  changeSelectedUserRole, deleteUser,
   getSelectedUser,
   getUsers,
 } from "../../actions/users_actions";
@@ -60,6 +60,17 @@ const usersSlice = createSlice({
     [changeSelectedUserRole.rejected.type]: (state: UsersState, { error }) => {
       changeRoleErrorState(state, error);
     },
+
+    [deleteUser.fulfilled.type]: (
+        state: UsersState,
+        action: PayloadAction<IUser>
+    ) => {
+      deleteUserSuccessState(state, action.payload);
+    },
+    [deleteUser.rejected.type]: (state: UsersState, { error }) => {
+      deleteUserErrorState(state, error);
+    },
+
   },
 });
 

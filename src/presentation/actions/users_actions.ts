@@ -27,7 +27,7 @@ export type ChangeUserRoleArgs = {
 };
 
 export const changeSelectedUserRole = createAsyncThunk<any, ChangeUserRoleArgs>(
-  "changeUserRole",
+  "users/changeUserRole",
   async (args, thunkApi) => {
     const userRoleRepository: IUserRoleRepository =
       resolveRepository.userRole();
@@ -44,4 +44,11 @@ export const changeSelectedUserRole = createAsyncThunk<any, ChangeUserRoleArgs>(
       thunkApi.rejectWithValue(new Error("Couldn't change user role"));
     }
   }
+);
+
+export const deleteUser = createAsyncThunk<any, string>(
+    "users/deleteUser",
+    async (userId: string, thunkAPI) => {
+        return resolveRepository.users().delete(userId);
+    }
 );

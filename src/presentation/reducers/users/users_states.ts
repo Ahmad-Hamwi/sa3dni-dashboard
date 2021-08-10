@@ -9,6 +9,8 @@ export interface UsersState {
   selectedUser?: IUser | null;
   changeRoleSuccess?: IUser | null;
   changeRoleError?: Error;
+  deleteUserSuccess?: IUser | null;
+  deleteUserError?: Error;
 }
 
 export const usersInitialState: UsersState = {
@@ -88,3 +90,31 @@ export const clearChangeRoleState = (state: UsersState): UsersState => {
   state.changeRoleError = undefined;
   return state;
 };
+
+export const deleteUserSuccessState = (
+    state: UsersState,
+    affectedUser: IUser
+): UsersState => {
+  state.deleteUserSuccess = affectedUser;
+
+  const user = state.users?.find((u) => u.id === affectedUser.id);
+
+  if (user) user.role = affectedUser.role;
+
+  return state;
+};
+
+export const deleteUserErrorState = (
+    state: UsersState,
+    error: Error
+): UsersState => {
+  state.deleteUserError = error;
+  return state;
+};
+
+export const clearDeleteUserState = (state: UsersState): UsersState => {
+  state.deleteUserSuccess = null;
+  state.deleteUserError = undefined;
+  return state;
+};
+
