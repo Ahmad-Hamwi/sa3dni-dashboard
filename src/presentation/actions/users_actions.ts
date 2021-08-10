@@ -3,6 +3,7 @@ import IUserRepository from "../../domain/gateway/IUserRepository";
 import { UserRole } from "../../domain/entity/UserRole";
 import IUserRoleRepository from "../../domain/gateway/IUserRoleRepository";
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { IUser } from "../../domain/entity/User";
 
 const getUsersAction = createAction("users/getUsers");
 export const getUsers = createAsyncThunk(
@@ -46,9 +47,15 @@ export const changeSelectedUserRole = createAsyncThunk<any, ChangeUserRoleArgs>(
   }
 );
 
-export const deleteUser = createAsyncThunk<any, string>(
-    "users/deleteUser",
-    async (userId: string, thunkAPI) => {
-        return resolveRepository.users().delete(userId);
+export const deleteUser = createAsyncThunk<any, IUser>(
+  "users/deleteUser",
+  async (userToBeDeleted: IUser, thunkAPI) => {
+    const usersRepo = resolveRepository.users();
+    const result = await usersRepo.delete(userToBeDeleted.id);
+    if (result) {
+      return userToBeDeleted;
+    } else {
+      thunkAPI.rejectWithValue(new Error("Something went wrong, agent was not removed"));
     }
+  }
 );

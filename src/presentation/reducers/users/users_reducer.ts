@@ -10,12 +10,16 @@ import {
   selectedUserErrorState,
   changeRoleSuccessState,
   changeRoleErrorState,
-  clearChangeRoleState, deleteUserSuccessState, deleteUserErrorState,
+  clearChangeRoleState,
+  deleteUserSuccessState,
+  deleteUserErrorState,
+  clearDeleteUserState,
 } from "./users_states";
 import { TStore } from "../../store/store";
 import { IUser } from "../../../domain/entity/User";
 import {
-  changeSelectedUserRole, deleteUser,
+  changeSelectedUserRole,
+  deleteUser,
   getSelectedUser,
   getUsers,
 } from "../../actions/users_actions";
@@ -25,6 +29,7 @@ const usersSlice = createSlice({
   initialState: usersInitialState,
   reducers: {
     clearChangeRoleReducer: (state: UsersState) => clearChangeRoleState(state),
+    clearDeleteUserReducer: (state: UsersState) => clearDeleteUserState(state),
   },
   extraReducers: {
     [getUsers.pending.type]: (state: UsersState) => usersLoadingState(state),
@@ -62,21 +67,18 @@ const usersSlice = createSlice({
     },
 
     [deleteUser.fulfilled.type]: (
-        state: UsersState,
-        action: PayloadAction<IUser>
+      state: UsersState,
+      action: PayloadAction<IUser>
     ) => {
       deleteUserSuccessState(state, action.payload);
     },
     [deleteUser.rejected.type]: (state: UsersState, { error }) => {
       deleteUserErrorState(state, error);
     },
-
   },
 });
 
-export const {
-  clearChangeRoleReducer,
-} = usersSlice.actions;
+export const { clearChangeRoleReducer } = usersSlice.actions;
 
 export const usersSliceReducer = usersSlice.reducer;
 

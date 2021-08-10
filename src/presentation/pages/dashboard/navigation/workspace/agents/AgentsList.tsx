@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import {
   changeSelectedUserRole,
+  deleteUser,
   getUsers,
 } from "../../../../../actions/users_actions";
 import { Alert } from "@material-ui/lab";
@@ -35,6 +36,7 @@ import {
   invitationsSelector,
 } from "../../../../../reducers/invitations/invitations_reducer";
 import { authSelector } from "../../../../../reducers/app/auth/auth_reducer";
+import { IUser } from "../../../../../../domain/entity/User";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -70,6 +72,8 @@ export default function AgentsList() {
     usersError,
     changeRoleSuccess,
     changeRoleError,
+    deleteUserSuccess,
+    deleteUserError,
   } = useSelector(usersSelector);
 
   const { user } = useSelector(authSelector);
@@ -109,13 +113,44 @@ export default function AgentsList() {
     };
   }, [dispatch, changeRoleSuccess, changeRoleError]);
 
+  //..................Delete User and side effects .....................
+
+  useEffect(() => {
+    if (deleteUserSuccess) {
+      setSnackbarState({
+        open: true,
+        snackBarMessage:
+          deleteUserSuccess.name +
+          " user has been removed from workspace successfully.",
+      });
+    }
+    return () => {
+      dispatch(clearChangeRoleReducer());
+    };
+  }, [dispatch, deleteUserSuccess]);
+
+  useEffect(() => {
+    if (deleteUserError) {
+      setSnackbarState({
+        open: true,
+        snackBarMessage:
+          "Something went wrong. User has not been removed from workspace.",
+      });
+      return () => {
+        dispatch(clearChangeRoleReducer());
+      };
+    }
+  }, [dispatch, deleteUserError]);
+
   //......................event handlers.....................................
 
   const handleOnRoleChanged = (id: string, role: UserRole) => {
     dispatch(changeSelectedUserRole({ userId: id, newRole: role }));
   };
 
-  const handleOnDeleteUser = (id: string) => {};
+  const handleOnDeleteUser = (userToBeDeleted: IUser) => {
+    dispatch(deleteUser(userToBeDeleted));
+  };
 
   const handleOnInviteAgentFormSubmission = (
     inviteForm: InviteAgentForm | null

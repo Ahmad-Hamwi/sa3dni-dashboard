@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export interface AgentListItemProps {
   agent: IUser;
   onRoleChanged: (id: string, role: UserRole) => void;
-  onDelete: (id: string) => void;
+  onDelete: (user: IUser) => void;
   isCurrentUser: boolean;
 }
 
@@ -104,9 +104,12 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
     <Avatar className={classes.avatar}>{name[0].toUpperCase()}</Avatar>
   );
 
-  const { [Routes.PARAM_AGENT_ID]: agentIdFromQueryParams } = qs.parse(location.search, {
-    ignoreQueryPrefix: true,
-  });
+  const { [Routes.PARAM_AGENT_ID]: agentIdFromQueryParams } = qs.parse(
+    location.search,
+    {
+      ignoreQueryPrefix: true,
+    }
+  );
 
   const popUpState = usePopupState({
     variant: "popper",
@@ -118,7 +121,7 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
   };
 
   const handleOnDelete = () => {
-    props.onDelete(id);
+    props.onDelete(props.agent);
   };
 
   return (
