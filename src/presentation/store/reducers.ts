@@ -5,6 +5,7 @@ import {authReducer} from "../reducers/app/auth/auth_reducer";
 import {invitationsSliceReducer} from "../reducers/invitations/invitations_reducer";
 import {groupsSliceReducer} from "../reducers/groups/groups_reducers";
 import {joinReducer} from "../reducers/join/join_reducer";
+import {combineReducers} from "redux";
 
 const reducers = {
   auth: authReducer,
@@ -16,4 +17,6 @@ const reducers = {
   groups: groupsSliceReducer
 };
 
-export default reducers;
+const combinedReducers = combineReducers(reducers);
+
+export default combinedReducers;
