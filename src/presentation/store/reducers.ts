@@ -6,15 +6,17 @@ import {invitationsSliceReducer} from "../reducers/invitations/invitations_reduc
 import {groupsSliceReducer} from "../reducers/groups/groups_reducers";
 import {joinReducer} from "../reducers/join/join_reducer";
 import {combineReducers} from "redux";
+import {dashboardSocketReducer} from "../reducers/connection/dashboard/dashboard_socket_reducer";
 
 const reducers = {
   auth: authReducer,
   login: loginReducer,
   register: registerReducer,
   join: joinReducer,
+  dashboardSocket: dashboardSocketReducer,
   users: usersSliceReducer,
   invitations: invitationsSliceReducer,
-  groups: groupsSliceReducer
+  groups: groupsSliceReducer,
 };
 
 const combinedReducers = combineReducers(reducers);

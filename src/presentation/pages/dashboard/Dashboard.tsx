@@ -3,12 +3,18 @@ import DashboardDrawerAndAppBar from "../../components/wrapper/DashboardDrawerAn
 import { Routes } from "../../route/routes";
 import { lazy, Suspense } from "react";
 import { TicketLoading } from "../../components/app/loader/TicketLoading";
+import {useDispatch} from "react-redux";
+import {connectToDashboardSocket} from "../../actions/dashboard_socket_actions";
 
 const Chats = lazy(() => import("./navigation/chats/Chats"));
 const Workspace = lazy(() => import("./navigation/workspace/Workspace"));
 
 const Dashboard = () => {
   let { path } = useRouteMatch();
+
+  const dispatch = useDispatch();
+
+  dispatch(connectToDashboardSocket);
 
   return (
     <DashboardDrawerAndAppBar>
