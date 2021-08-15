@@ -1,12 +1,12 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import reducers from "./reducers";
-
-const customizedMiddleware = getDefaultMiddleware({
-  serializableCheck: false,
-});
+import customizedMiddleware from "./middlewares/default_middleware";
+import socketMiddleware from "./middlewares/socket_middleware";
 
 export const store = configureStore({
   reducer: reducers,
-  middleware: customizedMiddleware,
+  middleware: customizedMiddleware
+      .concat(socketMiddleware),
 });
+
 export type TStore = ReturnType<typeof store.getState>;
