@@ -1,12 +1,12 @@
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import List from "@material-ui/core/List";
-import { Chat, SupervisorAccount } from "@material-ui/icons";
+import { Chat, SupervisorAccount, Assessment } from "@material-ui/icons";
 import { ToggleButton } from "@material-ui/lab";
 import { useState } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useRouteMatch, Link, useLocation } from "react-router-dom";
-import {Routes} from "../../../route/routes";
+import { Routes } from "../../../route/routes";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -62,7 +62,7 @@ const DrawerListItems = () => {
           <ListItemIcon>
             <Chat
               className={
-                  location.pathname.includes(path + Routes.CHATS)
+                location.pathname.includes(path + Routes.CHATS)
                   ? classes.IconSelected
                   : undefined
               }
@@ -85,6 +85,28 @@ const DrawerListItems = () => {
             <SupervisorAccount
               className={
                 location.pathname.includes(path + Routes.WORKSPACE)
+                  ? classes.IconSelected
+                  : undefined
+              }
+            />
+          </ListItemIcon>
+        </ToggleButton>
+      </ListItem>
+
+      <ListItem
+        alignItems="center"
+        className={classes.drawerItem}
+        component={Link}
+        to={path + Routes.REPORTS}
+      >
+        <ToggleButton
+          className={classes.selectedDrawerItem}
+          selected={location.pathname.includes(path + Routes.REPORTS)}
+        >
+          <ListItemIcon>
+            <Assessment
+              className={
+                location.pathname.includes(path + Routes.REPORTS)
                   ? classes.IconSelected
                   : undefined
               }

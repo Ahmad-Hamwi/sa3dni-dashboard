@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "status": true,
+    "statusCode": 200,
+    "message": "Success"
+  },
+  "data": [
+    {
+      "user": {
+        "fullName": "Ahmad",
+        "email": "ahmad@gmail.com"
+      },
+      "totalChats": 1,
+      "ratedGood": 1,
+      "ratedGoodPercent": 100,
+      "ratedBad": 0,
+      "ratedBadPercent": 0
+    },
+    {
+      "user": {
+        "fullName": "Ahmad",
+        "email": "ahmad@gmail.com"
+      },
+      "totalChats": 3,
+      "ratedGood": 1,
+      "ratedGoodPercent": 33,
+      "ratedBad": 2,
+      "ratedBadPercent": 67
+    }
+  ]
+}

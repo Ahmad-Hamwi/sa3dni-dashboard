@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "status": true,
+    "statusCode": 200,
+    "message": "Success"
+  },
+  "data": {
+    "days": [
+      {
+        "date": "16-08-2021",
+        "availability": "30 min"
+      },
+      {
+        "date": "16-08-2021",
+        "availability": "1 h"
+      },
+      {
+        "date": "16-08-2021",
+        "availability": "2 h"
+      },
+      {
+        "date": "16-08-2021",
+        "availability": "10 min"
+      }
+    ]
+  }
+}
