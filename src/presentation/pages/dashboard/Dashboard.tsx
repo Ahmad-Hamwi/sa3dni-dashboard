@@ -8,6 +8,7 @@ import {connectToDashboardSocket} from "../../actions/dashboard_socket_actions";
 
 const Chats = lazy(() => import("./navigation/chats/Chats"));
 const Workspace = lazy(() => import("./navigation/workspace/Workspace"));
+const Reports = lazy(() => import("../report/Reports"));
 
 const Dashboard = () => {
   let { path } = useRouteMatch();
@@ -25,6 +26,7 @@ const Dashboard = () => {
           </Route>
           <Route path={path + Routes.CHATS} component={Chats} />
           <Route path={path + Routes.WORKSPACE} component={Workspace} />
+          <Route path={path + Routes.REPORTS} component={Reports} />
         </Switch>
       </Suspense>
     </DashboardDrawerAndAppBar>

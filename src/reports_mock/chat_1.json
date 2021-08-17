@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "status": true,
+    "statusCode": 200,
+    "message": "Success"
+  },
+  "data": {
+    "totalChats": 5,
+    "ratedGood": 3,
+    "ratedBad": 2,
+    "ratedGoodPercent": 60,
+    "ratedBadPercent": 40,
+    "days": [
+      {
+        "date": "16-08-2021",
+        "ratedGood": 1,
+        "ratedBad": 0
+      },
+      {
+        "date": "17-08-2021",
+        "ratedGood": 1,
+        "ratedBad": 2
+      },
+      {
+        "date": "18-08-2021",
+        "ratedGood": 1,
+        "ratedBad": 0
+      }
+    ]
+  }
+}
