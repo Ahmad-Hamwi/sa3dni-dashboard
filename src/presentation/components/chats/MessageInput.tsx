@@ -4,7 +4,6 @@ import {
   IconButton,
   InputBase,
   Paper,
-  TextField,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Attachment, Send } from "@material-ui/icons";
@@ -15,7 +14,7 @@ const useStyles = makeStyles((theme) =>
   createStyles({
     inputPaper: {
       padding: theme.spacing(1),
-      minHeight: theme.spacing(6),
+      marginInline: theme.spacing(4),
     },
 
     inputPaperFocused: {
@@ -51,7 +50,10 @@ const MessageInput: FC<MessageInputProps> = (props) => {
   const [message, setMessage] = useState("");
 
   const handleSendMessage = (messageToBeSent: string) => {
-    if (message.length !== 0) props.onMessageSend(messageToBeSent);
+    if (message.length !== 0) {
+      props.onMessageSend(messageToBeSent);
+      setMessage("");
+    }
   };
 
   const handleEnterPressed: KeyboardEventHandler<HTMLInputElement> = (
@@ -94,6 +96,8 @@ const MessageInput: FC<MessageInputProps> = (props) => {
           onChange={(event) => setMessage(event.target.value)}
           onFocus={(_) => setFocus(true)}
           onBlur={(_) => setFocus(false)}
+          placeholder={"Write a message..."}
+          value={message}
         />
         <IconButton color="primary" onClick={handleSendButtonPressed}>
           <Send />

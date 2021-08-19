@@ -9,7 +9,7 @@ export default class User implements IUser {
   private _email: string;
   private _phoneNumber: string;
   private _jobTitle: string;
-  private _userStatus: UserActiveStatus;
+  private _userStatus: UserActiveStatus | undefined;
   private _role: UserRole;
   private _groupIds: string[];
   private _groups: IGroup[] | undefined;
@@ -55,7 +55,7 @@ export default class User implements IUser {
     return this._role;
   }
 
-  get userStatus(): UserActiveStatus {
+  get userStatus(): UserActiveStatus | undefined {
     return this._userStatus;
   }
 
@@ -92,7 +92,7 @@ export default class User implements IUser {
     this._jobTitle = value;
   }
 
-  set userStatus(value: UserActiveStatus) {
+  set userStatus(value: UserActiveStatus | undefined) {
     this._userStatus = value;
   }
 
@@ -116,7 +116,7 @@ export interface IUser {
   email: string;
   phoneNumber: string;
   role: UserRole;
-  userStatus: UserActiveStatus;
+  userStatus?: UserActiveStatus;
   groupIds: string[];
   jobTitle: string;
   groups?: IGroup[];
@@ -129,7 +129,7 @@ export type UserData = {
   email: string;
   phoneNumber: string;
   role: UserRole;
-  userStatus: UserActiveStatus;
+  userStatus?: UserActiveStatus;
   groupIds: string[];
   jobTitle: string;
   groups?: IGroup[];

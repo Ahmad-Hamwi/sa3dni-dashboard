@@ -133,7 +133,7 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
         selected={agentIdFromQueryParams === id}
         to={path + "?" + Routes.PARAM_AGENT_ID + "=" + id}
       >
-        <AgentStatusBadge status={userStatus}>{avatar}</AgentStatusBadge>
+        <AgentStatusBadge status={userStatus!}>{avatar}</AgentStatusBadge>
         <ListItemText
           className={classes.listItemText}
           primary={name}

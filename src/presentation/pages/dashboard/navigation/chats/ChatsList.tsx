@@ -3,9 +3,7 @@ import React from "react";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { List, Typography } from "@material-ui/core";
 import ChatsListItem from "../../../../components/chats/ChatsListItem";
-import { IChat } from "../../../../../domain/entity/Chat";
 import { UserRole } from "../../../../../domain/entity/UserRole";
-import { ChatStatus } from "../../../../../domain/entity/ChatStatus";
 import { UserActiveStatus } from "../../../../../domain/entity/UserActiveStatus";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -40,13 +38,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 const ChatsList = () => {
   const classes = useStyles();
 
-  const chatItem: IChat = {
+  const chatItem = {
     id: "6109bcaab3603626a8bb3c78",
     companyId: "6109b6b9093a784284a8cf1c",
     roomId: "6109bcaab3603626a8bb3c78",
     user: {
       id: "6109b6b9093a784284a8cf1b",
-      name: "Abdulrahman",
+      fullName: "Abdulrahman",
       email: "teara290@gmail.com",
       phoneNumber: "+963951223123",
       role: UserRole.OWNER,
@@ -69,7 +67,7 @@ const ChatsList = () => {
       fullName: "Customer1",
       os: "android",
     },
-    status: ChatStatus.PENDING,
+    status: "PENDING",
   };
 
   const handleOnChatClosed = () => {};

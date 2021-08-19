@@ -6,6 +6,7 @@ import EventMessage from "../../../../components/messages/EventMessage";
 import TextMessage from "../../../../components/messages/TextMessage";
 import { Event } from "@material-ui/icons";
 import MessageInput from "../../../../components/chats/MessageInput";
+import { useState } from "react";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -29,8 +30,6 @@ const useStyles = makeStyles((theme) =>
       flexDirection: "column",
       justifyContent: "space-between",
       paddingBottom: theme.spacing(4),
-      paddingLeft: theme.spacing(4),
-      paddingRight: theme.spacing(4),
       overflowY: "auto",
       maxHeight: `calc(100vh - ${theme.spacing(12)}px)`,
     },
@@ -40,6 +39,8 @@ const useStyles = makeStyles((theme) =>
       flexDirection: "column",
       overflow: "auto",
       paddingBottom: theme.spacing(2.5),
+      paddingLeft: theme.spacing(4),
+      paddingRight: theme.spacing(4),
       gap: theme.spacing(0.5),
     },
   })
@@ -48,67 +49,94 @@ const useStyles = makeStyles((theme) =>
 const OpenedChat = () => {
   const classes = useStyles();
 
-  const messages = [
+  const initial = [
     {
+      id: "me",
       senderName: "Abdulrahman Tayara",
       message: "Hello, how may I help?",
       isSelf: true,
-      isConcatenated: false,
       isEvent: false,
     },
     {
+      id: "cus",
       senderName: "Customer1",
       message: "Hi, I need help!",
       isSelf: false,
-      isConcatenated: false,
       isEvent: false,
     },
     {
+      id: "me",
       senderName: "Abdulrahman Tayara",
       message: "Sure!",
       isSelf: true,
-      isConcatenated: false,
       isEvent: false,
     },
     {
+      id: "me",
       senderName: "Abdulrahman Tayara",
       message: "Here is your help.",
       isSelf: true,
-      isConcatenated: true,
       isEvent: false,
     },
     // {
+    //   id: "me",
     //   senderName: "Abdulrahman Tayara",
     //   message:
     //     "This is the most valuable message ever created, and it is actually long, and I'm testing this because its long, it is extremely long that I should be considering a max width for the text box itself, but now it has descended to another row, what a shame! I guess i  need to be making some tweeks in the css design.",
     //   isSelf: true,
-    //   isConcatenated: true,
     //   isEvent: false,
     // },
     {
+      id: "cus",
       senderName: "Customer1",
       message: "Thank you very much!",
       isSelf: false,
-      isConcatenated: false,
       isEvent: true,
     },
     // {
+    //   id: "me",
     //   senderName: "Customer1",
     //   message:
     //     "  This is the most valuable message ever created, and it is actually long, and I'm testing this because its long, it is extremely long that I should be considering a max width for the text box itself, but now it has descended to another row, what a shame! I guess i  need to be making some tweeks in the css design.",
     //   isSelf: false,
-    //   isConcatenated: true,
     //   isEvent: true,
     // },
   ];
+
+  const [messages, setMessages] = useState(initial);
+  const [scrollPosition, setScrollPosition] = useState();
+
+  const handleOnMessageSend = (messageToBeSent: string) => {
+    setMessages([
+      ...messages,
+      {
+        id: "me",
+        senderName: "Abdulrahman Tayara",
+        message: messageToBeSent,
+        isSelf: true,
+        isEvent: false,
+      },
+    ]);
+  };
 
   const MessageList = () => {
     return (
       <Box className={classes.messageList}>
         <EventMessage />
-        {messages.map((message, index) => (
-          <TextMessage textMessageProps={message} />
-        ))}
+        {messages.map((message, index) => {
+          let isConcatenated = false;
+          if (index) {
+            if (messages[index].id === messages[index - 1].id) {
+              isConcatenated = true;
+            }
+          }
+          return (
+            <TextMessage
+              key={message.message}
+              textMessageProps={{ ...message, isConcatenated }}
+            />
+          );
+        })}
       </Box>
     );
   };
@@ -125,7 +153,7 @@ const OpenedChat = () => {
       </AppBar>
       <Box className={classes.content}>
         <MessageList />
-        <MessageInput onMessageSend={(messageToBeSent) => {}} />
+        <MessageInput onMessageSend={handleOnMessageSend} />
       </Box>
     </Box>
   );

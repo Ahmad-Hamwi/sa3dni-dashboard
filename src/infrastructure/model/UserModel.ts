@@ -1,8 +1,8 @@
 import User from "../../domain/entity/User";
-import { UserRole } from "../../domain/entity/UserRole";
 import GroupModel, { mapToEntity as groupMapper } from "./GroupModel";
 import { mapToEntities } from "./Mapper";
 import { UserActiveStatus } from "../../domain/entity/UserActiveStatus";
+import { UserRole } from "../../domain/entity/UserRole";
 
 export default class UserModel {
   id: string;
@@ -10,8 +10,8 @@ export default class UserModel {
   fullName: string;
   email: string;
   phoneNumber: string;
-  role: string;
-  activity: string;
+  role: "OWNER" | "ADMIN" | "AGENT";
+  activity?: string;
   groupIds: string[];
   jobTitle: string;
   groups?: GroupModel[];
@@ -35,12 +35,10 @@ export function mapToEntity(model?: UserModel): User | null {
 }
 
 export function mapUserRole(role: string): UserRole {
-  return Object.values<UserRole>(UserRole).find(
-      (r) => r === role
-  )!;
+  return Object.values<UserRole>(UserRole).find((r) => r === role)!;
 }
 
-export function mapUserStatus(status: string): UserActiveStatus {
+export function mapUserStatus(status?: string): UserActiveStatus | undefined {
   return Object.values<UserActiveStatus>(UserActiveStatus).find(
     (s) => s === status
   )!;

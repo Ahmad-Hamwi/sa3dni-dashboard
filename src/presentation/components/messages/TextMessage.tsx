@@ -7,7 +7,7 @@ import {
   Theme,
   Typography,
 } from "@material-ui/core";
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import clsx from "clsx";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -117,12 +117,13 @@ export type TextMessagePropsType = {
 };
 
 const TextMessage: FC<TextMessagePropsType> = ({ textMessageProps }) => {
+  const [animate, setAnimate] = useState(true);
   const { senderName, message, isSelf, isConcatenated, isEvent } =
     textMessageProps;
   const classes = useStyles();
 
-  return (
-    <Grow in>
+  const Message = () => {
+    return (
       <Box
         className={clsx(
           classes.root,
@@ -171,8 +172,25 @@ const TextMessage: FC<TextMessagePropsType> = ({ textMessageProps }) => {
           </Box>
         </Box>
       </Box>
-    </Grow>
-  );
+    );
+  };
+
+  const AnimatedMessage = () => {
+    return (
+      <Grow
+        in={true}
+        onEntered={() => {
+          console.log("animating");
+          setAnimate(false);
+        }}
+      >
+        <Message />
+      </Grow>
+    );
+  };
+
+  console.log("returning " + animate);
+  return animate ? <AnimatedMessage /> : <Message />;
 };
 
 export default TextMessage;

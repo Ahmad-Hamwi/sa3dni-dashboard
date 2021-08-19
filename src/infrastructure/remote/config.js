@@ -18,6 +18,10 @@ export const API_ENDPOINTS = {
 
   invitation: "invitations/:id",
   invitations: "invitations",
+
+  chats: "chats",
+  chat: "chat/:id",
+  chatMessages: "/chats/{id}/message",
 };
 
 export const API_HEADERS = {

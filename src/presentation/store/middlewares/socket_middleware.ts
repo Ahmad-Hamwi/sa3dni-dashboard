@@ -30,9 +30,6 @@ interface Options {
 const socketMiddlewareOptions: Options = {
   prefix: DASHBOARD_SOCKET_PREFIX,
   reconnectOnError: true,
-  dateSerializer: (date: Date) => {
-    return date.toJSON();
-  },
 };
 
 const socketMiddleware = reduxWebsocket(socketMiddlewareOptions);

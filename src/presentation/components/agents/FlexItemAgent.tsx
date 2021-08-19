@@ -79,7 +79,7 @@ const FlexItemAgent: FC<FlexItemAgentProps> = ({ user }) => {
       alignItems="center"
       className={classes.memberFlexItem}
     >
-      {user.userStatus === UserActiveStatus.ACTIVE ? (
+      {user.userStatus! === UserActiveStatus.ACTIVE ? (
         <OnlineBadge
           overlap="circle"
           anchorOrigin={{
@@ -92,7 +92,7 @@ const FlexItemAgent: FC<FlexItemAgentProps> = ({ user }) => {
             {user.name[0].toUpperCase()}
           </Avatar>
         </OnlineBadge>
-      ) : user.userStatus === UserActiveStatus.BUSY ? (
+      ) : user.userStatus! === UserActiveStatus.BUSY ? (
         <BusyBadge
           overlap="circle"
           anchorOrigin={{
@@ -103,7 +103,7 @@ const FlexItemAgent: FC<FlexItemAgentProps> = ({ user }) => {
         >
           <Avatar className={classes.avatar}>{user.name[0]}</Avatar>
         </BusyBadge>
-      ) : user.userStatus === UserActiveStatus.OFFLINE ? (
+      ) : user.userStatus! === UserActiveStatus.OFFLINE ? (
         <OfflineBadge
           overlap="circle"
           anchorOrigin={{

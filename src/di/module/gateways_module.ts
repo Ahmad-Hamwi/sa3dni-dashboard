@@ -25,6 +25,8 @@ import IInvitationRepository, {
   INJECT_INVITATION_REPOSITORY,
 } from "../../domain/gateway/IInvitationRepository";
 import InvitationRepository from "../../infrastructure/repository/InvitationRepository";
+import IChatRepository, {INJECT_CHAT_REPOSITORY} from "../../domain/gateway/IChatRepository";
+import ChatRepository from "../../infrastructure/repository/ChatRepository";
 
 export function registerGateways(container: IContainer) {
   container.registerLazySingleton<IAuthService>(INJECT_AUTH_SERVICE,
@@ -62,4 +64,11 @@ export function registerGateways(container: IContainer) {
       return new InvitationRepository(c.resolve<IApiClient>(INJECT_API_CLIENT));
     }
   );
+
+  container.registerLazySingleton<IChatRepository>(
+      INJECT_CHAT_REPOSITORY,
+      (c) => {
+        return new ChatRepository(c.resolve<IApiClient>(INJECT_API_CLIENT));
+      }
+  )
 }
