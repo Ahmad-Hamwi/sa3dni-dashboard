@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { resolveRepository } from "../../di/injection";
 import {InviteAgentForm} from "../pages/dashboard/navigation/workspace/agents/InviteAgentDialog";
-import {CreateInvitationParams} from "../../domain/gateway/IInvitationRepository";
+import {CreateInvitationParams} from "../../infrastructure/repository/invitation/IInvitationRepository";
 
 export const fetchInvitations = createAsyncThunk(
   "fetchInvitations",

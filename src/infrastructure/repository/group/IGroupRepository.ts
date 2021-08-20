@@ -1,13 +1,13 @@
-import Group from "../entity/Group";
+import GroupModel from "../../model/GroupModel";
 
 export default interface IGroupRepository {
-  getAll(): Promise<Array<Group>>;
+  getAll(): Promise<Array<GroupModel>>;
 
-  get(id: string): Promise<Group | null>;
+  get(id: string): Promise<GroupModel | null>;
 
   delete(id: string): Promise<boolean>;
 
-  create(param: CreateGroupParams): Promise<Group>;
+  create(param: CreateGroupParams): Promise<GroupModel>;
 }
 
 export const INJECT_GROUP_REPOSITORY = "INJECT_GROUP_REPOSITORY";

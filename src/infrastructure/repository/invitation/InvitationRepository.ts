@@ -1,16 +1,14 @@
 import IInvitationRepository, {
   CreateInvitationParams,
   InvitationResult,
-} from "../../domain/gateway/IInvitationRepository";
-import Invitation from "../../domain/entity/Invitation";
-import IApiClient from "../provider/api/client/IApiClinet";
-import { API_ENDPOINTS } from "../remote/config";
-import { BaseResponse } from "../remote/model/BaseResponse";
-import EmptyResponse from "../remote/model/EmptyResponse";
-import { InvitationResponse } from "../remote/model/invitation/InvitationResponse";
-import { mapToEntity } from "../model/InvitationModel";
-import { mapToEntities } from "../model/Mapper";
-import { InvitationsResponse } from "../remote/model/invitation/InvitationsResponse";
+} from "./IInvitationRepository";
+import IApiClient from "../../provider/api/client/IApiClinet";
+import { API_ENDPOINTS } from "../../remote/config";
+import { BaseResponse } from "../../remote/model/BaseResponse";
+import EmptyResponse from "../../remote/model/EmptyResponse";
+import { InvitationResponse } from "../../remote/model/invitation/InvitationResponse";
+import InvitationModel  from "../../model/InvitationModel";
+import { InvitationsResponse } from "../../remote/model/invitation/InvitationsResponse";
 
 export default class InvitationRepository implements IInvitationRepository {
   constructor(private readonly api: IApiClient) {}
@@ -41,7 +39,7 @@ export default class InvitationRepository implements IInvitationRepository {
     return response.data.metadata.status;
   }
 
-  async get(id: string): Promise<Invitation> {
+  async get(id: string): Promise<InvitationModel> {
     const response = await this.api.get<InvitationResponse>(
       API_ENDPOINTS.invitation,
       {
@@ -51,14 +49,14 @@ export default class InvitationRepository implements IInvitationRepository {
       }
     );
 
-    return mapToEntity(response.data.data)!;
+    return response.data.data;
   }
 
-  async getAll(): Promise<Array<Invitation>> {
+  async getAll(): Promise<Array<InvitationModel>> {
     const response = await this.api.get<InvitationsResponse>(
       API_ENDPOINTS.invitations
     );
 
-    return mapToEntities(response.data.data, mapToEntity);
+    return response.data.data;
   }
 }

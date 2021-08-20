@@ -1,8 +1,6 @@
 import React, { FC, useState } from "react";
 import {
   Avatar,
-  Badge,
-  Box,
   createStyles,
   Dialog,
   DialogTitle,
@@ -17,26 +15,23 @@ import {
   Menu,
   MenuItem,
   Theme,
-  Typography,
   useTheme,
-  withStyles,
 } from "@material-ui/core";
 
-import { MoreHoriz, Star, VerifiedUser } from "@material-ui/icons";
+import { MoreHoriz, VerifiedUser } from "@material-ui/icons";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import qs from "qs";
 import { Routes } from "../../route/routes";
-import { UserActiveStatus } from "../../../domain/entity/UserActiveStatus";
-import { UserRole } from "../../../domain/entity/UserRole";
 import {
   bindMenu,
   bindTrigger,
   usePopupState,
 } from "material-ui-popup-state/hooks";
 import { PopupState } from "material-ui-popup-state/core";
-import { IUser } from "../../../domain/entity/User";
 import { AgentRoleItem } from "./AgentRoleItem";
 import { AgentStatusBadge } from "./AgentStatusBadge";
+import UserViewModel from "../../viewmodel/user/UserViewModel";
+import {Role} from "../../../infrastructure/model/UserModel";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -82,9 +77,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export interface AgentListItemProps {
-  agent: IUser;
-  onRoleChanged: (id: string, role: UserRole) => void;
-  onDelete: (user: IUser) => void;
+  agent: UserViewModel;
+  onRoleChanged: (id: string, role: Role) => void;
+  onDelete: (user: UserViewModel) => void;
   isCurrentUser: boolean;
 }
 
@@ -98,10 +93,10 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
   const { path } = useRouteMatch();
   const location = useLocation();
 
-  const { id, name, role, userStatus, email } = props.agent;
+  const { id, fullName, role, activity, email } = props.agent;
 
   const avatar = (
-    <Avatar className={classes.avatar}>{name[0].toUpperCase()}</Avatar>
+    <Avatar className={classes.avatar}>{fullName[0].toUpperCase()}</Avatar>
   );
 
   const { [Routes.PARAM_AGENT_ID]: agentIdFromQueryParams } = qs.parse(
@@ -116,7 +111,7 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
     popupId: "AGENT_LIST_ITEM_POPUP",
   });
 
-  const handleOnRoleChanged = (role: UserRole) => {
+  const handleOnRoleChanged = (role: Role) => {
     props.onRoleChanged(props.agent.id, role);
   };
 
@@ -133,10 +128,10 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
         selected={agentIdFromQueryParams === id}
         to={path + "?" + Routes.PARAM_AGENT_ID + "=" + id}
       >
-        <AgentStatusBadge status={userStatus!}>{avatar}</AgentStatusBadge>
+        <AgentStatusBadge status={activity!}>{avatar}</AgentStatusBadge>
         <ListItemText
           className={classes.listItemText}
-          primary={name}
+          primary={fullName}
           secondary={email}
         />
         <AgentRoleItem role={role} />
@@ -167,8 +162,8 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
 
 type AgentOptionsMenuProps = {
   popupState: PopupState;
-  selectedAgent: IUser;
-  onRoleSelected: (role: UserRole) => void;
+  selectedAgent: UserViewModel;
+  onRoleSelected: (role: Role) => void;
   onDelete: () => void;
 };
 
@@ -185,7 +180,7 @@ const AgentOptionsMenu: FC<AgentOptionsMenuProps> = (props) => {
     props.onDelete(); //callback
   };
 
-  const handleOnRoleSelected = (role: UserRole | null) => {
+  const handleOnRoleSelected = (role: Role | null) => {
     setChangeRoleDialogOpen(false);
     //if a role has actually been selected from list (not dismissed by clicking away from the dialog for example).
     if (role) {
@@ -218,12 +213,12 @@ const AgentOptionsMenu: FC<AgentOptionsMenuProps> = (props) => {
 
 type ChangeRoleDialogProps = {
   open: boolean;
-  selectedAgent: IUser;
-  onRoleSelected: (selectedRole: UserRole | null) => void;
+  selectedAgent: UserViewModel;
+  onRoleSelected: (selectedRole: Role | null) => void;
 };
 
 const ChangeRoleDialog: FC<ChangeRoleDialogProps> = (props) => {
-  const handleUserRoleItemClicked = (role: UserRole | null) => {
+  const handleUserRoleItemClicked = (role: Role | null) => {
     props.onRoleSelected(role);
   };
 
@@ -234,14 +229,14 @@ const ChangeRoleDialog: FC<ChangeRoleDialogProps> = (props) => {
       open={props.open}
     >
       <DialogTitle id="change-role-dialog">
-        Change Role for: {props.selectedAgent.name}
+        Change Role for: {props.selectedAgent.fullName}
       </DialogTitle>
       <List>
         <ListItem
-          selected={props.selectedAgent.role === UserRole.ADMIN}
+          selected={props.selectedAgent.role === Role.ADMIN}
           button
-          onClick={() => handleUserRoleItemClicked(UserRole.ADMIN)}
-          key={UserRole.ADMIN}
+          onClick={() => handleUserRoleItemClicked(Role.ADMIN)}
+          key={Role.ADMIN}
         >
           <ListItemIcon>
             <VerifiedUser />
@@ -249,10 +244,10 @@ const ChangeRoleDialog: FC<ChangeRoleDialogProps> = (props) => {
           <ListItemText primary={"Admin"} />
         </ListItem>
         <ListItem
-          selected={props.selectedAgent.role === UserRole.AGENT}
+          selected={props.selectedAgent.role === Role.AGENT}
           button
-          onClick={() => handleUserRoleItemClicked(UserRole.AGENT)}
-          key={UserRole.AGENT}
+          onClick={() => handleUserRoleItemClicked(Role.AGENT)}
+          key={Role.AGENT}
         >
           <ListItemIcon />
           <ListItemText primary={"Agent"} />

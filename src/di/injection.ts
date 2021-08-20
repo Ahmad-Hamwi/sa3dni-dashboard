@@ -3,23 +3,22 @@ import { registerNetwork } from "./module/network_module";
 import Container from "./container/Container";
 import IContainer from "./container/IContainer";
 import { registerGateways } from "./module/gateways_module";
-import { registerUseCases } from "./module/usecases_module";
 import IUserRepository, {
   INJECT_USER_REPOSITORY,
-} from "../domain/gateway/IUserRepository";
+} from "../infrastructure/repository/user/IUserRepository";
 import IGroupRepository, {
   INJECT_GROUP_REPOSITORY,
-} from "../domain/gateway/IGroupRepository";
+} from "../infrastructure/repository/group/IGroupRepository";
 import IInvitationRepository, {
   INJECT_INVITATION_REPOSITORY,
-} from "../domain/gateway/IInvitationRepository";
+} from "../infrastructure/repository/invitation/IInvitationRepository";
 import IUserRoleRepository, {
   INJECT_USER_ROLE_REPOSITORY,
-} from "../domain/gateway/IUserRoleRepository";
+} from "../infrastructure/repository/role/IUserRoleRepository";
 import IAuthService, {
   INJECT_AUTH_SERVICE,
-} from "../domain/gateway/IAuthService";
-import IChatRepository, { INJECT_CHAT_REPOSITORY } from "../domain/gateway/IChatRepository";
+} from "../infrastructure/service/IAuthService";
+import IChatRepository, { INJECT_CHAT_REPOSITORY } from "../infrastructure/repository/chat/IChatRepository";
 
 let initialized = false;
 
@@ -54,5 +53,4 @@ function register(container: IContainer) {
   registerCache(container);
   registerNetwork(container);
   registerGateways(container);
-  registerUseCases(container);
 }

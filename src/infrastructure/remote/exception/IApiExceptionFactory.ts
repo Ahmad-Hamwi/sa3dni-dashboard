@@ -1,4 +1,4 @@
-import { Exception } from "../../../domain/exception/Exception";
+import { Exception } from "../../exception/Exception";
 
 export const INJECT_API_EXCEPTION_FACTORY = "INJECT_API_EXCEPTION_FACTORY";
 

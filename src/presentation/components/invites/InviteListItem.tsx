@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from "react";
-import { IInvitation } from "../../../domain/entity/Invitation";
 import { Avatar, ListItem, ListItemText } from "@material-ui/core";
 import { AgentRoleItem } from "../agents/AgentRoleItem";
 import {
@@ -7,6 +6,7 @@ import {
   makeStyles,
   Theme,
 } from "@material-ui/core/styles";
+import InvitationViewModel from "../../viewmodel/invitation/InvitationViewModel";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) => {
 });
 
 export type InviteListItemProps = {
-  invitation: IInvitation;
+  invitation: InvitationViewModel;
 };
 
 const InviteListItem: FunctionComponent<InviteListItemProps> = (props) => {

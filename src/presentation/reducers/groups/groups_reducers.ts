@@ -13,12 +13,12 @@ import {
   createGroupSuccessState,
 } from "./groups_states";
 import { TStore } from "../../store/store";
-import { IGroup } from "../../../domain/entity/Group";
 import {
   createGroup,
   getGroups,
   getSelectedGroup,
 } from "../../actions/groups_actions";
+import GroupModel from "../../../infrastructure/model/GroupModel";
 
 const groupsSlice = createSlice({
   name: "groups",
@@ -29,7 +29,7 @@ const groupsSlice = createSlice({
 
     [getGroups.fulfilled.type]: (
       state: GroupsState,
-      { payload }: PayloadAction<IGroup[]>
+      { payload }: PayloadAction<GroupModel[]>
     ) => groupsSuccessState(state, payload),
 
     [getGroups.rejected.type]: (
@@ -42,7 +42,7 @@ const groupsSlice = createSlice({
 
     [getSelectedGroup.fulfilled.type]: (
       state: GroupsState,
-      { payload }: PayloadAction<IGroup>
+      { payload }: PayloadAction<GroupModel>
     ) => selectedGroupSuccessState(state, payload),
 
     [getSelectedGroup.rejected.type]: (
@@ -60,7 +60,7 @@ const groupsSlice = createSlice({
 
     [createGroup.fulfilled.type]: (
       state: GroupsState,
-      { payload }: PayloadAction<IGroup>
+      { payload }: PayloadAction<GroupModel>
     ) => createGroupSuccessState(state, payload),
   },
 });

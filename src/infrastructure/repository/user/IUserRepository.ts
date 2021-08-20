@@ -1,11 +1,11 @@
-import User from "../entity/User";
+import UserModel from "../../model/UserModel";
 
 export default interface IUserRepository {
-  getAll(): Promise<Array<User>>;
+  getAll(): Promise<Array<UserModel>>;
 
-  get(id: string): Promise<User>;
+  get(id: string): Promise<UserModel>;
 
-  me(): Promise<User>;
+  me(): Promise<UserModel>;
 
   delete(userId: string): Promise<boolean>;
 }

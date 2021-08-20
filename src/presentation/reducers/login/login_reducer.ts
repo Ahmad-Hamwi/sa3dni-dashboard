@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TStore } from "../../store/store";
-import { initialState, loginFailedState, loginSuccessState } from "./login_states";
+import {
+  initialState,
+  loginFailedState,
+  loginSuccessState,
+} from "./login_states";
+import { login } from "../../actions/login_actions";
 
 const loginSlice = createSlice({
   name: "login",
@@ -18,6 +23,17 @@ const loginSlice = createSlice({
     setLoginSuccess: (state) => loginSuccessState(state),
     setLoginFailed: (state, { payload }: PayloadAction<Error | undefined>) =>
       loginFailedState(state, payload),
+  },
+  extraReducers: {
+    [login.fulfilled.type]: (state) => loginSuccessState(state),
+    [login.rejected.type]: (
+      state,
+      { payload }: PayloadAction<Error | undefined>
+    ) => loginFailedState(state, payload),
+
+    [login.pending.type]: (state) => {
+      state.isLoading = true;
+    },
   },
 });
 

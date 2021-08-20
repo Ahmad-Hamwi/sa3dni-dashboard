@@ -1,4 +1,3 @@
-import { IChat } from "../../../domain/entity/Chat";
 import {
   Avatar,
   createStyles,
@@ -14,8 +13,9 @@ import {
 import { MoreHoriz } from "@material-ui/icons";
 import React, { FC } from "react";
 import { Routes } from "../../route/routes";
-import {Link, useLocation, useRouteMatch} from "react-router-dom";
+import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import qs from "qs";
+import ChatViewModel from "../../viewmodel/chat/ChatViewModel";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,9 +50,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export interface ChatsListItemProps {
-  chat: IChat;
-  onChatClosed: (chat: IChat) => void;
-  onChatArchived: (chat: IChat) => void;
+  chat: ChatViewModel;
+  onChatClosed: (chat: ChatViewModel) => void;
+  onChatArchived: (chat: ChatViewModel) => void;
 }
 
 const ChatsListItem: FC<ChatsListItemProps> = (props) => {
@@ -64,9 +64,12 @@ const ChatsListItem: FC<ChatsListItemProps> = (props) => {
   const { path } = useRouteMatch();
   const location = useLocation();
 
-  const { [Routes.PARAM_CHAT_ID]: chatIdFromQueryParams } = qs.parse(location.search, {
-    ignoreQueryPrefix: true,
-  });
+  const { [Routes.PARAM_CHAT_ID]: chatIdFromQueryParams } = qs.parse(
+    location.search,
+    {
+      ignoreQueryPrefix: true,
+    }
+  );
 
   const CustomerAvatar = () => {
     return (

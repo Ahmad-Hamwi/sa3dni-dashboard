@@ -1,8 +1,8 @@
-import { UserRole } from "../entity/UserRole";
+import {Role} from "../../model/UserModel";
 
 export default interface IUserRoleRepository {
 
-  getAll(): Promise<Array<UserRole>>;
+  getAll(): Promise<Array<Role>>;
 
   update(userId: string, role: string): Promise<boolean>;
 }

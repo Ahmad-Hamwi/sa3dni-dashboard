@@ -1,6 +1,6 @@
 import IAuthService, {
   INJECT_AUTH_SERVICE,
-} from "../../domain/gateway/IAuthService";
+} from "../../infrastructure/service/IAuthService";
 import AuthService from "../../infrastructure/service/AuthService";
 import IContainer from "../container/IContainer";
 import IAppCache, {
@@ -11,22 +11,22 @@ import IApiClient, {
 } from "../../infrastructure/provider/api/client/IApiClinet";
 import IUserRepository, {
   INJECT_USER_REPOSITORY,
-} from "../../domain/gateway/IUserRepository";
-import UserRepository from "../../infrastructure/repository/UserRepository";
+} from "../../infrastructure/repository/user/IUserRepository";
+import UserRepository from "../../infrastructure/repository/user/UserRepository";
 import IUserRoleRepository, {
   INJECT_USER_ROLE_REPOSITORY,
-} from "../../domain/gateway/IUserRoleRepository";
-import UserRoleRepository from "../../infrastructure/repository/UserRoleRepository";
+} from "../../infrastructure/repository/role/IUserRoleRepository";
+import UserRoleRepository from "../../infrastructure/repository/role/UserRoleRepository";
 import IGroupRepository, {
   INJECT_GROUP_REPOSITORY,
-} from "../../domain/gateway/IGroupRepository";
-import GroupRepository from "../../infrastructure/repository/GroupRepository";
+} from "../../infrastructure/repository/group/IGroupRepository";
+import GroupRepository from "../../infrastructure/repository/group/GroupRepository";
 import IInvitationRepository, {
   INJECT_INVITATION_REPOSITORY,
-} from "../../domain/gateway/IInvitationRepository";
-import InvitationRepository from "../../infrastructure/repository/InvitationRepository";
-import IChatRepository, {INJECT_CHAT_REPOSITORY} from "../../domain/gateway/IChatRepository";
-import ChatRepository from "../../infrastructure/repository/ChatRepository";
+} from "../../infrastructure/repository/invitation/IInvitationRepository";
+import InvitationRepository from "../../infrastructure/repository/invitation/InvitationRepository";
+import IChatRepository, {INJECT_CHAT_REPOSITORY} from "../../infrastructure/repository/chat/IChatRepository";
+import ChatRepository from "../../infrastructure/repository/chat/ChatRepository";
 
 export function registerGateways(container: IContainer) {
   container.registerLazySingleton<IAuthService>(INJECT_AUTH_SERVICE,

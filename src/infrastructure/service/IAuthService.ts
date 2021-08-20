@@ -1,5 +1,4 @@
-import User from "../entity/User";
-import { RegisterParams } from "../interactor/auth/RegisterUseCase";
+import UserModel from "../model/UserModel";
 
 export const INJECT_AUTH_SERVICE = "INJECT_AUTH_SERVICE";
 
@@ -14,14 +13,21 @@ export default interface IAuthService {
 }
 
 export type LoginResult = {
-  user: User;
+  user: UserModel;
   token: string;
 };
 
-//It hurts to put this here
+export type RegisterParams = {
+  email: string;
+  password: string;
+  fullName: string;
+  companyName: string;
+  phoneNumber: string;
+};
+
 export type RegisterAgentParams = {
   email: string;
   password: string;
-  name: string;
+  fullName: string;
   phoneNumber: string;
 };

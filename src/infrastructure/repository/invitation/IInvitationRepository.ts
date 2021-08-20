@@ -1,9 +1,9 @@
-import Invitation from "../entity/Invitation";
+import InvitationModel from "../../model/InvitationModel";
 
 export default interface IInvitationRepository {
-  get(id: string): Promise<Invitation>;
+  get(id: string): Promise<InvitationModel>;
 
-  getAll(): Promise<Array<Invitation>>;
+  getAll(): Promise<Array<InvitationModel>>;
 
   delete(id: string, reason: string): Promise<boolean>;
 

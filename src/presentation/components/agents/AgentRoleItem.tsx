@@ -1,8 +1,8 @@
-import { UserRole } from "../../../domain/entity/UserRole";
 import React, { FunctionComponent } from "react";
 import { Star, VerifiedUser } from "@material-ui/icons";
 import { Box, Typography, useTheme } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import {Role} from "../../../infrastructure/model/UserModel";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) => {
 });
 
 export type AgentRoleItemProps = {
-  role: UserRole;
+  role: Role;
 };
 
 const AgentRoleItem: FunctionComponent<AgentRoleItemProps> = (props) => {
@@ -28,17 +28,17 @@ const AgentRoleItem: FunctionComponent<AgentRoleItemProps> = (props) => {
       mx={theme.spacing(1)}
       alignItems="center"
     >
-      {props.role === UserRole.OWNER ? (
+      {props.role === Role.OWNER ? (
         <Star />
-      ) : props.role === UserRole.ADMIN ? (
+      ) : props.role === Role.ADMIN ? (
         <VerifiedUser />
       ) : null}
       <Typography className={classes.roleText}>
-        {props.role === UserRole.OWNER
+        {props.role === Role.OWNER
           ? "Owner"
-          : props.role === UserRole.ADMIN
+          : props.role === Role.ADMIN
           ? "Admin"
-          : props.role === UserRole.AGENT
+          : props.role === Role.AGENT
           ? "Agent"
           : null}
       </Typography>

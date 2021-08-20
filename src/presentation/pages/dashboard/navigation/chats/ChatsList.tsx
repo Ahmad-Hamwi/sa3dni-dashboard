@@ -3,8 +3,8 @@ import React from "react";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { List, Typography } from "@material-ui/core";
 import ChatsListItem from "../../../../components/chats/ChatsListItem";
-import { UserRole } from "../../../../../domain/entity/UserRole";
-import { UserActiveStatus } from "../../../../../domain/entity/UserActiveStatus";
+import { Activity, Role } from "../../../../../infrastructure/model/UserModel";
+import ChatViewModel from "../../../../viewmodel/chat/ChatViewModel";
 
 const useStyles = makeStyles((theme: Theme) => ({
   listSection: {
@@ -26,19 +26,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: theme.spacing(6) + 2,
     "&.MuiPaper-outlined": {
       border: "0px",
-      borderBottom: "1px solid rgba(0, 0, 0, 0.12)"
-    }
+      borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+    },
   },
 
   appBarText: {
     fontWeight: 500,
-  }
+  },
 }));
 
 const ChatsList = () => {
   const classes = useStyles();
 
-  const chatItem = {
+  const chatItem: ChatViewModel = {
     id: "6109bcaab3603626a8bb3c78",
     companyId: "6109b6b9093a784284a8cf1c",
     roomId: "6109bcaab3603626a8bb3c78",
@@ -47,11 +47,11 @@ const ChatsList = () => {
       fullName: "Abdulrahman",
       email: "teara290@gmail.com",
       phoneNumber: "+963951223123",
-      role: UserRole.OWNER,
+      role: Role.OWNER,
       companyId: "6109b6b9093a784284a8cf1c",
       groupIds: ["6109b6b9093a784284a8cf1d"],
       jobTitle: "Technical Assistant",
-      userStatus: UserActiveStatus.ACTIVE,
+      activity: Activity.ACTIVE,
     },
     group: {
       id: "6109b6b9093a784284a8cf1d",
@@ -68,6 +68,7 @@ const ChatsList = () => {
       os: "android",
     },
     status: "PENDING",
+    "createdAt": "2021-08-03T22:01:14.927Z"
   };
 
   const handleOnChatClosed = () => {};

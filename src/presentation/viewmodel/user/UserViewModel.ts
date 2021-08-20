@@ -1,4 +1,5 @@
 import GroupViewModel from "../group/GroupViewModel";
+import { Activity, Role } from "../../../infrastructure/model/UserModel";
 
 export default interface UserViewModel {
   id: string;
@@ -6,9 +7,9 @@ export default interface UserViewModel {
   fullName: string;
   email: string;
   phoneNumber: string;
-  role: "OWNER" | "ADMIN" | "AGENT";
-  activity: string;
-  groupIds?: string[];
+  role: Role;
+  activity: Activity;
+  groupIds: string[];
   jobTitle: string;
   groups?: GroupViewModel[];
 }

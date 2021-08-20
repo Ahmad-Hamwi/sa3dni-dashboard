@@ -1,15 +1,16 @@
-import { IUser } from "../../../domain/entity/User";
+import UserModel from "../../../infrastructure/model/UserModel";
+
 
 export interface UsersState {
   isUsersLoading: boolean;
   usersError?: Error | null;
-  users?: IUser[] | null;
+  users?: UserModel[] | null;
   isSelectedUserLoading: boolean;
   selectedUserError?: Error | null;
-  selectedUser?: IUser | null;
-  changeRoleSuccess?: IUser | null;
+  selectedUser?: UserModel | null;
+  changeRoleSuccess?: UserModel | null;
   changeRoleError?: Error;
-  deleteUserSuccess?: IUser | null;
+  deleteUserSuccess?: UserModel | null;
   deleteUserError?: Error;
 }
 
@@ -25,7 +26,7 @@ export const usersLoadingState = (state: UsersState): UsersState => {
 
 export const usersSuccessState = (
   state: UsersState,
-  users: IUser[]
+  users: UserModel[]
 ): UsersState => {
   state.isUsersLoading = false;
   state.users = users;
@@ -48,7 +49,7 @@ export const selectedUserLoadingState = (state: UsersState): UsersState => {
 
 export const selectedUserSuccessState = (
   state: UsersState,
-  user: IUser
+  user: UserModel
 ): UsersState => {
   state.isSelectedUserLoading = false;
   state.selectedUser = user;
@@ -66,7 +67,7 @@ export const selectedUserErrorState = (
 
 export const changeRoleSuccessState = (
   state: UsersState,
-  affectedUser: IUser
+  affectedUser: UserModel
 ): UsersState => {
   state.changeRoleSuccess = affectedUser;
 
@@ -93,7 +94,7 @@ export const clearChangeRoleState = (state: UsersState): UsersState => {
 
 export const deleteUserSuccessState = (
     state: UsersState,
-    affectedUser: IUser
+    affectedUser: UserModel
 ): UsersState => {
   state.deleteUserSuccess = affectedUser;
 

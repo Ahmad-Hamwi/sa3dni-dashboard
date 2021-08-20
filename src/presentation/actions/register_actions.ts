@@ -1,8 +1,7 @@
-import { setLoading, setRegisterFailed, setRegisterSuccess } from "../reducers/register/register_reducer";
-import RegisterUseCase from "../../domain/interactor/auth/RegisterUseCase";
-import { resolve } from "../../di/injection";
+import { resolveService } from "../../di/injection";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export type RegisterParams = {
+export type RegisterArgs = {
   email: string;
   password: string;
   fullName: string;
@@ -10,16 +9,17 @@ export type RegisterParams = {
   phoneNumber: string;
 };
 
-export const register = (params: RegisterParams) => async (dispatch: any) => {
-  dispatch(setLoading(true));
+export const register = createAsyncThunk(
+  "auth/register",
+  async (args: RegisterArgs, thunkAPI) => {
+    const service = resolveService.authService();
 
-  const registerUseCase = resolve<RegisterUseCase>(RegisterUseCase);
+    const registerResult = await service.register(args);
 
-  try {
-    const { success } = await registerUseCase.execute(params);
+    const success: boolean = !!registerResult;
 
-    dispatch(setRegisterSuccess());
-  } catch (e) {
-    dispatch(setRegisterFailed(e));
+    if (!success) {
+      thunkAPI.rejectWithValue(new Error("Error registering company"));
+    }
   }
-};
+);

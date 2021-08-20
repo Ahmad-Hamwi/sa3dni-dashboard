@@ -1,4 +1,4 @@
-import { Exception } from "../../domain/exception/Exception";
+import { Exception } from "../Exception";
 
 export default class ServerException extends Exception {
   constructor(message?: string | undefined) {

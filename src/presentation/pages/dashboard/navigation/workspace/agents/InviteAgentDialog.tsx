@@ -21,7 +21,7 @@ import { toast } from "react-hot-toast";
 import FlexItemGroup from "../../../../../components/groups/FlexItemGroup";
 import { bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import ListOfGroupsPopUpMenu from "../../../../../components/groups/ListOfGroupsPopUpMenu";
-import { IGroup } from "../../../../../../domain/entity/Group";
+import GroupViewModel from "../../../../../viewmodel/group/GroupViewModel";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -115,12 +115,12 @@ export type InviteAgentDialogProps = {
 export interface InviteAgentForm {
   email: string;
   isAdmin: boolean;
-  groups: IGroup[];
+  groups: GroupViewModel[];
 }
 
 type SelectionState = {
-  selectedGroups: IGroup[];
-  remainingGroups: IGroup[];
+  selectedGroups: GroupViewModel[];
+  remainingGroups: GroupViewModel[];
 };
 
 export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
@@ -145,11 +145,11 @@ export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
     if (!groups) dispatch(getGroups());
   }, [groups, dispatch]);
 
-  const addGroupToSelected = (group: IGroup) => {
+  const addGroupToSelected = (group: GroupViewModel) => {
     setSelection((prevState) => {
       return {
         remainingGroups: prevState.remainingGroups.filter(
-          (itrGroup: IGroup) => itrGroup.id !== group.id
+          (itrGroup: GroupViewModel) => itrGroup.id !== group.id
         ),
         selectedGroups: [...prevState.selectedGroups, group],
       };
@@ -191,7 +191,7 @@ export const InviteAgentDialog: FC<InviteAgentDialogProps> = (props) => {
     });
   };
 
-  const handleOnGroupSelectedFromMenu = (group: IGroup) => {
+  const handleOnGroupSelectedFromMenu = (group: GroupViewModel) => {
     addGroupToSelected(group);
   };
 

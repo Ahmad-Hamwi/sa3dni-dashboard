@@ -4,7 +4,7 @@ import { resolveService } from "../../di/injection";
 export type JoinWorkspaceArgs = {
   email: string;
   password: string;
-  name: string;
+  fullName: string;
   phoneNumber: string;
 };
 

@@ -49,7 +49,7 @@ const Login = () => {
   const history = useHistory();
 
   const handleClick = () => {
-    dispatch(login(email, password));
+    dispatch(login({ email, password }));
   };
 
   useEffect(() => {

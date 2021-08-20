@@ -1,4 +1,4 @@
-import ChatModel from "../../infrastructure/model/ChatModel";
+import ChatModel from "../../model/ChatModel";
 
 export default interface IChatRepository {
   getChats(): Promise<ChatModel[]>;

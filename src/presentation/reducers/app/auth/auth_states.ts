@@ -1,15 +1,15 @@
-import { IUser } from "../../../../domain/entity/User";
+import UserViewModel from "../../../viewmodel/user/UserViewModel";
 
 export interface AuthState {
   isUserAuthenticated?: boolean;
-  user?: IUser | null;
+  user?: UserViewModel | null;
 }
 
 export const initialState: AuthState = {};
 
 export const authenticatedState = (
   state: AuthState,
-  user: IUser
+  user: UserViewModel
 ): AuthState => {
   state.isUserAuthenticated = true;
   state.user = user;

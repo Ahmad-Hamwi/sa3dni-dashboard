@@ -3,10 +3,8 @@ import {
   createStyles,
   makeStyles,
   Theme,
-  CircularProgress,
   Snackbar,
   Fab,
-  Icon,
 } from "@material-ui/core";
 
 import AgentListItem from "../../../../../components/agents/AgentListItem";
@@ -22,9 +20,7 @@ import {
   deleteUser,
   getUsers,
 } from "../../../../../actions/users_actions";
-import { Alert } from "@material-ui/lab";
 import { Spinner } from "../../../../../components/app/loader/Spinner";
-import { UserRole } from "../../../../../../domain/entity/UserRole";
 import { Add } from "@material-ui/icons";
 import { InviteAgentDialog, InviteAgentForm } from "./InviteAgentDialog";
 import {
@@ -36,7 +32,8 @@ import {
   invitationsSelector,
 } from "../../../../../reducers/invitations/invitations_reducer";
 import { authSelector } from "../../../../../reducers/app/auth/auth_reducer";
-import { IUser } from "../../../../../../domain/entity/User";
+import UserViewModel from "../../../../../viewmodel/user/UserViewModel";
+import {Role} from "../../../../../../infrastructure/model/UserModel";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -100,7 +97,7 @@ export default function AgentsList() {
       setSnackbarState({
         open: true,
         snackBarMessage:
-          changeRoleSuccess.name + " role has been changed successfully.",
+          changeRoleSuccess.fullName + " role has been changed successfully.",
       });
     } else if (changeRoleError) {
       setSnackbarState({
@@ -120,7 +117,7 @@ export default function AgentsList() {
       setSnackbarState({
         open: true,
         snackBarMessage:
-          deleteUserSuccess.name +
+          deleteUserSuccess.fullName +
           " user has been removed from workspace successfully.",
       });
     }
@@ -144,11 +141,11 @@ export default function AgentsList() {
 
   //......................event handlers.....................................
 
-  const handleOnRoleChanged = (id: string, role: UserRole) => {
+  const handleOnRoleChanged = (id: string, role: Role) => {
     dispatch(changeSelectedUserRole({ userId: id, newRole: role }));
   };
 
-  const handleOnDeleteUser = (userToBeDeleted: IUser) => {
+  const handleOnDeleteUser = (userToBeDeleted: UserViewModel) => {
     dispatch(deleteUser(userToBeDeleted));
   };
 

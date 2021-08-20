@@ -1,7 +1,7 @@
-import { UserActiveStatus } from "../../../domain/entity/UserActiveStatus";
 import { Badge, ListItemIcon, withStyles } from "@material-ui/core";
 import React, { FunctionComponent } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import {Activity} from "../../../infrastructure/model/UserModel";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -75,7 +75,7 @@ const OfflineBadge = withStyles((theme: Theme) =>
 )(StatusBadge);
 
 export type AgentStatusBadgeProps = {
-  status: UserActiveStatus;
+  status: Activity;
 };
 
 const AgentStatusBadge: FunctionComponent<AgentStatusBadgeProps> = (props) => {
@@ -83,11 +83,11 @@ const AgentStatusBadge: FunctionComponent<AgentStatusBadgeProps> = (props) => {
 
   return (
     <ListItemIcon className={classes.listItemIcon}>
-      {props.status === UserActiveStatus.ACTIVE ? (
+      {props.status === Activity.ACTIVE ? (
         <OnlineBadge>{props.children}</OnlineBadge>
-      ) : props.status === UserActiveStatus.BUSY ? (
+      ) : props.status === Activity.BUSY ? (
         <BusyBadge>{props.children}</BusyBadge>
-      ) : props.status === UserActiveStatus.OFFLINE ? (
+      ) : props.status === Activity.OFFLINE ? (
         <OfflineBadge>{props.children}</OfflineBadge>
       ) : (
         <></>

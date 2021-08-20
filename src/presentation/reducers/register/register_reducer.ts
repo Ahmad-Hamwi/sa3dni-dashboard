@@ -5,6 +5,7 @@ import {
   registerFailedState,
   registerSuccessState,
 } from "./register_states";
+import { register } from "../../actions/register_actions";
 
 const registerSlice = createSlice({
   name: "register",
@@ -15,19 +16,25 @@ const registerSlice = createSlice({
       state.error = null;
       state.success = false;
     },
-    setLoading: (state, { payload }: PayloadAction<boolean>) => {
+  },
+
+  extraReducers: {
+    [register.pending.type]: (state, { payload }: PayloadAction<boolean>) => {
       clearState();
       state.isLoading = payload;
     },
-    setRegisterSuccess: (state) => registerSuccessState(state),
-    setRegisterFailed: (state, { payload }: PayloadAction<Error | undefined>) =>
-      registerFailedState(state, payload),
+
+    [register.fulfilled.type]: (state) => registerSuccessState(state),
+
+    [register.rejected.type]: (
+      state,
+      { payload }: PayloadAction<Error | undefined>
+    ) => registerFailedState(state, payload),
   },
 });
 
 export const registerReducer = registerSlice.reducer;
 
-export const { setRegisterSuccess, setLoading, setRegisterFailed, clearState } =
-  registerSlice.actions;
+export const { clearState } = registerSlice.actions;
 
 export const registerSelector = (store: TStore) => store.register;

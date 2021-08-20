@@ -1,24 +1,23 @@
-import {
-  authenticatedState,
-  initialState,
-  unAuthenticatedState,
-} from "./auth_states";
+import {authenticatedState, initialState, unAuthenticatedState} from "./auth_states";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TStore } from "../../../store/store";
-import { GetUserDetailsResult } from "../../../../domain/interactor/user/GetUserDetailsUseCase";
+import { authenticateUser } from "../../../actions/auth_actions";
+import UserViewModel from "../../../viewmodel/user/UserViewModel";
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    authenticated: (state, { payload }: PayloadAction<GetUserDetailsResult>) =>
-      authenticatedState(state, payload.user),
-    unAuthenticated: (state) => unAuthenticatedState(state),
+  reducers: {},
+
+  extraReducers: {
+    [authenticateUser.fulfilled.type]: (
+      state,
+      { payload }: PayloadAction<UserViewModel>
+    ) => authenticatedState(state, payload),
+    [authenticateUser.rejected.type]: (state) => unAuthenticatedState(state),
   },
 });
 
 export const authReducer = authSlice.reducer;
-
-export const { authenticated, unAuthenticated } = authSlice.actions;
 
 export const authSelector = (store: TStore) => store.auth;
