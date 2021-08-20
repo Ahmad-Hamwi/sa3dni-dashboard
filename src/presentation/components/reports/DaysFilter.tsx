@@ -1,37 +1,12 @@
 import { FC, useEffect, useState } from "react";
 import {
-  Box,
   FormControl,
-  InputBase,
-  MenuItem,
-  Select,
-  TextField,
-  withStyles,
+  MenuItem, Typography,
 } from "@material-ui/core";
 
 import Utils from "../../../utils/Utils";
+import DropDownSelectMenu from "../common/DropDownSelectMenu";
 
-const BootstrapInput = withStyles((theme) => ({
-  root: {
-    "label + &": {
-      marginTop: theme.spacing(3),
-    },
-  },
-  input: {
-    borderRadius: 4,
-    position: "relative",
-    backgroundColor: theme.palette.background.paper,
-    border: "1px solid #ced4da",
-    fontSize: 16,
-    padding: "10px 26px 10px 12px",
-    transition: theme.transitions.create(["border-color", "box-shadow"]),
-    "&:focus": {
-      borderRadius: 4,
-      borderColor: "#80bdff",
-      boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
-    },
-  },
-}))(InputBase);
 
 export type FilterValue = {
   start: Date;
@@ -91,18 +66,15 @@ const DaysFilter: FC<DaysFilterProps> = (props) => {
   }, [selectedValue]);
 
   return (
-    <div>
-      <h3 style={{display: 'inline-block', top: '8px'}}>Filter:</h3>
+    <div style={{display: 'flex', alignItems: 'center'}}>
+      <Typography style={{margin: '10px'}}>Filter:</Typography>
       <FormControl style={{left: '8px'}}>
-        <Select
-          labelId="demo-customized-select-label"
-          id="demo-customized-select"
+        <DropDownSelectMenu
           value={selectedValue}
           onChange={handleChange}
-          input={<BootstrapInput />}
         >
           {menuItemsComponents}
-        </Select>
+        </DropDownSelectMenu>
       </FormControl>
     </div>
   );
