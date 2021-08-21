@@ -1,4 +1,6 @@
 import { DASHBOARD_SOCKET_PREFIX } from "../store/constants";
+
+import { DASHBOARD_SOCKET_BASE_URL } from "../socket/constants";
 import {
   connect,
   WEBSOCKET_BEGIN_RECONNECT,
@@ -12,8 +14,7 @@ import {
   WEBSOCKET_RECONNECT_ATTEMPT,
   WEBSOCKET_RECONNECTED,
   WEBSOCKET_SEND,
-} from "@giantmachines/redux-websocket/dist";
-import { DASHBOARD_SOCKET_BASE_URL } from "../socket/constants";
+} from "../../infrastructure/provider/socket";
 
 export const DASHBOARD_SOCKET_CONNECT = `${DASHBOARD_SOCKET_PREFIX}::${WEBSOCKET_CONNECT}`;
 export const DASHBOARD_SOCKET_DISCONNECT = `${DASHBOARD_SOCKET_PREFIX}::${WEBSOCKET_DISCONNECT}`;

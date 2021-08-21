@@ -1,5 +1,6 @@
-import reduxWebsocket from "@giantmachines/redux-websocket";
+import reduxWebsocket from "./../../../infrastructure/provider/socket/createMiddleware";
 import { DASHBOARD_SOCKET_PREFIX } from "../constants";
+import {Socket} from "socket.io-client";
 
 interface Options {
   // Defaults to 'REDUX_WEBSOCKET'. Use this option to set a custom action type
@@ -15,7 +16,7 @@ interface Options {
   reconnectOnError?: boolean;
   // Callback when the WebSocket connection is open. Useful for when you
   // need a reference to the WebSocket instance.
-  onOpen?: (socket: WebSocket) => void;
+  onOpen?: (socket: Socket) => void;
   // Custom function to serialize your payload before sending. Defaults to JSON.stringify
   // but you could use this function to send any format you like, including binary
   serializer?: (payload: any) => string | ArrayBuffer | ArrayBufferView | Blob;

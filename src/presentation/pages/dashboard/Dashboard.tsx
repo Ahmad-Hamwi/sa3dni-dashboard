@@ -1,10 +1,11 @@
 import { Switch, Route, useRouteMatch, Redirect } from "react-router-dom";
 import DashboardDrawerAndAppBar from "../../components/wrapper/DashboardDrawerAndAppBar";
 import { Routes } from "../../route/routes";
-import { lazy, Suspense } from "react";
+import {lazy, Suspense, useEffect} from "react";
 import { TicketLoading } from "../../components/app/loader/TicketLoading";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {connectToDashboardSocket} from "../../actions/dashboard_socket_actions";
+import {dashboardSocketSelector} from "../../reducers/connection/dashboard/dashboard_socket_reducer";
 
 const Chats = lazy(() => import("./navigation/chats/Chats"));
 const Workspace = lazy(() => import("./navigation/workspace/Workspace"));
@@ -16,6 +17,20 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   dispatch(connectToDashboardSocket);
+
+  const {opened, error, dropped, reconnectingAttempts, reconnected, reconnecting, message, closed} = useSelector(dashboardSocketSelector);
+
+  useEffect(() => {
+    console.log(`opened: ${opened}`);
+    console.log(`error: ${error}`);
+    console.log(`dropped: ${dropped}`);
+    console.log(`reconnectingAttempts: ${reconnectingAttempts}`);
+    console.log(`reconnected: ${reconnected}`);
+    console.log(`reconnected: ${reconnected}`);
+    console.log(`reconnecting: ${reconnecting}`);
+    console.log(`message: ${message}`);
+    console.log(`closed: ${closed}`);
+  }, [opened, error, dropped, reconnectingAttempts, reconnected, reconnecting, message, closed])
 
   return (
     <DashboardDrawerAndAppBar>
