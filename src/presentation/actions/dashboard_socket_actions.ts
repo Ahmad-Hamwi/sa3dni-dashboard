@@ -1,6 +1,9 @@
 import { DASHBOARD_SOCKET_PREFIX } from "../store/constants";
 
-import { DASHBOARD_SOCKET_BASE_URL } from "../socket/constants";
+import {
+  DASHBOARD_SOCKET_AUTH_QP,
+  DASHBOARD_SOCKET_BASE_URL,
+} from "../socket/constants";
 import {
   connect,
   WEBSOCKET_BEGIN_RECONNECT,
@@ -15,6 +18,7 @@ import {
   WEBSOCKET_RECONNECTED,
   WEBSOCKET_SEND,
 } from "../../infrastructure/provider/socket";
+import qs from "qs";
 
 export const DASHBOARD_SOCKET_CONNECT = `${DASHBOARD_SOCKET_PREFIX}::${WEBSOCKET_CONNECT}`;
 export const DASHBOARD_SOCKET_DISCONNECT = `${DASHBOARD_SOCKET_PREFIX}::${WEBSOCKET_DISCONNECT}`;
@@ -29,7 +33,16 @@ export const DASHBOARD_SOCKET_RECONNECT_ATTEMPT = `${DASHBOARD_SOCKET_PREFIX}::$
 export const DASHBOARD_SOCKET_RECONNECTED = `${DASHBOARD_SOCKET_PREFIX}::${WEBSOCKET_RECONNECTED}`;
 export const DASHBOARD_SOCKET_ERROR = `${DASHBOARD_SOCKET_PREFIX}::${WEBSOCKET_ERROR}`;
 
-export const connectToDashboardSocket = connect(
-  DASHBOARD_SOCKET_BASE_URL,
-  DASHBOARD_SOCKET_PREFIX
-);
+export const connectToDashboardSocket = (token: string) => {
+
+  //compose the query param
+  const qp = qs.stringify({
+    [DASHBOARD_SOCKET_AUTH_QP]: token,
+  });
+
+  //build url
+  const fullUrl: string =
+    DASHBOARD_SOCKET_BASE_URL + "?" + qp;
+
+  return connect(fullUrl, DASHBOARD_SOCKET_PREFIX);
+};

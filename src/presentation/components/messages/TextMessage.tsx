@@ -180,7 +180,6 @@ const TextMessage: FC<TextMessagePropsType> = ({ textMessageProps }) => {
       <Grow
         in={true}
         onEntered={() => {
-          console.log("animating");
           setAnimate(false);
         }}
       >
@@ -189,7 +188,6 @@ const TextMessage: FC<TextMessagePropsType> = ({ textMessageProps }) => {
     );
   };
 
-  console.log("returning " + animate);
   return animate ? <AnimatedMessage /> : <Message />;
 };
 

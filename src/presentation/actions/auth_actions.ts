@@ -1,9 +1,14 @@
-import { resolveRepository } from "../../di/injection";
+import { resolveRepository, resolveService } from "../../di/injection";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const authenticateUser = createAsyncThunk(
   "user/authenticateUser",
-  async () => {
-    return await resolveRepository.users().me();
+  async (_, thunkAPI) => {
+    const user = await resolveRepository.users().me();
+    const token = await resolveService.authService().getToken();
+    return {
+      user,
+      token,
+    };
   }
 );

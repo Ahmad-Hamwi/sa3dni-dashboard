@@ -1,11 +1,12 @@
 import { Switch, Route, useRouteMatch, Redirect } from "react-router-dom";
 import DashboardDrawerAndAppBar from "../../components/wrapper/DashboardDrawerAndAppBar";
 import { Routes } from "../../route/routes";
-import {lazy, Suspense, useEffect} from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { TicketLoading } from "../../components/app/loader/TicketLoading";
-import {useDispatch, useSelector} from "react-redux";
-import {connectToDashboardSocket} from "../../actions/dashboard_socket_actions";
-import {dashboardSocketSelector} from "../../reducers/connection/dashboard/dashboard_socket_reducer";
+import { useDispatch, useSelector } from "react-redux";
+import { connectToDashboardSocket } from "../../actions/dashboard_socket_actions";
+import { dashboardSocketSelector } from "../../reducers/connection/dashboard/dashboard_socket_reducer";
+import { authSelector } from "../../reducers/app/auth/auth_reducer";
 
 const Chats = lazy(() => import("./navigation/chats/Chats"));
 const Workspace = lazy(() => import("./navigation/workspace/Workspace"));
@@ -16,9 +17,25 @@ const Dashboard = () => {
 
   const dispatch = useDispatch();
 
-  dispatch(connectToDashboardSocket);
+  const { token } = useSelector(authSelector);
 
-  const {opened, error, dropped, reconnectingAttempts, reconnected, reconnecting, message, closed} = useSelector(dashboardSocketSelector);
+  useEffect(() => {
+    if (token) {
+      console.log("token: ", token);
+      dispatch(connectToDashboardSocket(token));
+    }
+  }, [token]);
+
+  const {
+    opened,
+    error,
+    dropped,
+    reconnectingAttempts,
+    reconnected,
+    reconnecting,
+    message,
+    closed,
+  } = useSelector(dashboardSocketSelector);
 
   useEffect(() => {
     console.log(`opened: ${opened}`);
@@ -30,7 +47,16 @@ const Dashboard = () => {
     console.log(`reconnecting: ${reconnecting}`);
     console.log(`message: ${message}`);
     console.log(`closed: ${closed}`);
-  }, [opened, error, dropped, reconnectingAttempts, reconnected, reconnecting, message, closed])
+  }, [
+    opened,
+    error,
+    dropped,
+    reconnectingAttempts,
+    reconnected,
+    reconnecting,
+    message,
+    closed,
+  ]);
 
   return (
     <DashboardDrawerAndAppBar>

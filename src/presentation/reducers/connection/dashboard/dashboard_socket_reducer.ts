@@ -56,6 +56,7 @@ const dashboardSocketSlice = createSlice({
       state: DashboardSocketState,
       { payload }: PayloadAction<Error>
     ) => {
+      console.log("reducer: ", payload);
       state.error = payload;
     },
   },

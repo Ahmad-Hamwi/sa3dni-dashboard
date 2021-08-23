@@ -50,6 +50,41 @@ export default class ReduxWebSocket {
   } | null = null;
 
   // Keep track of if the WebSocket connection has ever successfully opened.
+  /**
+   * WebSocket connect event handler.
+   *
+   * @param {MiddlewareAPI} store
+   * @param {Action} action
+   */
+  connect = ({ dispatch }: MiddlewareAPI, { payload }: Action) => {
+    console.log("connect: ", this);
+    this.close();
+
+    const { prefix, deserializer } = this.options;
+
+    this.lastConnectPayload = payload;
+    this.websocket = io(payload.url);
+
+    this.websocket.on("disconnect", (reason) => {
+      console.log("disconnect: ", reason);
+      this.handleClose(dispatch, prefix, new Event(reason));
+    });
+    this.websocket.on("error", (error) => {
+      console.log("here1: ", error);
+      this.handleError(dispatch, prefix, error);
+    });
+    this.websocket.on("connect_error", (error) => {
+      console.log("here2: ", error);
+      this.handleError(dispatch, prefix, error);
+    });
+    this.websocket.on("connect", () => {
+      this.handleOpen(dispatch, prefix, this.options.onOpen);
+    });
+    this.websocket.on("message", (event) =>
+      this.handleMessage(dispatch, prefix, deserializer, event)
+    );
+  };
+
   private hasOpened = false;
 
   /**
@@ -63,42 +98,11 @@ export default class ReduxWebSocket {
   }
 
   /**
-   * WebSocket connect event handler.
-   *
-   * @param {MiddlewareAPI} store
-   * @param {Action} action
-   */
-  connect({ dispatch }: MiddlewareAPI, { payload }: Action) {
-    this.close();
-
-    const { prefix, deserializer } = this.options;
-
-    this.lastConnectPayload = payload;
-    this.websocket = io(payload.url);
-
-    this.websocket.on("disconnect", (reason) =>
-      this.handleClose(dispatch, prefix, new Event(reason))
-    );
-    // this.websocket.on("error", (error) =>
-    //   this.handleError(dispatch, prefix, error)
-    // );
-    // this.websocket.on("connect_error", (error) =>
-    //   this.handleError(dispatch, prefix, error)
-    // );
-    this.websocket.on("connect", () => {
-      this.handleOpen(dispatch, prefix, this.options.onOpen);
-    });
-    this.websocket.on("message", (event) =>
-      this.handleMessage(dispatch, prefix, deserializer, event)
-    );
-  }
-
-  /**
    * WebSocket disconnect event handler.
    *
    * @throws {Error} Socket connection must exist.
    */
-  disconnect() {
+  disconnect = () => {
     if (this.websocket) {
       this.close();
     } else {
@@ -106,7 +110,7 @@ export default class ReduxWebSocket {
         "Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first"
       );
     }
-  }
+  };
 
   /**
    * WebSocket send event handler.
@@ -116,7 +120,7 @@ export default class ReduxWebSocket {
    *
    * @throws {Error} Socket connection must exist.
    */
-  send(_store: MiddlewareAPI, { payload }: Action) {
+  send = (_store: MiddlewareAPI, { payload }: Action) => {
     if (this.websocket) {
       if (this.options.serializer) {
         this.websocket.send(this.options.serializer(payload));
@@ -128,7 +132,7 @@ export default class ReduxWebSocket {
         "Socket connection not initialized. Dispatch WEBSOCKET_CONNECT first"
       );
     }
-  }
+  };
 
   /**
    * Handle a close event.

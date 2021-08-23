@@ -44,4 +44,8 @@ export default class AuthService implements IAuthService {
   async saveToken(token: string): Promise<void> {
     this.cache.saveToken(token);
   }
+
+  getToken(): Promise<string | null> {
+    return Promise.resolve(this.cache.getToken());
+  }
 }

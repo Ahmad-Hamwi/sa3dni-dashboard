@@ -12,8 +12,8 @@ const authSlice = createSlice({
   extraReducers: {
     [authenticateUser.fulfilled.type]: (
       state,
-      { payload }: PayloadAction<UserViewModel>
-    ) => authenticatedState(state, payload),
+      { payload }: PayloadAction<{ user: UserViewModel, token: string }>
+    ) => authenticatedState(state, payload.user, payload.token),
     [authenticateUser.rejected.type]: (state) => unAuthenticatedState(state),
   },
 });

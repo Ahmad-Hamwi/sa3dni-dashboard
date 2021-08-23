@@ -1,4 +1,5 @@
-export const DASHBOARD_SOCKET_BASE_URL = "wss://sa3dni.herokuapp.com/?token=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MTFmZmI1MjA0YjZiNDAwMTY0ZTNkNTIiLCJjb21wYW55SWQiOiI2MTFmZmI1MzA0YjZiNDAwMTY0ZTNkNTMiLCJpYXQiOjE2Mjk0ODU5MzV9.elDz_e1j_mvPoNlMdhngN-sBbhZE5ktP6bjKGZjB8Ko";
+export const DASHBOARD_SOCKET_BASE_URL = "wss://sa3dni.herokuapp.com/";
+export const DASHBOARD_SOCKET_AUTH_QP = "token";
 
 export default {
     DASHBOARD_SOCKET_BASE_URL,
