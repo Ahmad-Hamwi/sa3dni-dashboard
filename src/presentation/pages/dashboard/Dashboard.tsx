@@ -21,7 +21,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (token) {
-      console.log("token: ", token);
       dispatch(connectToDashboardSocket(token));
     }
   }, [token]);

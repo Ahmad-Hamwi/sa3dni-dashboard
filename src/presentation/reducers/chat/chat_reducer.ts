@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ChatsState, initialChatsState } from "./chat_state";
 import { getChats } from "../../actions/chat_actions";
 import ChatModel from "../../../infrastructure/model/ChatModel";
+import {TStore} from "../../store/store";
 
 export const chatsSlice = createSlice({
   name: "chats",
@@ -31,3 +32,7 @@ export const chatsSlice = createSlice({
     },
   },
 });
+
+export const chatReducer = chatsSlice.reducer;
+
+export const chatSelector = (store: TStore) => store.chat;

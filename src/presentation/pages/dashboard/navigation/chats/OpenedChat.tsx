@@ -4,9 +4,10 @@ import { Routes } from "../../../../route/routes";
 import AppBar from "@material-ui/core/AppBar";
 import EventMessage from "../../../../components/messages/EventMessage";
 import TextMessage from "../../../../components/messages/TextMessage";
-import { Event } from "@material-ui/icons";
 import MessageInput from "../../../../components/chats/MessageInput";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
+import qs from "qs";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -106,6 +107,12 @@ const OpenedChat = () => {
   const [messages, setMessages] = useState(initial);
   const [scrollPosition, setScrollPosition] = useState();
 
+  const location = useLocation();
+
+  const { [Routes.PARAM_CHAT_ID]: selectedChatId } = qs.parse(location.search, {
+    ignoreQueryPrefix: true,
+  });
+
   const handleOnMessageSend = (messageToBeSent: string) => {
     setMessages([
       ...messages,
@@ -143,18 +150,23 @@ const OpenedChat = () => {
 
   return (
     <Box flexDirection={"column"} width={"60%"}>
-      <AppBar
-        position="static"
-        variant="outlined"
-        color="transparent"
-        className={classes.topBar}
-      >
-        <Typography className={classes.infoTopBarText}>Customer</Typography>
-      </AppBar>
-      <Box className={classes.content}>
-        <MessageList />
-        <MessageInput onMessageSend={handleOnMessageSend} />
-      </Box>
+      {selectedChatId && (
+        <>
+          <AppBar
+            position="static"
+            variant="outlined"
+            color="transparent"
+            className={classes.topBar}
+          >
+            <Typography className={classes.infoTopBarText}>Customer</Typography>
+          </AppBar>
+
+          <Box className={classes.content}>
+            <MessageList />
+            <MessageInput onMessageSend={handleOnMessageSend} />
+          </Box>
+        </>
+      )}
     </Box>
   );
 };

@@ -6,7 +6,7 @@ import OpenedChat from "./OpenedChat";
 
 const useStyles = makeStyles((theme: Theme) => ({
   verticalDivider: {
-    height: `calc(100vh - ${theme.spacing(6)-2}px)`,
+    height: `calc(100vh - ${theme.spacing(6) - 2}px)`,
   },
 }));
 
