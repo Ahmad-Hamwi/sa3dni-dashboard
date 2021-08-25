@@ -4,7 +4,7 @@ import { Routes } from "../../route/routes";
 import { lazy, Suspense, useEffect } from "react";
 import { TicketLoading } from "../../components/app/loader/TicketLoading";
 import { useDispatch, useSelector } from "react-redux";
-import { connectToDashboardSocket } from "../../actions/dashboard_socket_actions";
+import { connectToDashboardSocket } from "../../actions/dashboardsocket/dashboard_socket_actions";
 import { dashboardSocketSelector } from "../../reducers/connection/dashboard/dashboard_socket_reducer";
 import { authSelector } from "../../reducers/app/auth/auth_reducer";
 

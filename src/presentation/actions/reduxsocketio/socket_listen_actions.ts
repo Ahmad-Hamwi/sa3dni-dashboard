@@ -1,29 +1,16 @@
-import { DASHBOARD_SOCKET_PREFIX } from "../store/constants";
-
+import { DASHBOARD_SOCKET_PREFIX } from "../../store/constants";
 import {
-  DASHBOARD_SOCKET_AUTH_QP,
-  DASHBOARD_SOCKET_BASE_URL,
-} from "../socket/constants";
-import {
-  connect,
   WEBSOCKET_BEGIN_RECONNECT,
   WEBSOCKET_BROKEN,
   WEBSOCKET_CLOSED,
-  WEBSOCKET_CONNECT,
-  WEBSOCKET_DISCONNECT,
   WEBSOCKET_ERROR,
   WEBSOCKET_MESSAGE,
   WEBSOCKET_OPEN,
   WEBSOCKET_RECONNECT_ATTEMPT,
   WEBSOCKET_RECONNECTED,
-  WEBSOCKET_SEND,
-} from "../../infrastructure/provider/socket";
-import qs from "qs";
+} from "./actionTypes";
 
-export const DASHBOARD_SOCKET_CONNECT = `${DASHBOARD_SOCKET_PREFIX}::${WEBSOCKET_CONNECT}`;
-export const DASHBOARD_SOCKET_DISCONNECT = `${DASHBOARD_SOCKET_PREFIX}::${WEBSOCKET_DISCONNECT}`;
-export const DASHBOARD_SOCKET_SEND = `${DASHBOARD_SOCKET_PREFIX}::${WEBSOCKET_SEND}`;
-
+// Socket defined, socket.io middleware actions to dispatch
 export const DASHBOARD_SOCKET_OPEN = `${DASHBOARD_SOCKET_PREFIX}::${WEBSOCKET_OPEN}`;
 export const DASHBOARD_SOCKET_CLOSED = `${DASHBOARD_SOCKET_PREFIX}::${WEBSOCKET_CLOSED}`;
 export const DASHBOARD_SOCKET_MESSAGE = `${DASHBOARD_SOCKET_PREFIX}::${WEBSOCKET_MESSAGE}`;
@@ -32,17 +19,3 @@ export const DASHBOARD_SOCKET_BEGIN_RECONNECT = `${DASHBOARD_SOCKET_PREFIX}::${W
 export const DASHBOARD_SOCKET_RECONNECT_ATTEMPT = `${DASHBOARD_SOCKET_PREFIX}::${WEBSOCKET_RECONNECT_ATTEMPT}`;
 export const DASHBOARD_SOCKET_RECONNECTED = `${DASHBOARD_SOCKET_PREFIX}::${WEBSOCKET_RECONNECTED}`;
 export const DASHBOARD_SOCKET_ERROR = `${DASHBOARD_SOCKET_PREFIX}::${WEBSOCKET_ERROR}`;
-
-export const connectToDashboardSocket = (token: string) => {
-
-  //compose the query param
-  const qp = qs.stringify({
-    [DASHBOARD_SOCKET_AUTH_QP]: token,
-  });
-
-  //build url
-  const fullUrl: string =
-    DASHBOARD_SOCKET_BASE_URL + "?" + qp;
-
-  return connect(fullUrl, DASHBOARD_SOCKET_PREFIX);
-};

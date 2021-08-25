@@ -12,7 +12,7 @@ import {
   DASHBOARD_SOCKET_OPEN,
   DASHBOARD_SOCKET_RECONNECT_ATTEMPT,
   DASHBOARD_SOCKET_RECONNECTED,
-} from "../../../actions/dashboard_socket_actions";
+} from "../../../actions/reduxsocketio/socket_listen_actions";
 
 const dashboardSocketSlice = createSlice({
   name: "dashboardSocket",

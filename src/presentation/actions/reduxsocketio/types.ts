@@ -1,8 +1,36 @@
-import reduxWebsocket from "./../../../infrastructure/provider/socket/createMiddleware";
-import { DASHBOARD_SOCKET_PREFIX } from "../constants";
+import {
+  WEBSOCKET_CLOSED,
+  WEBSOCKET_CONNECT,
+  WEBSOCKET_DISCONNECT,
+  WEBSOCKET_MESSAGE,
+  WEBSOCKET_OPEN,
+  WEBSOCKET_SEND,
+} from "./actionTypes";
 import {Socket} from "socket.io-client";
 
-interface Options {
+type Serializer = (
+  payload: any
+) => string | ArrayBuffer | ArrayBufferView | Blob;
+
+type Deserializer = (message: any) => any;
+
+type ActionType =
+  | typeof WEBSOCKET_CLOSED
+  | typeof WEBSOCKET_CONNECT
+  | typeof WEBSOCKET_DISCONNECT
+  | typeof WEBSOCKET_MESSAGE
+  | typeof WEBSOCKET_OPEN
+  | typeof WEBSOCKET_SEND;
+
+type Action =
+  | { type: typeof WEBSOCKET_CLOSED; payload: any; meta?: any }
+  | { type: typeof WEBSOCKET_CONNECT; payload: any; meta?: any }
+  | { type: typeof WEBSOCKET_DISCONNECT; payload: any; meta?: any }
+  | { type: typeof WEBSOCKET_MESSAGE; payload: any; meta?: any }
+  | { type: typeof WEBSOCKET_OPEN; payload: any; meta?: any }
+  | { type: typeof WEBSOCKET_SEND; payload: any; meta?: any };
+
+type Options = {
   // Defaults to 'REDUX_WEBSOCKET'. Use this option to set a custom action type
   // prefix. This is useful when you're creating multiple instances of the
   // middleware, and need to handle actions dispatched by each middleware instance separately.
@@ -26,13 +54,10 @@ interface Options {
   // Custom function to serialize the timestamp. The default behavior maintains the timestamp
   // as a Date but you could use this function to store it as a string or number.
   dateSerializer?: (date: Date) => string | number;
-}
-
-const socketMiddlewareOptions: Options = {
-  prefix: DASHBOARD_SOCKET_PREFIX,
-  reconnectOnError: true,
 };
 
-const socketMiddleware = reduxWebsocket(socketMiddlewareOptions);
-
-export default socketMiddleware;
+// Huh? https://github.com/babel/babel/issues/6065#issuecomment-453901877
+/* eslint-disable no-undef */
+// @ts-ignore
+export { Action, ActionType, Options, Serializer, Deserializer };
+/* eslint-enable no-undef */

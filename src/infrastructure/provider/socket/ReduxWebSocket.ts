@@ -9,8 +9,8 @@ import {
   open,
   reconnectAttempt,
   reconnected,
-} from "./actions";
-import { Action, Serializer, Deserializer } from "./types";
+} from "../../../presentation/actions/reduxsocketio/actions";
+import { Action, Serializer, Deserializer } from "../../../presentation/actions/reduxsocketio/types";
 import { io, Socket } from "socket.io-client";
 
 interface ReduxWebSocketOptions {
@@ -66,15 +66,12 @@ export default class ReduxWebSocket {
     this.websocket = io(payload.url);
 
     this.websocket.on("disconnect", (reason) => {
-      console.log("disconnect: ", reason);
       this.handleClose(dispatch, prefix, new Event(reason));
     });
     this.websocket.on("error", (error) => {
-      console.log("here1: ", error);
       this.handleError(dispatch, prefix, error);
     });
     this.websocket.on("connect_error", (error) => {
-      console.log("here2: ", error);
       this.handleError(dispatch, prefix, error);
     });
     this.websocket.on("connect", () => {
@@ -123,7 +120,7 @@ export default class ReduxWebSocket {
   send = (_store: MiddlewareAPI, { payload }: Action) => {
     if (this.websocket) {
       if (this.options.serializer) {
-        this.websocket.send(this.options.serializer(payload));
+        this.websocket.emit("message", this.options.serializer(payload));
       } else {
         throw new Error("Serializer not provided");
       }

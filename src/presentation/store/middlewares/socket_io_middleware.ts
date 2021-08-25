@@ -1,9 +1,9 @@
-import { Middleware, MiddlewareAPI } from "redux";
-
-import { Action, Options } from "./types";
-import { error } from "./actions";
-import * as actionTypes from "./actionTypes";
-import ReduxWebSocket from "./ReduxWebSocket";
+import { Socket } from "socket.io-client";
+import * as actionTypes from "../../actions/reduxsocketio/actionTypes";
+import {Middleware, MiddlewareAPI} from "redux";
+import ReduxWebSocket from "../../../infrastructure/provider/socket/ReduxWebSocket";
+import {Action, Options} from "../../actions/reduxsocketio/types";
+import {error} from "../../actions/reduxsocketio/actions";
 
 /**
  * Default middleware creator options.
@@ -25,7 +25,7 @@ const defaultOptions = {
  *
  * @returns {Middleware}
  */
-export default (rawOptions?: Options): Middleware => {
+const socketIOMiddleware = (rawOptions?: Options): Middleware => {
   const options = { ...defaultOptions, ...rawOptions };
   const { prefix, dateSerializer } = options;
   const actionPrefixExp = RegExp(`^${prefix}::`);
@@ -51,7 +51,6 @@ export default (rawOptions?: Options): Middleware => {
       const handler = Reflect.get(handlers, baseActionType);
 
       if (action.meta && action.meta.timestamp && dateSerializer) {
-        // eslint-disable-next-line no-param-reassign
         action.meta.timestamp = dateSerializer(action.meta.timestamp);
       }
 
@@ -67,3 +66,5 @@ export default (rawOptions?: Options): Middleware => {
     return next(action);
   };
 };
+
+export default socketIOMiddleware;

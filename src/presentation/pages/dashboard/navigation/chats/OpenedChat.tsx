@@ -5,9 +5,12 @@ import AppBar from "@material-ui/core/AppBar";
 import EventMessage from "../../../../components/messages/EventMessage";
 import TextMessage from "../../../../components/messages/TextMessage";
 import MessageInput from "../../../../components/chats/MessageInput";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useLocation } from "react-router-dom";
 import qs from "qs";
+import {useDispatch, useSelector} from "react-redux";
+import {chatSelector} from "../../../../reducers/chat/chat_reducer";
+import {getChat} from "../../../../actions/chat_actions";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -112,6 +115,14 @@ const OpenedChat = () => {
   const { [Routes.PARAM_CHAT_ID]: selectedChatId } = qs.parse(location.search, {
     ignoreQueryPrefix: true,
   });
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (typeof selectedChatId === "string") {
+      dispatch(getChat(selectedChatId));
+    }
+  }, [selectedChatId]);
 
   const handleOnMessageSend = (messageToBeSent: string) => {
     setMessages([

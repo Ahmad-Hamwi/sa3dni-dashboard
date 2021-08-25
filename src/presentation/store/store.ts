@@ -1,11 +1,20 @@
-import { configureStore } from "@reduxjs/toolkit";
+import {configureStore, getDefaultMiddleware} from "@reduxjs/toolkit";
 import reducers from "./reducers";
-import customizedMiddleware from "./middlewares/default_middleware";
-import socketMiddleware from "./middlewares/socket_middleware";
+import {DASHBOARD_SOCKET_PREFIX} from "./constants";
+import socketIOMiddleware from "./middlewares/socket_io_middleware";
+
+const defaultMiddleware = getDefaultMiddleware({
+  serializableCheck: false,
+});
+
+const socketMiddleware = socketIOMiddleware({
+  prefix: DASHBOARD_SOCKET_PREFIX,
+  reconnectOnError: true,
+});
 
 export const store = configureStore({
   reducer: reducers,
-  middleware: customizedMiddleware
+  middleware: defaultMiddleware
       .concat(socketMiddleware),
 });
 
