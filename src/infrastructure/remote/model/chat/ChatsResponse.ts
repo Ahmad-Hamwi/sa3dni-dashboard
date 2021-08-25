@@ -1,4 +1,4 @@
 import { BaseResponse } from "../BaseResponse";
-import ChatModel from "../../../model/ChatModel";
+import ChatResponseData from "./ChatResponseData";
 
-export default class ChatsResponse extends BaseResponse<ChatModel[]> {}
+export default class ChatsResponse extends BaseResponse<ChatResponseData[]> {}

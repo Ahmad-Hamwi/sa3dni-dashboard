@@ -1,6 +1,6 @@
 import GroupModel from "./GroupModel";
 
-export default class UserModel {
+export default interface UserModel {
   id: string;
   companyId: string;
   fullName: string;

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ChatsState, initialChatsState } from "./chat_state";
 import { getChats } from "../../actions/chat_actions";
-import ChatModel from "../../../infrastructure/model/ChatModel";
+import ChatModel from "../../../infrastructure/model/chat/ChatModel";
 import {TStore} from "../../store/store";
 
 export const chatsSlice = createSlice({

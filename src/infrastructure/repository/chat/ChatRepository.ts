@@ -1,9 +1,10 @@
 import IChatRepository from "./IChatRepository";
 import IApiClient from "../../provider/api/client/IApiClinet";
-import ChatModel from "../../model/ChatModel";
+import ChatModel from "../../model/chat/ChatModel";
 import { API_ENDPOINTS } from "../../remote/config";
 import ChatsResponse from "../../remote/model/chat/ChatsResponse";
 import ChatResponse from "../../remote/model/chat/ChatResponse";
+import ChatMessageModel from "../../model/chat/message/ChatMessageModel";
 
 export default class ChatRepository implements IChatRepository {
   constructor(private readonly api: IApiClient) {}
@@ -21,4 +22,15 @@ export default class ChatRepository implements IChatRepository {
     });
     return response.data.data;
   }
+
+  async getChatMessages(chatId: string): Promise<ChatMessageModel[]> {
+    const response = await this.api.get<ChatMessagesResponse>(API_ENDPOINTS.chatMessages, {
+      params: {
+        id: chatId,
+      },
+    });
+
+    return response.data.data;
+  }
+
 }
