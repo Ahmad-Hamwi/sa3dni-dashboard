@@ -28,6 +28,7 @@ import {
 } from "../../../../viewmodel/chat/message/data/constants";
 import TextMessageViewModel from "../../../../viewmodel/chat/message/data/TextMessageViewModel";
 import { authSelector } from "../../../../reducers/app/auth/auth_reducer";
+import {sendTextMessage} from "../../../../actions/dashboardsocket/dashboard_socket_actions";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -112,7 +113,9 @@ const OpenedChat = () => {
 
   const messages: ChatMessageViewModel[] | undefined = currentChat?.messages;
 
-  const handleOnMessageSend = (messageToBeSent: string) => {};
+  const handleOnMessageSend = (messageToBeSent: string) => {
+    dispatch(sendTextMessage(currentChat?.roomId!, messageToBeSent));
+  };
 
   const MessageList = () => {
     return (
@@ -154,7 +157,7 @@ const OpenedChat = () => {
   return (
     <Box flexDirection={"column"} width={"60%"} position={"relative"}>
       <Spinner loading={loading}>
-        {selectedChatId && (
+        {selectedChatId && messages && (
           <>
             <AppBar
               position="static"
