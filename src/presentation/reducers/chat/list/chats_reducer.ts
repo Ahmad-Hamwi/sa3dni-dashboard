@@ -61,7 +61,7 @@ export const chatsSlice = createSlice({
 
     ///////////////////////////////////////////////////////////////////////////////////////
 
-    [getChatMessages.pending.type]: (
+    [getChatMessages.fulfilled.type]: (
       state: ChatsState,
       { payload }: PayloadAction<ChatMessageViewModel[]>
     ) => {
@@ -76,7 +76,6 @@ export const chatsSlice = createSlice({
           } else {
             // TODO make "messages pending for chat field" cause the message came but did not find the parent chat.
           }
-
         }
       }
     },

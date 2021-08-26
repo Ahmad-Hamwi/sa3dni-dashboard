@@ -1,33 +1,38 @@
 import MessageSenderViewModel from "./MessageSenderViewModel";
 import TextMessageViewModel from "./data/TextMessageViewModel";
 import FileMessageViewModel from "./data/FileMessageViewModel";
-import EventMessageViewModel, { EventType } from "./data/EventMessageViewModel";
 import { EVENT_MESSAGE, FILE_MESSAGE, TEXT_MESSAGE } from "./data/constants";
+import {EventMessageData} from "./data/EventMessageViewModel";
 
 export type TextMessageType = typeof TEXT_MESSAGE;
 export type FileMessageType = typeof FILE_MESSAGE;
 export type EventMessageType = typeof EVENT_MESSAGE;
-
-export type MessageType = TextMessageType | FileMessageType | EventMessageType;
 
 export default interface ChatMessageViewModel {
   id: string;
   chatId: string;
   // undefined when the content is an EVENT
   sender?: MessageSenderViewModel;
-  content: MessageContent<MessageType>;
+  content: MessageContent;
   createdAt: string;
 }
 
-export interface MessageContent<T extends MessageType> {
-  type: T;
-  data: MessageDataContent<T>;
+export type MessageContent =
+  | TextMessageContent
+  | FileMessageContent
+  | EventMessageContent;
+
+export interface TextMessageContent {
+  type: TextMessageType;
+  data: TextMessageViewModel;
 }
 
-type MessageDataContent<T> = T extends TextMessageType
-  ? TextMessageViewModel
-  : T extends FileMessageType
-  ? FileMessageViewModel
-  : T extends EventMessageType
-  ? EventMessageViewModel<EventType>
-  : never;
+export interface FileMessageContent {
+  type: FileMessageType;
+  data: FileMessageViewModel;
+}
+
+export interface EventMessageContent {
+  type: EventMessageType;
+  data: EventMessageData;
+}

@@ -12,25 +12,30 @@ import {
 type ChatStartedType = typeof CHAT_STARTED_EVENT;
 type ChatTransformedType = typeof CHAT_TRANSFORMED_EVENT;
 type ChatClosedType = typeof CHAT_CLOSED_EVENT;
-type ChatAssigned = typeof CHAT_ASSIGNED;
+type ChatAssignedType = typeof CHAT_ASSIGNED;
 
-export type EventType =
-  | ChatStartedType
-  | ChatTransformedType
-  | ChatClosedType
-  | ChatAssigned;
+export type EventMessageData =
+  | ChatStartedEvent
+  | ChatTransformedEvent
+  | ChatClosedEvent
+  | ChatAssignedEvent;
 
-export default interface EventMessageModel<T extends EventType> {
-  eventType: T;
-  payload: EventPayload<T>;
+export interface ChatStartedEvent {
+  eventType: ChatStartedType;
+  payload: ChatStartedModel;
 }
 
-type EventPayload<T> = T extends ChatStartedType
-  ? ChatStartedModel
-  : T extends ChatTransformedType
-  ? ChatTransformedModel
-  : T extends ChatClosedType
-  ? ChatClosedModel
-  : T extends ChatAssigned
-  ? ChatAssignedModel
-  : never;
+export interface ChatTransformedEvent {
+  eventType: ChatTransformedType;
+  payload: ChatTransformedModel;
+}
+
+export interface ChatClosedEvent {
+  eventType: ChatClosedType;
+  payload: ChatClosedModel;
+}
+
+export interface ChatAssignedEvent {
+  eventType: ChatAssignedType;
+  payload: ChatAssignedModel;
+}

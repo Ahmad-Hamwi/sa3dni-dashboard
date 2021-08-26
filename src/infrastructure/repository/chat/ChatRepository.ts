@@ -28,10 +28,12 @@ export default class ChatRepository implements IChatRepository {
     const response = await this.api.get<ChatMessagesResponse>(API_ENDPOINTS.chatMessages, {
       params: {
         id: chatId,
+        page: 1,
+        pageLimit: 1000,
       },
     });
 
-    return response.data.data;
+    return response.data.data.data;
   }
 
 }

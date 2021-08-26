@@ -9,6 +9,8 @@ import {
 } from "@material-ui/core";
 import React, { FC, useEffect, useState } from "react";
 import clsx from "clsx";
+import TextMessageViewModel from "../../viewmodel/chat/message/data/TextMessageViewModel";
+import ChatMessageViewModel from "../../viewmodel/chat/message/ChatMessageViewModel";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -104,12 +106,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface TextMessageProps {
+export interface TextMessageProps {
   senderName: string;
   message: string;
   isSelf: boolean;
   isConcatenated: boolean;
-  isEvent: boolean;
 }
 
 export type TextMessagePropsType = {
@@ -118,7 +119,7 @@ export type TextMessagePropsType = {
 
 const TextMessage: FC<TextMessagePropsType> = ({ textMessageProps }) => {
   const [animate, setAnimate] = useState(true);
-  const { senderName, message, isSelf, isConcatenated, isEvent } =
+  const { senderName, message, isSelf, isConcatenated } =
     textMessageProps;
   const classes = useStyles();
 

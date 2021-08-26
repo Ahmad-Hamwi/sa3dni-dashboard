@@ -8,8 +8,8 @@ import { joinReducer } from "../reducers/join/join_reducer";
 import { combineReducers } from "redux";
 import { dashboardSocketReducer } from "../reducers/connection/dashboard/dashboard_socket_reducer";
 import { chatReducer } from "../reducers/chat/list/chats_reducer";
-import { openedChatReducer } from "../reducers/chat/messages/messages_reducer";
-import { messagesReducer } from "../reducers/chat/opened/opened_chat_reducer";
+import {openedChatReducer} from "../reducers/chat/opened/opened_chat_reducer";
+import {messagesReducer} from "../reducers/chat/messages/messages_reducer";
 
 const reducers = {
   auth: authReducer,

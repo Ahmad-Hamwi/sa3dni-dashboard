@@ -7,9 +7,27 @@ import MessageInput from "../../../../components/chats/MessageInput";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import qs from "qs";
-import { useDispatch } from "react-redux";
-import { getChat } from "../../../../actions/chat_actions";
-import TextMessage from "../../../../components/messages/TextMessage";
+import { useDispatch, useSelector } from "react-redux";
+import { getChat, getChatMessages } from "../../../../actions/chat_actions";
+import TextMessage, {
+  TextMessageProps,
+} from "../../../../components/messages/TextMessage";
+import { openedChatSelector } from "../../../../reducers/chat/opened/opened_chat_reducer";
+import { Spinner } from "../../../../components/app/loader/Spinner";
+import { messagesSelector } from "../../../../reducers/chat/messages/messages_reducer";
+import { chatSelector } from "../../../../reducers/chat/list/chats_reducer";
+import ChatViewModel from "../../../../viewmodel/chat/ChatViewModel";
+import { current } from "@reduxjs/toolkit";
+import ChatMessageViewModel, {
+  MessageContent,
+  TextMessageType,
+} from "../../../../viewmodel/chat/message/ChatMessageViewModel";
+import {
+  EVENT_MESSAGE,
+  TEXT_MESSAGE,
+} from "../../../../viewmodel/chat/message/data/constants";
+import TextMessageViewModel from "../../../../viewmodel/chat/message/data/TextMessageViewModel";
+import { authSelector } from "../../../../reducers/app/auth/auth_reducer";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -52,61 +70,6 @@ const useStyles = makeStyles((theme) =>
 const OpenedChat = () => {
   const classes = useStyles();
 
-  const initial = [
-    {
-      id: "me",
-      senderName: "Abdulrahman Tayara",
-      message: "Hello, how may I help?",
-      isSelf: true,
-      isEvent: false,
-    },
-    {
-      id: "cus",
-      senderName: "Customer1",
-      message: "Hi, I need help!",
-      isSelf: false,
-      isEvent: false,
-    },
-    {
-      id: "me",
-      senderName: "Abdulrahman Tayara",
-      message: "Sure!",
-      isSelf: true,
-      isEvent: false,
-    },
-    {
-      id: "me",
-      senderName: "Abdulrahman Tayara",
-      message: "Here is your help.",
-      isSelf: true,
-      isEvent: false,
-    },
-    // {
-    //   id: "me",
-    //   senderName: "Abdulrahman Tayara",
-    //   message:
-    //     "This is the most valuable message ever created, and it is actually long, and I'm testing this because its long, it is extremely long that I should be considering a max width for the text box itself, but now it has descended to another row, what a shame! I guess i  need to be making some tweeks in the css design.",
-    //   isSelf: true,
-    //   isEvent: false,
-    // },
-    {
-      id: "cus",
-      senderName: "Customer1",
-      message: "Thank you very much!",
-      isSelf: false,
-      isEvent: true,
-    },
-    // {
-    //   id: "me",
-    //   senderName: "Customer1",
-    //   message:
-    //     "  This is the most valuable message ever created, and it is actually long, and I'm testing this because its long, it is extremely long that I should be considering a max width for the text box itself, but now it has descended to another row, what a shame! I guess i  need to be making some tweeks in the css design.",
-    //   isSelf: false,
-    //   isEvent: true,
-    // },
-  ];
-
-  const [messages, setMessages] = useState(initial);
   const [scrollPosition, setScrollPosition] = useState();
 
   const location = useLocation();
@@ -115,70 +78,108 @@ const OpenedChat = () => {
     ignoreQueryPrefix: true,
   });
 
+  const { user: self } = useSelector(authSelector);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (typeof selectedChatId === "string") {
-      dispatch(getChat(selectedChatId));
     }
   }, [selectedChatId]);
 
-  const handleOnMessageSend = (messageToBeSent: string) => {
-    setMessages([
-      ...messages,
-      {
-        id: "me",
-        senderName: "Abdulrahman Tayara",
-        message: messageToBeSent,
-        isSelf: true,
-        isEvent: false,
-      },
-    ]);
-  };
+  const { chats } = useSelector(chatSelector);
+
+  useEffect(() => {
+    if (typeof selectedChatId === "string") {
+      const foundChat = chats?.find(
+        (chatItem) => chatItem.id === selectedChatId
+      );
+      if (foundChat) {
+        if (!foundChat.messages) {
+          dispatch(getChatMessages(selectedChatId));
+        }
+      } else {
+        dispatch(getChat(selectedChatId));
+      }
+    }
+  }, [chats, selectedChatId]);
+
+  const { loading, error } = useSelector(messagesSelector);
+
+  const currentChat: ChatViewModel | undefined = chats?.find(
+    (chatItem) => chatItem.id === selectedChatId
+  );
+
+  const messages: ChatMessageViewModel[] | undefined = currentChat?.messages;
+
+  const handleOnMessageSend = (messageToBeSent: string) => {};
 
   const MessageList = () => {
     return (
       <Box className={classes.messageList}>
         <EventMessage />
-        {messages.map((message, index) => {
-          let isConcatenated = false;
-          if (index) {
-            if (messages[index].id === messages[index - 1].id) {
-              isConcatenated = true;
+        {messages &&
+          messages.map((message, index) => {
+            if (message.content.type === "TEXT") {
+              const senderName = message.sender?.fullName!;
+              const isSelf = message.sender?.id === self?.id;
+              const text = message.content.data;
+
+              let isConcatenated = false;
+              if (index) {
+                if (
+                  messages[index].sender!.id === messages[index - 1].sender!.id
+                ) {
+                  isConcatenated = true;
+                }
+              }
+
+              return (
+                <TextMessage
+                  key={message.id}
+                  textMessageProps={{
+                    senderName,
+                    isSelf,
+                    message: text,
+                    isConcatenated,
+                  }}
+                />
+              );
             }
-          }
-          return (
-            <TextMessage
-              key={message.message}
-              textMessageProps={{ ...message, isConcatenated }}
-            />
-          );
-        })}
+          })}
       </Box>
     );
   };
 
   return (
-    <Box flexDirection={"column"} width={"60%"}>
-      {selectedChatId && (
-        <>
-          <AppBar
-            position="static"
-            variant="outlined"
-            color="transparent"
-            className={classes.topBar}
-          >
-            <Typography className={classes.infoTopBarText}>Customer</Typography>
-          </AppBar>
+    <Box flexDirection={"column"} width={"60%"} position={"relative"}>
+      <Spinner loading={loading}>
+        {selectedChatId && (
+          <>
+            <AppBar
+              position="static"
+              variant="outlined"
+              color="transparent"
+              className={classes.topBar}
+            >
+              <Typography className={classes.infoTopBarText}>
+                Customer
+              </Typography>
+            </AppBar>
 
-          <Box className={classes.content}>
-            <MessageList />
-            <MessageInput onMessageSend={handleOnMessageSend} />
-          </Box>
-        </>
-      )}
+            <Box className={classes.content}>
+              <MessageList />
+              <MessageInput onMessageSend={handleOnMessageSend} />
+            </Box>
+          </>
+        )}
+      </Spinner>
     </Box>
   );
 };
 
 export default OpenedChat;
+
+type something = "something";
+
+const bla: something = "something";

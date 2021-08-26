@@ -12,7 +12,7 @@ const messagesSlice = createSlice({
       state.loading = true;
     },
 
-    [getChatMessages.rejected.type]: (state: MessagesState, _) => {
+    [getChatMessages.fulfilled.type]: (state: MessagesState, _) => {
       state.loading = false;
     },
 
@@ -28,4 +28,4 @@ const messagesSlice = createSlice({
 
 export const messagesReducer = messagesSlice.reducer;
 
-export const messagesSelector = (store: TStore) => store.chat;
+export const messagesSelector = (store: TStore) => store.messages;
