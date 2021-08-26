@@ -5,6 +5,7 @@ import { API_ENDPOINTS } from "../../remote/config";
 import ChatsResponse from "../../remote/model/chat/ChatsResponse";
 import ChatResponse from "../../remote/model/chat/ChatResponse";
 import ChatMessageModel from "../../model/chat/message/ChatMessageModel";
+import ChatMessagesResponse from "../../remote/model/chat/ChatMessagesResponse";
 
 export default class ChatRepository implements IChatRepository {
   constructor(private readonly api: IApiClient) {}

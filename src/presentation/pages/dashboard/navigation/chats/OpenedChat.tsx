@@ -3,13 +3,13 @@ import { Box, createStyles, Paper, Typography } from "@material-ui/core";
 import { Routes } from "../../../../route/routes";
 import AppBar from "@material-ui/core/AppBar";
 import EventMessage from "../../../../components/messages/EventMessage";
-import TextMessage from "../../../../components/messages/TextMessage";
 import MessageInput from "../../../../components/chats/MessageInput";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import qs from "qs";
 import { useDispatch } from "react-redux";
 import { getChat } from "../../../../actions/chat_actions";
+import TextMessage from "../../../../components/messages/TextMessage";
 
 const useStyles = makeStyles((theme) =>
   createStyles({

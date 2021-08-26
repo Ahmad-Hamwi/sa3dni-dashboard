@@ -7,7 +7,9 @@ import { groupsSliceReducer } from "../reducers/groups/groups_reducers";
 import { joinReducer } from "../reducers/join/join_reducer";
 import { combineReducers } from "redux";
 import { dashboardSocketReducer } from "../reducers/connection/dashboard/dashboard_socket_reducer";
-import { chatReducer } from "../reducers/chat/chat_reducer";
+import { chatReducer } from "../reducers/chat/list/chats_reducer";
+import { openedChatReducer } from "../reducers/chat/messages/messages_reducer";
+import { messagesReducer } from "../reducers/chat/opened/opened_chat_reducer";
 
 const reducers = {
   auth: authReducer,
@@ -19,6 +21,8 @@ const reducers = {
   invitations: invitationsSliceReducer,
   groups: groupsSliceReducer,
   chat: chatReducer,
+  openedChat: openedChatReducer,
+  messages: messagesReducer,
 };
 
 const combinedReducers = combineReducers(reducers);

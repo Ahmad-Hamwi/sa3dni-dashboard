@@ -50,6 +50,7 @@ const MessageInput: FC<MessageInputProps> = (props) => {
   const [message, setMessage] = useState("");
 
   const handleSendMessage = (messageToBeSent: string) => {
+    messageToBeSent.trim();
     if (message.length !== 0) {
       props.onMessageSend(messageToBeSent);
       setMessage("");
@@ -59,7 +60,8 @@ const MessageInput: FC<MessageInputProps> = (props) => {
   const handleEnterPressed: KeyboardEventHandler<HTMLInputElement> = (
     event
   ) => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
       handleSendMessage(message);
     }
   };

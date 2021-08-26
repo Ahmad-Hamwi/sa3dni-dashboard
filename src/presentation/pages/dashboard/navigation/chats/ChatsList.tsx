@@ -4,7 +4,7 @@ import { makeStyles, Theme } from "@material-ui/core/styles";
 import { List, Snackbar, Typography } from "@material-ui/core";
 import ChatsListItem from "../../../../components/chats/ChatsListItem";
 import { useDispatch, useSelector } from "react-redux";
-import { chatSelector } from "../../../../reducers/chat/chat_reducer";
+import { chatSelector } from "../../../../reducers/chat/list/chats_reducer";
 import { Spinner } from "../../../../components/app/loader/Spinner";
 import { getChats } from "../../../../actions/chat_actions";
 

@@ -1,4 +1,4 @@
-import ChatViewModel from "../../viewmodel/chat/ChatViewModel";
+import ChatViewModel from "../../../viewmodel/chat/ChatViewModel";
 
 export interface ChatsState {
   chats?: ChatViewModel[] | null;
