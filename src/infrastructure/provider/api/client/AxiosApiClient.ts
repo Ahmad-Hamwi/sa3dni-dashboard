@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import IApiClient, { RequestOptions, ApiResponse } from "./IApiClinet";
-import ServerException from "../../../exception/ServerException";
+import ServerException from "../../../exception/connection/ServerException";
 
 export default class AxiosApiClient implements IApiClient {
   constructor(private readonly axios: AxiosInstance) {}

@@ -1,16 +1,13 @@
 import {
-  CircularProgress,
   Card,
   makeStyles,
   Theme,
-  Avatar,
   Divider,
 } from "@material-ui/core";
 import { FC, useEffect } from "react";
 import GroupBanner from "../../../../../components/groupdetails/GroupBanner";
 import GroupMembers from "../../../../../components/groupdetails/GroupMembers";
 import GroupPerformance from "../../../../../components/groupdetails/GroupPerfomance";
-import { IGroup } from "../../../../../../domain/entity/Group";
 import { useDispatch, useSelector } from "react-redux";
 import { groupsSelector } from "../../../../../reducers/groups/groups_reducers";
 import { getSelectedGroup } from "../../../../../actions/groups_actions";

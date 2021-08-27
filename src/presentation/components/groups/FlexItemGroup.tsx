@@ -1,6 +1,6 @@
 import { makeStyles, Theme, Typography } from "@material-ui/core";
-import { IGroup } from "../../../domain/entity/Group";
 import { FC } from "react";
+import GroupViewModel from "../../viewmodel/group/GroupViewModel";
 
 const useStyles = makeStyles((theme: Theme) => ({
   groupFlexItem: {
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export type SquaredGroupProps = {
-  group: IGroup;
+  group: GroupViewModel;
 };
 
 const FlexItemGroup: FC<SquaredGroupProps> = ({ group }) => {

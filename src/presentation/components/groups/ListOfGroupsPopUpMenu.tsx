@@ -1,17 +1,17 @@
-import { IGroup } from "../../../domain/entity/Group";
 import React, { FC } from "react";
 import { bindMenu } from "material-ui-popup-state/hooks";
 import {Fade, Menu, MenuItem} from "@material-ui/core";
 import { PopupState } from "material-ui-popup-state/es/core";
+import GroupViewModel from "../../viewmodel/group/GroupViewModel";
 
 export type ListOfGroupsPopUpMenuProps = {
   popupState: PopupState;
-  groups: IGroup[];
-  onGroupSelected: (group: IGroup) => void;
+  groups: GroupViewModel[];
+  onGroupSelected: (group: GroupViewModel) => void;
 };
 
 const ListOfGroupsPopUpMenu: FC<ListOfGroupsPopUpMenuProps> = (props) => {
-  const handleOnChangeRoleClick = (group: IGroup) => {
+  const handleOnChangeRoleClick = (group: GroupViewModel) => {
     props.onGroupSelected(group);
     props.popupState.close();
   };

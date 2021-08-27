@@ -99,8 +99,8 @@ const AgentDetails: FC<AgentDetailsProps> = (props: AgentDetailsProps) => {
         <Card variant="outlined" className={classes.card}>
           <div className={classes.cardContent}>
             <AgentBanner
-              status={selectedUser.userStatus}
-              username={selectedUser.name}
+              status={selectedUser.activity!}
+              username={selectedUser.fullName}
               jobTitle={selectedUser?.jobTitle!}
               email={selectedUser?.email!}
               role={selectedUser.role}

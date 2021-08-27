@@ -8,19 +8,16 @@ import {
   DialogTitle,
   TextField,
 } from "@material-ui/core";
-import { IUser } from "../../../../../../domain/entity/User";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import FlexItemGroup from "../../../../../components/groups/FlexItemGroup";
 import { bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import ListOfGroupsPopUpMenu from "../../../../../components/groups/ListOfGroupsPopUpMenu";
 import FlexItemAgent from "../../../../../components/agents/FlexItemAgent";
 import { useDispatch, useSelector } from "react-redux";
 import { usersSelector } from "../../../../../reducers/users/users_reducer";
 import { getUsers } from "../../../../../actions/users_actions";
-import { IGroup } from "../../../../../../domain/entity/Group";
-import { Add, Send } from "@material-ui/icons";
+import { Add } from "@material-ui/icons";
 import { toast } from "react-hot-toast";
 import ListOfUsersPopUpMenu from "../../../../../components/agents/ListOfAgentsPopUpMenu";
+import UserViewModel from "../../../../../viewmodel/user/UserViewModel";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -68,7 +65,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export interface CreateGroupForm {
   name: string;
-  users: IUser[];
+  users: UserViewModel[];
 }
 
 export interface CreateGroupDialogProps {
@@ -77,8 +74,8 @@ export interface CreateGroupDialogProps {
 }
 
 type SelectionState = {
-  selectedUsers: IUser[];
-  remainingUsers: IUser[];
+  selectedUsers: UserViewModel[];
+  remainingUsers: UserViewModel[];
 };
 
 const CreateGroupDialog: FC<CreateGroupDialogProps> = (props) => {
@@ -112,11 +109,11 @@ const CreateGroupDialog: FC<CreateGroupDialogProps> = (props) => {
     if (usersError) toast(usersError.message);
   }, [usersError, dispatch]);
 
-  const addUserToSelected = (user: IUser) => {
+  const addUserToSelected = (user: UserViewModel) => {
     setSelection((prevState) => {
       return {
         remainingUsers: prevState.remainingUsers.filter(
-          (itrUser: IUser) => itrUser.id !== user.id
+          (itrUser: UserViewModel) => itrUser.id !== user.id
         ),
         selectedUsers: [...prevState.selectedUsers, user],
       };
@@ -142,7 +139,7 @@ const CreateGroupDialog: FC<CreateGroupDialogProps> = (props) => {
     });
   };
 
-  const handleOnUserSelectedFromMenu = (user: IUser) => {
+  const handleOnUserSelectedFromMenu = (user: UserViewModel) => {
     addUserToSelected(user);
   };
 

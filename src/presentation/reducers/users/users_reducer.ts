@@ -16,7 +16,7 @@ import {
   clearDeleteUserState,
 } from "./users_states";
 import { TStore } from "../../store/store";
-import { IUser } from "../../../domain/entity/User";
+import UserModel from "../../../infrastructure/model/UserModel";
 import {
   changeSelectedUserRole,
   deleteUser,
@@ -36,7 +36,7 @@ const usersSlice = createSlice({
 
     [getUsers.fulfilled.type]: (
       state: UsersState,
-      { payload }: PayloadAction<IUser[]>
+      { payload }: PayloadAction<UserModel[]>
     ) => usersSuccessState(state, payload),
 
     [getUsers.rejected.type]: (
@@ -48,7 +48,7 @@ const usersSlice = createSlice({
 
     [getSelectedUser.fulfilled.type]: (
       state: UsersState,
-      { payload }: PayloadAction<IUser>
+      { payload }: PayloadAction<UserModel>
     ) => selectedUserSuccessState(state, payload),
 
     [getSelectedUser.rejected.type]: (
@@ -58,7 +58,7 @@ const usersSlice = createSlice({
 
     [changeSelectedUserRole.fulfilled.type]: (
       state: UsersState,
-      action: PayloadAction<IUser>
+      action: PayloadAction<UserModel>
     ) => {
       changeRoleSuccessState(state, action.payload);
     },
@@ -68,7 +68,7 @@ const usersSlice = createSlice({
 
     [deleteUser.fulfilled.type]: (
       state: UsersState,
-      action: PayloadAction<IUser>
+      action: PayloadAction<UserModel>
     ) => {
       deleteUserSuccessState(state, action.payload);
     },

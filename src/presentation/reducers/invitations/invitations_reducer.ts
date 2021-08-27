@@ -11,8 +11,8 @@ import {
   inviteUser,
 } from "../../actions/invitations_actions";
 import { TStore } from "../../store/store";
-import { IInvitation } from "../../../domain/entity/Invitation";
-import { InvitationResult } from "../../../domain/gateway/IInvitationRepository";
+import { InvitationResult } from "../../../infrastructure/repository/invitation/IInvitationRepository";
+import InvitationModel from "../../../infrastructure/model/InvitationModel";
 
 const invitationsSlice = createSlice({
   name: "invitations",
@@ -26,7 +26,7 @@ const invitationsSlice = createSlice({
   extraReducers: {
     [fetchInvitations.fulfilled.type]: (
       state: InvitationsState,
-      action: PayloadAction<IInvitation[]>
+      action: PayloadAction<InvitationModel[]>
     ) => {
       invitationsSuccessState(state, action.payload);
     },

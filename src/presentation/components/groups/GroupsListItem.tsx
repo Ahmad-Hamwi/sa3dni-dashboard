@@ -16,7 +16,7 @@ import { MoreHoriz } from "@material-ui/icons";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import qs from "qs";
 import { Routes } from "../../route/routes";
-import { IGroup } from "../../../domain/entity/Group";
+import GroupViewModel from "../../viewmodel/group/GroupViewModel";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export interface GroupListItemProps {
-  group: IGroup;
+  group: GroupViewModel;
 }
 
 export interface QueryParams {

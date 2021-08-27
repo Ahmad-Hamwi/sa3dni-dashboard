@@ -53,7 +53,7 @@ const Join = () => {
       joinWorkspace({
         email,
         password,
-        name: fullName,
+        fullName,
         phoneNumber,
       })
     );

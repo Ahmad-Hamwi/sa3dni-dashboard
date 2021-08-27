@@ -1,4 +1,3 @@
-import { UserActiveStatus } from "../../../domain/entity/UserActiveStatus";
 import {
   Avatar,
   Badge,
@@ -9,8 +8,9 @@ import {
   Typography,
   withStyles,
 } from "@material-ui/core";
-import { IUser } from "../../../domain/entity/User";
 import {FC} from "react";
+import UserViewModel from "../../viewmodel/user/UserViewModel";
+import {Activity} from "../../../infrastructure/model/UserModel";
 
 const OnlineBadge = withStyles((theme: Theme) =>
   createStyles({
@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export type FlexItemAgentProps = {
-  user: IUser;
+  user: UserViewModel;
 };
 
 const FlexItemAgent: FC<FlexItemAgentProps> = ({ user }) => {
@@ -79,7 +79,7 @@ const FlexItemAgent: FC<FlexItemAgentProps> = ({ user }) => {
       alignItems="center"
       className={classes.memberFlexItem}
     >
-      {user.userStatus === UserActiveStatus.ACTIVE ? (
+      {user.activity! === Activity.ACTIVE ? (
         <OnlineBadge
           overlap="circle"
           anchorOrigin={{
@@ -89,10 +89,10 @@ const FlexItemAgent: FC<FlexItemAgentProps> = ({ user }) => {
           variant="dot"
         >
           <Avatar className={classes.avatar}>
-            {user.name[0].toUpperCase()}
+            {user.fullName[0].toUpperCase()}
           </Avatar>
         </OnlineBadge>
-      ) : user.userStatus === UserActiveStatus.BUSY ? (
+      ) : user.activity! === Activity.BUSY ? (
         <BusyBadge
           overlap="circle"
           anchorOrigin={{
@@ -101,9 +101,9 @@ const FlexItemAgent: FC<FlexItemAgentProps> = ({ user }) => {
           }}
           variant="dot"
         >
-          <Avatar className={classes.avatar}>{user.name[0]}</Avatar>
+          <Avatar className={classes.avatar}>{user.fullName[0]}</Avatar>
         </BusyBadge>
-      ) : user.userStatus === UserActiveStatus.OFFLINE ? (
+      ) : user.activity! === Activity.OFFLINE ? (
         <OfflineBadge
           overlap="circle"
           anchorOrigin={{
@@ -112,11 +112,11 @@ const FlexItemAgent: FC<FlexItemAgentProps> = ({ user }) => {
           }}
           variant="dot"
         >
-          <Avatar className={classes.avatar}>{user.name[0]}</Avatar>
+          <Avatar className={classes.avatar}>{user.fullName[0]}</Avatar>
         </OfflineBadge>
       ) : null}
       <Typography className={classes.memberFlexItemText}>
-        {user.name}
+        {user.fullName}
       </Typography>
     </Box>
   );

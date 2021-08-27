@@ -7,8 +7,10 @@ import {
   Theme,
   Typography,
 } from "@material-ui/core";
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import clsx from "clsx";
+import TextMessageViewModel from "../../viewmodel/chat/message/data/TextMessageViewModel";
+import ChatMessageViewModel from "../../viewmodel/chat/message/ChatMessageViewModel";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -104,12 +106,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface TextMessageProps {
+export interface TextMessageProps {
   senderName: string;
   message: string;
   isSelf: boolean;
   isConcatenated: boolean;
-  isEvent: boolean;
 }
 
 export type TextMessagePropsType = {
@@ -117,61 +118,67 @@ export type TextMessagePropsType = {
 };
 
 const TextMessage: FC<TextMessagePropsType> = ({ textMessageProps }) => {
-  const { senderName, message, isSelf, isConcatenated, isEvent } =
-    textMessageProps;
+  const [open, setOpen] = useState(false);
+  const { senderName, message, isSelf, isConcatenated } = textMessageProps;
   const classes = useStyles();
 
-  return (
-    <Grow in>
-      <Box
-        className={clsx(
-          classes.root,
-          !isConcatenated && classes.rootConcatenated,
-          isSelf && classes.agentRoot
-        )}
-      >
-        {!isConcatenated && (
-          <Typography
-            className={clsx(
-              classes.customerName,
-              isSelf && classes.customerNameSelf
-            )}
-          >
-            Customer1
-          </Typography>
-        )}
-        <Box
+  const renderedMessage = (
+    <Box
+      className={clsx(
+        classes.root,
+        !isConcatenated && classes.rootConcatenated,
+        isSelf && classes.agentRoot
+      )}
+    >
+      {!isConcatenated && (
+        <Typography
           className={clsx(
-            classes.avatarTextContainer,
-            isSelf && classes.avatarTextContainerSelf
+            classes.customerName,
+            isSelf && classes.customerNameSelf
           )}
         >
-          <Avatar
+            {senderName}
+        </Typography>
+      )}
+      <Box
+        className={clsx(
+          classes.avatarTextContainer,
+          isSelf && classes.avatarTextContainerSelf
+        )}
+      >
+        <Avatar
+          className={clsx(
+            classes.avatar,
+            isConcatenated && classes.avatarConcatenated
+          )}
+        >
+          {senderName[0].toUpperCase()}
+        </Avatar>
+        <Box
+          className={clsx(
+            classes.textContainer,
+            isSelf && classes.textContainerSelf
+          )}
+        >
+          <Typography
             className={clsx(
-              classes.avatar,
-              isConcatenated && classes.avatarConcatenated
+              classes.messageText,
+              isSelf && classes.messageTextSelf
             )}
           >
-            {senderName[0].toUpperCase()}
-          </Avatar>
-          <Box
-            className={clsx(
-              classes.textContainer,
-              isSelf && classes.textContainerSelf
-            )}
-          >
-            <Typography
-              className={clsx(
-                classes.messageText,
-                isSelf && classes.messageTextSelf
-              )}
-            >
-              {message}
-            </Typography>
-          </Box>
+            {message}
+          </Typography>
         </Box>
       </Box>
+    </Box>
+  );
+
+  return open ? (
+    <Grow onEntered={() => setOpen(true)}>
+      {renderedMessage}
     </Grow>
+  ) : (
+    renderedMessage
   );
 };
 

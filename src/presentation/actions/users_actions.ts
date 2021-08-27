@@ -1,9 +1,9 @@
 import { resolveRepository } from "../../di/injection";
-import IUserRepository from "../../domain/gateway/IUserRepository";
-import { UserRole } from "../../domain/entity/UserRole";
-import IUserRoleRepository from "../../domain/gateway/IUserRoleRepository";
+import IUserRepository from "../../infrastructure/repository/user/IUserRepository";
+import IUserRoleRepository from "../../infrastructure/repository/role/IUserRoleRepository";
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { IUser } from "../../domain/entity/User";
+import UserViewModel from "../viewmodel/user/UserViewModel";
+import {Role} from "../../infrastructure/model/UserModel";
 
 const getUsersAction = createAction("users/getUsers");
 export const getUsers = createAsyncThunk(
@@ -24,7 +24,7 @@ export const getSelectedUser = createAsyncThunk(
 
 export type ChangeUserRoleArgs = {
   userId: string;
-  newRole: UserRole;
+  newRole: Role
 };
 
 export const changeSelectedUserRole = createAsyncThunk<any, ChangeUserRoleArgs>(
@@ -47,9 +47,9 @@ export const changeSelectedUserRole = createAsyncThunk<any, ChangeUserRoleArgs>(
   }
 );
 
-export const deleteUser = createAsyncThunk<any, IUser>(
+export const deleteUser = createAsyncThunk(
   "users/deleteUser",
-  async (userToBeDeleted: IUser, thunkAPI) => {
+  async (userToBeDeleted: UserViewModel, thunkAPI) => {
     const usersRepo = resolveRepository.users();
     const result = await usersRepo.delete(userToBeDeleted.id);
     if (result) {

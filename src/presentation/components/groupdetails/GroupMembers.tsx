@@ -3,15 +3,10 @@ import {
   Box,
   Theme,
   makeStyles,
-  withStyles,
-  createStyles,
-  Badge,
-  Avatar,
 } from "@material-ui/core";
 import { FC } from "react";
-import { IUser } from "../../../domain/entity/User";
-import { UserActiveStatus } from "../../../domain/entity/UserActiveStatus";
 import FlexItemAgent from "../agents/FlexItemAgent";
+import UserViewModel from "../../viewmodel/user/UserViewModel";
 
 const useStyles = makeStyles((theme: Theme) => ({
   content: {
@@ -28,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export interface GroupMembersProps {
-  users?: IUser[];
+  users?: UserViewModel[];
 }
 
 const GroupMembers: FC<GroupMembersProps> = ({ users }: GroupMembersProps) => {

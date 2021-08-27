@@ -1,8 +1,8 @@
-import { IInvitation } from "../../../domain/entity/Invitation";
-import {InvitationResult} from "../../../domain/gateway/IInvitationRepository";
+import {InvitationResult} from "../../../infrastructure/repository/invitation/IInvitationRepository";
+import InvitationViewModel from "../../viewmodel/invitation/InvitationViewModel";
 
 export interface InvitationsState {
-  invitations?: IInvitation[];
+  invitations?: InvitationViewModel[];
   isLoading: boolean;
   error?: Error;
   isInviting?: boolean;
@@ -16,7 +16,7 @@ export const invitationsInitialState: InvitationsState = {
 
 export const invitationsSuccessState = (
   state: InvitationsState,
-  invitations: IInvitation[]
+  invitations: InvitationViewModel[]
 ): InvitationsState => {
   state.invitations = invitations;
   state.isLoading = false;

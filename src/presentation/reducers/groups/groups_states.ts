@@ -1,16 +1,16 @@
-import { IGroup } from "../../../domain/entity/Group";
+import GroupViewModel from "../../viewmodel/group/GroupViewModel";
 
 export interface GroupsState {
   isGroupsLoading: boolean;
   groupsError?: Error | null;
-  groups?: IGroup[] | null;
+  groups?: GroupViewModel[] | null;
 
   isSelectedGroupLoading: boolean;
   selectedGroupError?: Error | null;
-  selectedGroup?: IGroup | null;
+  selectedGroup?: GroupViewModel | null;
 
   isCreatingGroup: boolean;
-  createGroupSuccess?: IGroup | null;
+  createGroupSuccess?: GroupViewModel | null;
   createGroupError?: Error | null;
 }
 
@@ -27,7 +27,7 @@ export const groupsLoadingState = (state: GroupsState): GroupsState => {
 
 export const groupsSuccessState = (
   state: GroupsState,
-  groups: IGroup[]
+  groups: GroupViewModel[]
 ): GroupsState => {
   state.isGroupsLoading = false;
   state.groups = groups;
@@ -50,7 +50,7 @@ export const selectedGroupLoadingState = (state: GroupsState): GroupsState => {
 
 export const selectedGroupSuccessState = (
   state: GroupsState,
-  group: IGroup
+  group: GroupViewModel
 ): GroupsState => {
   state.isSelectedGroupLoading = false;
   state.selectedGroup = group;
@@ -75,7 +75,7 @@ export const creatingGroupState = (
 
 export const createGroupSuccessState = (
   state: GroupsState,
-  group: IGroup
+  group: GroupViewModel
 ): GroupsState => {
   state.isCreatingGroup = false;
   state.createGroupSuccess = group;

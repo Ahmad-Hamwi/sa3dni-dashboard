@@ -8,10 +8,6 @@ import {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    agentsList: {
-      padding: 0,
-    },
-
     loadingContainer: {
       position: "absolute",
       top: "50%",
@@ -33,6 +29,6 @@ export const Spinner: FunctionComponent<SpinnerProps> = (props) => {
       <CircularProgress />
     </div>
   ) : (
-    <div>{props.children}</div>
+    <>{props.children}</>
   );
 };

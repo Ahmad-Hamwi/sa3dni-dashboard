@@ -1,6 +1,6 @@
 import IApiExceptionFactory from "./IApiExceptionFactory";
-import { Exception } from "../../../domain/exception/Exception";
-import UnauthorizedException from "../../../domain/exception/UnauthorizedException";
+import { Exception } from "../../exception/Exception";
+import UnauthorizedException from "../../exception/domain/UnauthorizedException";
 
 export default class ApiExceptionFactory implements IApiExceptionFactory {
   createException(statusCode: number, message: string | undefined): Exception {

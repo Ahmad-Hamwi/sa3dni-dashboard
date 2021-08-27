@@ -1,7 +1,7 @@
-import { Typography, Box, Card, Theme, makeStyles } from "@material-ui/core";
+import { Typography, Box, Theme, makeStyles } from "@material-ui/core";
 import { FC } from "react";
-import { IGroup } from "../../../domain/entity/Group";
 import FlexItemGroup from "../groups/FlexItemGroup";
+import GroupViewModel from "../../viewmodel/group/GroupViewModel";
 
 const useStyles = makeStyles((theme: Theme) => ({
   content: {
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export interface AgentGroupsProps {
-  groups: IGroup[];
+  groups: GroupViewModel[];
 }
 
 const AgentGroups: FC<AgentGroupsProps> = (props: AgentGroupsProps) => {

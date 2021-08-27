@@ -1,17 +1,18 @@
-import { setLoading, setLoginSuccess, setLoginFailed } from "../reducers/login/login_reducer";
-import { resolve } from "../../di/injection";
-import LoginUseCase from "../../domain/interactor/auth/LoginUseCase";
+import { resolveService } from "../../di/injection";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const login =
-  (email: string, password: string) => async (dispatch: any) => {
-    dispatch(setLoading(true));
+export type LoginArgs = {
+  email: string;
+  password: string;
+};
 
-    const useCase = resolve<LoginUseCase>(LoginUseCase);
+export const login = createAsyncThunk(
+  "auth/login",
+  async (args: LoginArgs, thunkAPI) => {
+    const authService = resolveService.authService();
 
-    try {
-      const result = await useCase.execute({ email, password });
-      dispatch(setLoginSuccess());
-    } catch (e) {
-      dispatch(setLoginFailed(e));
-    }
-  };
+    const loginResult = await authService.login(args.email, args.password);
+
+    const cachingResult = await authService.saveToken(loginResult.token);
+  }
+);
