@@ -8,6 +8,8 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   makeStyles,
+  Menu,
+  MenuItem,
   Theme,
 } from "@material-ui/core";
 import { MoreHoriz } from "@material-ui/icons";
@@ -16,6 +18,8 @@ import { Routes } from "../../route/routes";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import qs from "qs";
 import ChatViewModel from "../../viewmodel/chat/ChatViewModel";
+import {bindMenu, bindTrigger, usePopupState} from "material-ui-popup-state/hooks";
+import { PopupState } from "material-ui-popup-state/es/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -51,12 +55,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export interface ChatsListItemProps {
   chat: ChatViewModel;
-  onChatClosed: (chat: ChatViewModel) => void;
-  onChatArchived: (chat: ChatViewModel) => void;
+  onRequestCloseChat: (chat: ChatViewModel) => void;
 }
 
 const ChatsListItem: FC<ChatsListItemProps> = (props) => {
-  const { chat, onChatClosed, onChatArchived } = props;
+  const { chat, onRequestCloseChat } = props;
   const { customer, user, group } = chat;
 
   const classes = useStyles();
@@ -79,6 +82,11 @@ const ChatsListItem: FC<ChatsListItemProps> = (props) => {
     );
   };
 
+  const popUpState = usePopupState({
+    variant: "popper",
+    popupId: "CHAT_LIST_ITEM_POPUP",
+  });
+
   return (
     <>
       <ListItem
@@ -100,16 +108,15 @@ const ChatsListItem: FC<ChatsListItemProps> = (props) => {
           <IconButton
             edge="end"
             aria-label="options"
-            //{...bindTrigger(popUpState)}
+            {...bindTrigger(popUpState)}
           >
             <MoreHoriz />
           </IconButton>
-          {/*<AgentOptionsMenu*/}
-          {/*  popupState={popUpState}*/}
-          {/*  selectedAgent={props.agent}*/}
-          {/*  onRoleSelected={handleOnRoleChanged}*/}
-          {/*  onDelete={handleOnDelete}*/}
-          {/*/>*/}
+          <Menu {...bindMenu(popUpState)}>
+            <MenuItem onClick={() => onRequestCloseChat(chat)}>
+              Close chat
+            </MenuItem>
+          </Menu>
         </ListItemSecondaryAction>
       </ListItem>
       <Divider />

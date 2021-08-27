@@ -1,12 +1,24 @@
 import AppBar from "@material-ui/core/AppBar";
-import React, { useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { makeStyles, Theme } from "@material-ui/core/styles";
-import { List, Snackbar, Typography } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  List,
+  Snackbar,
+  Typography,
+} from "@material-ui/core";
 import ChatsListItem from "../../../../components/chats/ChatsListItem";
 import { useDispatch, useSelector } from "react-redux";
 import { chatSelector } from "../../../../reducers/chat/list/chats_reducer";
 import { Spinner } from "../../../../components/app/loader/Spinner";
 import { getChats } from "../../../../actions/chat_actions";
+import ChatViewModel from "../../../../viewmodel/chat/ChatViewModel";
 
 const useStyles = makeStyles((theme: Theme) => ({
   listSection: {
@@ -40,6 +52,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ChatsList = () => {
   const classes = useStyles();
+  const [closeChatDialogOpen, setCloseChatDialogOpen] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -51,8 +64,11 @@ const ChatsList = () => {
     }
   }, [chats]);
 
-  const handleOnChatClosed = () => {};
-  const handleOnChatArchived = () => {};
+  let selectedChatToBeClosed: ChatViewModel;
+  const handleOnChatClosed = (chat: ChatViewModel) => {
+    selectedChatToBeClosed = chat;
+    setCloseChatDialogOpen(true);
+  };
 
   const ChatsList = () => {
     return (
@@ -62,13 +78,19 @@ const ChatsList = () => {
             return (
               <ChatsListItem
                 chat={chat}
-                onChatClosed={handleOnChatClosed}
-                onChatArchived={handleOnChatArchived}
+                onRequestCloseChat={handleOnChatClosed}
               />
             );
           })}
       </List>
     );
+  };
+
+  const handleOnCloseChatConfirmation = () => {
+    if (selectedChatToBeClosed) {
+      //dispatch action here;
+    }
+    setCloseChatDialogOpen(false);
   };
 
   return (
@@ -88,9 +110,47 @@ const ChatsList = () => {
         </div>
       </Spinner>
 
+      <CloseChatConfirmationDialog
+        open={closeChatDialogOpen}
+        onPositive={handleOnCloseChatConfirmation}
+        onNegative={() => {
+          setCloseChatDialogOpen(false);
+        }}
+      />
+
       {error && <Snackbar autoHideDuration={3000} message={error?.message} />}
     </div>
   );
 };
 
 export default ChatsList;
+
+type CloseChatConfirmationDialogProps = {
+  open: boolean;
+  onPositive: () => void;
+  onNegative: () => void;
+};
+
+const CloseChatConfirmationDialog: FC<CloseChatConfirmationDialogProps> = (
+  props
+) => {
+  return (
+    <Dialog open={props.open} onClose={() => props.onNegative()}>
+      <DialogTitle>Close Chat</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          Closing the chat will end the current activity of a chat. You will no
+          longer be able to communicate with the customer.
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => props.onNegative()} color="primary">
+          Cancel
+        </Button>
+        <Button onClick={() => props.onPositive()} color="primary" autoFocus>
+          Okay
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
