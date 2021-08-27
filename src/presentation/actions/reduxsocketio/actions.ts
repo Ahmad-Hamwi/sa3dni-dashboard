@@ -107,7 +107,7 @@ export const message = (
 ) =>
   buildAction(`${prefix}::${WEBSOCKET_MESSAGE}`, {
     event,
-    message: deserializer ? deserializer(event.data) : event.data,
+    message: event.data,
     origin: event.origin,
   });
 export const error = (

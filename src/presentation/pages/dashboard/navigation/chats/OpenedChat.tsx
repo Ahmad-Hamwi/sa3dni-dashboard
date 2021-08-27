@@ -28,7 +28,10 @@ import {
 } from "../../../../viewmodel/chat/message/data/constants";
 import TextMessageViewModel from "../../../../viewmodel/chat/message/data/TextMessageViewModel";
 import { authSelector } from "../../../../reducers/app/auth/auth_reducer";
-import {sendTextMessage} from "../../../../actions/dashboardsocket/dashboard_socket_actions";
+import {
+  joinChat,
+  sendTextMessage,
+} from "../../../../actions/dashboardsocket/dashboard_socket_actions";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -83,11 +86,6 @@ const OpenedChat = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (typeof selectedChatId === "string") {
-    }
-  }, [selectedChatId]);
-
   const { chats } = useSelector(chatSelector);
 
   useEffect(() => {
@@ -110,6 +108,10 @@ const OpenedChat = () => {
   const currentChat: ChatViewModel | undefined = chats?.find(
     (chatItem) => chatItem.id === selectedChatId
   );
+
+  useEffect(() => {
+    dispatch(joinChat(currentChat?.roomId!));
+  }, [currentChat]);
 
   const messages: ChatMessageViewModel[] | undefined = currentChat?.messages;
 

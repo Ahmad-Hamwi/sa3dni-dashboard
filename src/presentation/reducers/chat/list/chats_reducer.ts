@@ -8,6 +8,11 @@ import {
 import ChatModel from "../../../../infrastructure/model/chat/ChatModel";
 import { TStore } from "../../../store/store";
 import ChatMessageViewModel from "../../../viewmodel/chat/message/ChatMessageViewModel";
+import ChatViewModel from "../../../viewmodel/chat/ChatViewModel";
+import {
+  notifyChatAssigned,
+  notifyMessageReceived,
+} from "../../../actions/dashboardsocket/dashboard_socket_actions";
 
 export const chatsSlice = createSlice({
   name: "chats",
@@ -78,6 +83,32 @@ export const chatsSlice = createSlice({
           }
         }
       }
+    },
+
+    ///////////////////////////////////////////////////////////////////////////////////////
+
+    [notifyMessageReceived.type]: (
+      state: ChatsState,
+      { payload }: PayloadAction<ChatMessageViewModel>
+    ) => {
+      if (state.chats) {
+        const foundChat = state.chats.find(
+          (chatItem) => payload.chatId === chatItem.id
+        );
+        if (foundChat) {
+          foundChat.messages = foundChat.messages
+            ? [...foundChat.messages, payload]
+            : [payload];
+        } else {
+        }
+      }
+    },
+
+    [notifyChatAssigned.type]: (
+        state: ChatsState,
+        { payload }: PayloadAction<ChatViewModel>
+    ) => {
+      state.chats = state.chats ? [...state.chats, payload] : [payload];
     },
   },
 });

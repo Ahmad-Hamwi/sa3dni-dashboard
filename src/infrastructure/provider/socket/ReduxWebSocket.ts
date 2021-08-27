@@ -120,7 +120,7 @@ export default class ReduxWebSocket {
   send = (_store: MiddlewareAPI, { payload }: Action) => {
     if (this.websocket) {
       if (this.options.serializer) {
-        this.websocket.emit(payload.event, this.options.serializer(payload.payload));
+        this.websocket.emit(payload.event, payload.payload);
       } else {
         throw new Error("Serializer not provided");
       }
