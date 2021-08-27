@@ -30,6 +30,17 @@ const theme = createMuiTheme({
       },
     },
 
+    MuiRadio: {
+      root: {
+        color: "#6200ea",
+      },
+      colorSecondary: {
+        '&$checked': {
+          color: "#6200ea",
+        },
+      },
+    },
+
     MuiTouchRipple: {
       child: {
         backgroundColor: "#757ce8",

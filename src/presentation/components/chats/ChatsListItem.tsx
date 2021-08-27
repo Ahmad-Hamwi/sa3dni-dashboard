@@ -56,10 +56,11 @@ const useStyles = makeStyles((theme: Theme) =>
 export interface ChatsListItemProps {
   chat: ChatViewModel;
   onRequestCloseChat: (chat: ChatViewModel) => void;
+  onRequestTransferChat: (chat: ChatViewModel) => void;
 }
 
 const ChatsListItem: FC<ChatsListItemProps> = (props) => {
-  const { chat, onRequestCloseChat } = props;
+  const { chat, onRequestCloseChat, onRequestTransferChat } = props;
   const { customer, user, group } = chat;
 
   const classes = useStyles();
@@ -115,6 +116,9 @@ const ChatsListItem: FC<ChatsListItemProps> = (props) => {
           <Menu {...bindMenu(popUpState)}>
             <MenuItem onClick={() => onRequestCloseChat(chat)}>
               Close chat
+            </MenuItem>
+            <MenuItem onClick={() => onRequestTransferChat(chat)}>
+              Transfer chat
             </MenuItem>
           </Menu>
         </ListItemSecondaryAction>

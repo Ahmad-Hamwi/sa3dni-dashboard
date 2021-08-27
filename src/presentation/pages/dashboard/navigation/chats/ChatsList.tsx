@@ -9,9 +9,13 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  FormControlLabel,
   List,
+  Radio,
+  RadioGroup,
   Snackbar,
   Typography,
+  useTheme,
 } from "@material-ui/core";
 import ChatsListItem from "../../../../components/chats/ChatsListItem";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +23,10 @@ import { chatSelector } from "../../../../reducers/chat/list/chats_reducer";
 import { Spinner } from "../../../../components/app/loader/Spinner";
 import { getChats } from "../../../../actions/chat_actions";
 import ChatViewModel from "../../../../viewmodel/chat/ChatViewModel";
+import GroupViewModel from "../../../../viewmodel/group/GroupViewModel";
+import { groupsSelector } from "../../../../reducers/groups/groups_reducers";
+import { getGroups } from "../../../../actions/groups_actions";
+import { dispatch } from "react-hot-toast";
 
 const useStyles = makeStyles((theme: Theme) => ({
   listSection: {
@@ -48,11 +56,18 @@ const useStyles = makeStyles((theme: Theme) => ({
   appBarText: {
     fontWeight: 500,
   },
+
+  radioButton: {
+    "&$checked": {
+      color: theme.palette.primary.dark,
+    },
+  },
 }));
 
 const ChatsList = () => {
   const classes = useStyles();
   const [closeChatDialogOpen, setCloseChatDialogOpen] = useState(false);
+  const [transferChatDialogOpen, setTransferChatDialogOpen] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -64,10 +79,16 @@ const ChatsList = () => {
     }
   }, [chats]);
 
-  let selectedChatToBeClosed: ChatViewModel;
+  let selectedChat: ChatViewModel;
+
   const handleOnChatClosed = (chat: ChatViewModel) => {
-    selectedChatToBeClosed = chat;
+    selectedChat = chat;
     setCloseChatDialogOpen(true);
+  };
+
+  const handleOnRequestTransferChat = (chat: ChatViewModel) => {
+    selectedChat = chat;
+    setTransferChatDialogOpen(true);
   };
 
   const ChatsList = () => {
@@ -79,6 +100,7 @@ const ChatsList = () => {
               <ChatsListItem
                 chat={chat}
                 onRequestCloseChat={handleOnChatClosed}
+                onRequestTransferChat={handleOnRequestTransferChat}
               />
             );
           })}
@@ -87,10 +109,17 @@ const ChatsList = () => {
   };
 
   const handleOnCloseChatConfirmation = () => {
-    if (selectedChatToBeClosed) {
+    if (selectedChat) {
       //dispatch action here;
     }
     setCloseChatDialogOpen(false);
+  };
+
+  const handleOnChatTransferConfirmation = () => {
+    if (selectedChat) {
+      //dispatch action here;
+    }
+    setTransferChatDialogOpen(false);
   };
 
   return (
@@ -116,6 +145,12 @@ const ChatsList = () => {
         onNegative={() => {
           setCloseChatDialogOpen(false);
         }}
+      />
+
+      <TransferChatDialog
+        open={transferChatDialogOpen}
+        onPositive={handleOnChatTransferConfirmation}
+        onNegative={() => setTransferChatDialogOpen(false)}
       />
 
       {error && <Snackbar autoHideDuration={3000} message={error?.message} />}
@@ -149,6 +184,82 @@ const CloseChatConfirmationDialog: FC<CloseChatConfirmationDialogProps> = (
         </Button>
         <Button onClick={() => props.onPositive()} color="primary" autoFocus>
           Okay
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+type TransferChatDialogProps = {
+  open: boolean;
+  onPositive: (group: GroupViewModel) => void;
+  onNegative: () => void;
+};
+
+const TransferChatDialog: FC<TransferChatDialogProps> = (props) => {
+  const classes = useStyles();
+
+  const { groups } = useSelector(groupsSelector);
+
+  const [selectedGroupIndex, setSelectedGroupIndex] = useState(0);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!groups) {
+      dispatch(getGroups());
+    }
+  }, [groups]);
+
+  const radioGroupRef = React.useRef<HTMLElement>(null);
+
+  const handleEntering = () => {
+    if (radioGroupRef.current != null) {
+      radioGroupRef.current.focus();
+    }
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = (event.target as HTMLInputElement).value;
+    const index = +value;
+    setSelectedGroupIndex(index);
+  };
+
+  return (
+    <Dialog
+      maxWidth="xs"
+      onEntering={handleEntering}
+      open={props.open}
+      onClose={() => props.onNegative()}
+    >
+      <DialogTitle>Select a group to transfer chat to:</DialogTitle>
+      <DialogContent dividers>
+        <RadioGroup
+          ref={radioGroupRef}
+          onChange={handleChange}
+          value={selectedGroupIndex}
+        >
+          {groups &&
+            groups.map((groupItem, index) => (
+              <FormControlLabel
+                className={classes.radioButton}
+                value={index}
+                key={groupItem.id}
+                control={<Radio classes={{ checked: classes.radioButton }} />}
+                label={groupItem.name}
+              />
+            ))}
+        </RadioGroup>
+      </DialogContent>
+      <DialogActions>
+        <Button autoFocus onClick={() => props.onNegative()} color="primary">
+          Cancel
+        </Button>
+        <Button
+          onClick={() => props.onPositive(groups![selectedGroupIndex])}
+          color="primary"
+        >
+          Ok
         </Button>
       </DialogActions>
     </Dialog>
