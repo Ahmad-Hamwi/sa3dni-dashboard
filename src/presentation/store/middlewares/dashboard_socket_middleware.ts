@@ -7,7 +7,11 @@ import {
   DASHBOARD_CHAT_CLOSED_SOCKET_EVENT,
   DASHBOARD_CHAT_MESSAGE_SOCKET_EVENT,
 } from "../../socket/constants";
-import {notifyChatAssigned, notifyMessageReceived} from "../../actions/dashboardsocket/dashboard_socket_actions";
+import {
+  notifyChatAssigned,
+  notifyChatClosed,
+  notifyMessageReceived
+} from "../../actions/dashboardsocket/dashboard_socket_actions";
 import {EventMessageData} from "../../../infrastructure/model/chat/message/data/EventMessageModel";
 
 export default (): Middleware => {
@@ -29,6 +33,7 @@ export default (): Middleware => {
       } else if (
           socketMessage.action === DASHBOARD_CHAT_CLOSED_SOCKET_EVENT
       ) {
+        dispatch(notifyChatClosed(socketMessage.payload));
       }
     }
 

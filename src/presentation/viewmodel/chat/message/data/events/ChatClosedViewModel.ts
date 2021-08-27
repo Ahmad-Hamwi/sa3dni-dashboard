@@ -1,3 +1,6 @@
-export default interface ChatClosedViewModel {
+import MessageSenderViewModel from "../../MessageSenderViewModel";
 
+export default interface ChatClosedViewModel {
+  closedBy: MessageSenderViewModel;
+  createdAt: string;
 }

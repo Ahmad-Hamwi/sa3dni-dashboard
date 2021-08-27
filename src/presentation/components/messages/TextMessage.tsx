@@ -118,78 +118,68 @@ export type TextMessagePropsType = {
 };
 
 const TextMessage: FC<TextMessagePropsType> = ({ textMessageProps }) => {
-  const [animate, setAnimate] = useState(true);
-  const { senderName, message, isSelf, isConcatenated } =
-    textMessageProps;
+  const [open, setOpen] = useState(false);
+  const { senderName, message, isSelf, isConcatenated } = textMessageProps;
   const classes = useStyles();
 
-  const Message = () => {
-    return (
-      <Box
-        className={clsx(
-          classes.root,
-          !isConcatenated && classes.rootConcatenated,
-          isSelf && classes.agentRoot
-        )}
-      >
-        {!isConcatenated && (
-          <Typography
-            className={clsx(
-              classes.customerName,
-              isSelf && classes.customerNameSelf
-            )}
-          >
-            Customer1
-          </Typography>
-        )}
-        <Box
+  const renderedMessage = (
+    <Box
+      className={clsx(
+        classes.root,
+        !isConcatenated && classes.rootConcatenated,
+        isSelf && classes.agentRoot
+      )}
+    >
+      {!isConcatenated && (
+        <Typography
           className={clsx(
-            classes.avatarTextContainer,
-            isSelf && classes.avatarTextContainerSelf
+            classes.customerName,
+            isSelf && classes.customerNameSelf
           )}
         >
-          <Avatar
+            {senderName}
+        </Typography>
+      )}
+      <Box
+        className={clsx(
+          classes.avatarTextContainer,
+          isSelf && classes.avatarTextContainerSelf
+        )}
+      >
+        <Avatar
+          className={clsx(
+            classes.avatar,
+            isConcatenated && classes.avatarConcatenated
+          )}
+        >
+          {senderName[0].toUpperCase()}
+        </Avatar>
+        <Box
+          className={clsx(
+            classes.textContainer,
+            isSelf && classes.textContainerSelf
+          )}
+        >
+          <Typography
             className={clsx(
-              classes.avatar,
-              isConcatenated && classes.avatarConcatenated
+              classes.messageText,
+              isSelf && classes.messageTextSelf
             )}
           >
-            {senderName[0].toUpperCase()}
-          </Avatar>
-          <Box
-            className={clsx(
-              classes.textContainer,
-              isSelf && classes.textContainerSelf
-            )}
-          >
-            <Typography
-              className={clsx(
-                classes.messageText,
-                isSelf && classes.messageTextSelf
-              )}
-            >
-              {message}
-            </Typography>
-          </Box>
+            {message}
+          </Typography>
         </Box>
       </Box>
-    );
-  };
+    </Box>
+  );
 
-  const AnimatedMessage = () => {
-    return (
-      <Grow
-        in={true}
-        onEntered={() => {
-          setAnimate(false);
-        }}
-      >
-        <Message />
-      </Grow>
-    );
-  };
-
-  return animate ? <AnimatedMessage /> : <Message />;
+  return open ? (
+    <Grow onEntered={() => setOpen(true)}>
+      {renderedMessage}
+    </Grow>
+  ) : (
+    renderedMessage
+  );
 };
 
 export default TextMessage;

@@ -1,5 +1,7 @@
 import { Box, Divider, Typography } from "@material-ui/core";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
+import { FC } from "react";
+import { EventMessageData } from "../../viewmodel/chat/message/data/EventMessageViewModel";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -17,21 +19,42 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-const EventMessage = () => {
+export interface EventMessageProps {
+  eventMessage: EventMessageData;
+}
+
+const EventMessage: FC<EventMessageProps> = ({ eventMessage }) => {
   const classes = useStyles();
 
-  return (
-    <Box display={"flex"} flexDirection={"column"} mt={2}>
-      <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
-        <Divider orientation={"horizontal"} className={classes.divider} />
-        <Typography className={classes.eventText}>
-          6/16/2021 - 06:41:35 pm
-        </Typography>
-        <Divider orientation={"horizontal"} className={classes.divider} />
+  const Message: FC<{ date: string; event: string }> = ({ date, event }) => {
+    return (
+      <Box display={"flex"} flexDirection={"column"} mt={2}>
+        <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
+          <Divider orientation={"horizontal"} className={classes.divider} />
+          <Typography className={classes.eventText}>{date}</Typography>
+          <Divider orientation={"horizontal"} className={classes.divider} />
+        </Box>
+        <Typography className={classes.eventText}>{event}</Typography>
       </Box>
-      <Typography className={classes.eventText}>Chat started</Typography>
-    </Box>
-  );
+    );
+  };
+
+  if (eventMessage.action === "chat-started") {
+    const date = new Date(eventMessage.payload.createdAt);
+    const dateString = date.toDateString() + " - " + date.toLocaleTimeString();
+    const event = "Chat Started";
+    return <Message date={dateString} event={event} />;
+  }
+
+  if (eventMessage.action === "chat-closed") {
+    const date = new Date(eventMessage.payload.createdAt);
+    const dateString = date.toDateString() + " - " + date.toLocaleTimeString();
+    const event =
+      eventMessage.payload.closedBy.fullName + " has closed the chat";
+    return <Message date={dateString} event={event} />;
+  }
+
+  return <></>;
 };
 
 export default EventMessage;

@@ -25,15 +25,19 @@ export default class ChatRepository implements IChatRepository {
   }
 
   async getChatMessages(chatId: string): Promise<ChatMessageModel[]> {
-    const response = await this.api.get<ChatMessagesResponse>(API_ENDPOINTS.chatMessages, {
-      params: {
-        id: chatId,
-        page: 1,
-        pageLimit: 1000,
-      },
-    });
+    const response = await this.api.get<ChatMessagesResponse>(
+      API_ENDPOINTS.chatMessages,
+      {
+        params: {
+          id: chatId,
+        },
+        queryParams: {
+          page: 1,
+          pageLimit: 1000,
+        },
+      }
+    );
 
     return response.data.data.data;
   }
-
 }

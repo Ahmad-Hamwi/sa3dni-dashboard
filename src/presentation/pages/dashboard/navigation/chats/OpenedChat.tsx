@@ -68,6 +68,12 @@ const useStyles = makeStyles((theme) =>
       paddingRight: theme.spacing(4),
       gap: theme.spacing(0.5),
     },
+
+    reversed: {
+      display: "flex",
+      overflow: "auto",
+      flexDirection: "column-reverse",
+    },
   })
 );
 
@@ -121,37 +127,48 @@ const OpenedChat = () => {
 
   const MessageList = () => {
     return (
-      <Box className={classes.messageList}>
-        <EventMessage />
-        {messages &&
-          messages.map((message, index) => {
-            if (message.content.type === "TEXT") {
-              const senderName = message.sender?.fullName!;
-              const isSelf = message.sender?.id === self?.id;
-              const text = message.content.data;
+      <Box className={classes.reversed}>
+        <Box className={classes.messageList}>
+          <EventMessage
+            eventMessage={{
+              action: "chat-started",
+              payload: { createdAt: currentChat?.createdAt! },
+            }}
+          />
+          {messages &&
+            messages.map((message, index) => {
+              if (message.content.type === "EVENT") {
+                return <EventMessage eventMessage={message.content.data} />;
+              } else if (message.content.type === "TEXT") {
+                const senderName = message.sender?.fullName!;
+                const isSelf = message.sender?.id === self?.id;
+                const text = message.content.data;
 
-              let isConcatenated = false;
-              if (index) {
-                if (
-                  messages[index].sender!.id === messages[index - 1].sender!.id
-                ) {
-                  isConcatenated = true;
+                let isConcatenated = false;
+                if (index) {
+                  if (messages[index - 1].content.type === "TEXT")
+                    if (
+                      messages[index].sender!.id ===
+                      messages[index - 1].sender!.id
+                    ) {
+                      isConcatenated = true;
+                    }
                 }
-              }
 
-              return (
-                <TextMessage
-                  key={message.id}
-                  textMessageProps={{
-                    senderName,
-                    isSelf,
-                    message: text,
-                    isConcatenated,
-                  }}
-                />
-              );
-            }
-          })}
+                return (
+                  <TextMessage
+                    key={message.id}
+                    textMessageProps={{
+                      senderName,
+                      isSelf,
+                      message: text,
+                      isConcatenated,
+                    }}
+                  />
+                );
+              }
+            })}
+        </Box>
       </Box>
     );
   };
@@ -168,7 +185,7 @@ const OpenedChat = () => {
               className={classes.topBar}
             >
               <Typography className={classes.infoTopBarText}>
-                Customer
+                {currentChat?.customer.fullName}
               </Typography>
             </AppBar>
 
@@ -184,7 +201,3 @@ const OpenedChat = () => {
 };
 
 export default OpenedChat;
-
-type something = "something";
-
-const bla: something = "something";

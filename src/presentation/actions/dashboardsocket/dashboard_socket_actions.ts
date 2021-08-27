@@ -2,7 +2,7 @@ import { DASHBOARD_SOCKET_PREFIX } from "../../store/constants";
 
 import {
   DASHBOARD_CHAT_MESSAGE_SOCKET_EVENT,
-  DASHBOARD_JOIN_CHAT_SOCKET_EVENT,
+  DASHBOARD_JOIN_CHAT_SOCKET_EVENT, DASHBOARD_SEND_MESSAGE_SOCKET_EVENT,
   DASHBOARD_SOCKET_AUTH_QP,
   DASHBOARD_SOCKET_BASE_URL,
 } from "../../socket/constants";
@@ -12,6 +12,7 @@ import { connect, disconnect, send } from "../reduxsocketio/actions";
 import { createAction } from "@reduxjs/toolkit";
 import ChatMessageViewModel from "../../viewmodel/chat/message/ChatMessageViewModel";
 import ChatViewModel from "../../viewmodel/chat/ChatViewModel";
+import ChatClosedViewModel from "../../viewmodel/chat/message/data/events/ChatClosedViewModel";
 
 export const connectToDashboardSocket = (token: string) => {
   //compose the query param
@@ -31,7 +32,7 @@ export const disconnectDashboardSocket = () => {
 
 export const sendTextMessage = (roomId: string, textMessage: string) => {
   const message = {
-    event: DASHBOARD_CHAT_MESSAGE_SOCKET_EVENT,
+    event: DASHBOARD_SEND_MESSAGE_SOCKET_EVENT,
     payload: {
       roomId: roomId,
       text: textMessage,
@@ -68,4 +69,13 @@ export const notifyChatAssigned = createAction(
       payload: chat,
     };
   }
+);
+
+export const notifyChatClosed = createAction(
+    "chats/notifyChatClosed",
+    (chat: ChatClosedViewModel) => {
+      return {
+        payload: chat,
+      };
+    }
 );

@@ -10,9 +10,10 @@ import { TStore } from "../../../store/store";
 import ChatMessageViewModel from "../../../viewmodel/chat/message/ChatMessageViewModel";
 import ChatViewModel from "../../../viewmodel/chat/ChatViewModel";
 import {
-  notifyChatAssigned,
+  notifyChatAssigned, notifyChatClosed,
   notifyMessageReceived,
 } from "../../../actions/dashboardsocket/dashboard_socket_actions";
+import ChatClosedViewModel from "../../../viewmodel/chat/message/data/events/ChatClosedViewModel";
 
 export const chatsSlice = createSlice({
   name: "chats",
@@ -77,6 +78,7 @@ export const chatsSlice = createSlice({
           );
 
           if (foundChat) {
+            payload.reverse();
             foundChat.messages = payload;
           } else {
             // TODO make "messages pending for chat field" cause the message came but did not find the parent chat.
@@ -94,7 +96,7 @@ export const chatsSlice = createSlice({
       if (state.chats) {
         const foundChat = state.chats.find(
           (chatItem) => payload.chatId === chatItem.id
-        );
+        )
         if (foundChat) {
           foundChat.messages = foundChat.messages
             ? [...foundChat.messages, payload]
@@ -105,11 +107,28 @@ export const chatsSlice = createSlice({
     },
 
     [notifyChatAssigned.type]: (
-        state: ChatsState,
-        { payload }: PayloadAction<ChatViewModel>
+      state: ChatsState,
+      { payload }: PayloadAction<ChatViewModel>
     ) => {
       state.chats = state.chats ? [...state.chats, payload] : [payload];
     },
+
+    // [notifyChatClosed.type]: (
+    //     state: ChatsState,
+    //     { payload }: PayloadAction<ChatClosedViewModel>
+    // ) => {
+    //   if (state.chats) {
+    //     const foundChat = state.chats.find(
+    //         (chatItem) => payload.chatId === chatItem.id
+    //     );
+    //     if (foundChat) {
+    //       foundChat.messages = foundChat.messages
+    //           ? [...foundChat.messages, payload]
+    //           : [payload];
+    //     } else {
+    //     }
+    //   }
+    // },
   },
 });
 
