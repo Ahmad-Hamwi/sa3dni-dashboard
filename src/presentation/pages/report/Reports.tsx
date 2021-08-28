@@ -9,8 +9,10 @@ const Reports: FC = () => {
       <div style={{ width: "360px", position: "relative" }}>
         <ReportsListMenu />
       </div>
-      <Divider orientation={"vertical"} flexItem style={{height: '93vh'}} />
-      <ReportsContent />
+      <Divider orientation={"vertical"} flexItem style={{ height: "93vh" }} />
+      <div style={{ width: '100%', margin: "16px" }}>
+        <ReportsContent />
+      </div>
     </Box>
   );
 };
