@@ -21,7 +21,11 @@ import ChatsListItem from "../../../../components/chats/ChatsListItem";
 import { useDispatch, useSelector } from "react-redux";
 import { chatSelector } from "../../../../reducers/chat/list/chats_reducer";
 import { Spinner } from "../../../../components/app/loader/Spinner";
-import { getChats } from "../../../../actions/chat_actions";
+import {
+  closeChat,
+  getChats,
+  transferChat,
+} from "../../../../actions/chat_actions";
 import ChatViewModel from "../../../../viewmodel/chat/ChatViewModel";
 import GroupViewModel from "../../../../viewmodel/group/GroupViewModel";
 import { groupsSelector } from "../../../../reducers/groups/groups_reducers";
@@ -71,6 +75,14 @@ const ChatsList = () => {
 
   const dispatch = useDispatch();
 
+  const { groups } = useSelector(groupsSelector);
+
+  useEffect(() => {
+    if (!groups) {
+      dispatch(getGroups());
+    }
+  }, [groups]);
+
   const { chats, chatsLoading, error } = useSelector(chatSelector);
 
   useEffect(() => {
@@ -79,15 +91,15 @@ const ChatsList = () => {
     }
   }, [chats]);
 
-  let selectedChat: ChatViewModel;
+  const [selectedChat, setSelectedChat] = useState<ChatViewModel>();
 
   const handleOnChatClosed = (chat: ChatViewModel) => {
-    selectedChat = chat;
+    setSelectedChat(chat);
     setCloseChatDialogOpen(true);
   };
 
   const handleOnRequestTransferChat = (chat: ChatViewModel) => {
-    selectedChat = chat;
+    setSelectedChat(chat);
     setTransferChatDialogOpen(true);
   };
 
@@ -96,28 +108,31 @@ const ChatsList = () => {
       <List className={classes.agentsList}>
         {chats &&
           chats.map((chat) => {
-            return (
-              <ChatsListItem
-                chat={chat}
-                onRequestCloseChat={handleOnChatClosed}
-                onRequestTransferChat={handleOnRequestTransferChat}
-              />
-            );
+            if (chat.status !== "CLOSED") {
+              return (
+                <ChatsListItem
+                  chat={chat}
+                  onRequestCloseChat={handleOnChatClosed}
+                  onRequestTransferChat={handleOnRequestTransferChat}
+                />
+              );
+            }
           })}
       </List>
     );
   };
 
   const handleOnCloseChatConfirmation = () => {
+    console.log(selectedChat);
     if (selectedChat) {
-      //dispatch action here;
+      dispatch(closeChat(selectedChat.id));
     }
     setCloseChatDialogOpen(false);
   };
 
-  const handleOnChatTransferConfirmation = () => {
+  const handleOnChatTransferConfirmation = (group: GroupViewModel) => {
     if (selectedChat) {
-      //dispatch action here;
+      dispatch(transferChat({ chatId: selectedChat.id, groupId: group.id }));
     }
     setTransferChatDialogOpen(false);
   };
@@ -147,11 +162,15 @@ const ChatsList = () => {
         }}
       />
 
-      <TransferChatDialog
-        open={transferChatDialogOpen}
-        onPositive={handleOnChatTransferConfirmation}
-        onNegative={() => setTransferChatDialogOpen(false)}
-      />
+      {selectedChat && (
+        <TransferChatDialog
+          open={transferChatDialogOpen}
+          groups={groups!}
+          currentGroup={selectedChat?.group!}
+          onPositive={handleOnChatTransferConfirmation}
+          onNegative={() => setTransferChatDialogOpen(false)}
+        />
+      )}
 
       {error && <Snackbar autoHideDuration={3000} message={error?.message} />}
     </div>
@@ -192,6 +211,8 @@ const CloseChatConfirmationDialog: FC<CloseChatConfirmationDialogProps> = (
 
 type TransferChatDialogProps = {
   open: boolean;
+  currentGroup: GroupViewModel;
+  groups: GroupViewModel[];
   onPositive: (group: GroupViewModel) => void;
   onNegative: () => void;
 };
@@ -199,17 +220,12 @@ type TransferChatDialogProps = {
 const TransferChatDialog: FC<TransferChatDialogProps> = (props) => {
   const classes = useStyles();
 
-  const { groups } = useSelector(groupsSelector);
+  const currentGroupIndex = props.groups.findIndex(
+    (groupItem) => groupItem.id === props.currentGroup.id
+  );
 
-  const [selectedGroupIndex, setSelectedGroupIndex] = useState(0);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (!groups) {
-      dispatch(getGroups());
-    }
-  }, [groups]);
+  const [selectedGroupIndex, setSelectedGroupIndex] =
+    useState(currentGroupIndex);
 
   const radioGroupRef = React.useRef<HTMLElement>(null);
 
@@ -239,12 +255,13 @@ const TransferChatDialog: FC<TransferChatDialogProps> = (props) => {
           onChange={handleChange}
           value={selectedGroupIndex}
         >
-          {groups &&
-            groups.map((groupItem, index) => (
+          {props.groups &&
+            props.groups.map((groupItem, index) => (
               <FormControlLabel
                 className={classes.radioButton}
                 value={index}
                 key={groupItem.id}
+                disabled={groupItem.id === props.currentGroup?.id}
                 control={<Radio classes={{ checked: classes.radioButton }} />}
                 label={groupItem.name}
               />
@@ -256,7 +273,8 @@ const TransferChatDialog: FC<TransferChatDialogProps> = (props) => {
           Cancel
         </Button>
         <Button
-          onClick={() => props.onPositive(groups![selectedGroupIndex])}
+          disabled={currentGroupIndex === selectedGroupIndex}
+          onClick={() => props.onPositive(props.groups[selectedGroupIndex])}
           color="primary"
         >
           Ok

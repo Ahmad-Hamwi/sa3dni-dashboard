@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) =>
 
 interface MessageInputProps {
   onMessageSend: (messageToBeSent: string) => void;
+  enabled: boolean;
 }
 
 const MessageInput: FC<MessageInputProps> = (props) => {
@@ -77,6 +78,7 @@ const MessageInput: FC<MessageInputProps> = (props) => {
     >
       <Box className={classes.content}>
         <input
+          disabled={!props.enabled}
           accept="image/*"
           className={classes.fileInput}
           id="icon-button-file"
@@ -84,6 +86,7 @@ const MessageInput: FC<MessageInputProps> = (props) => {
         />
         <label htmlFor="icon-button-file">
           <IconButton
+            disabled={!props.enabled}
             color="primary"
             aria-label="upload picture"
             component="span"
@@ -94,6 +97,7 @@ const MessageInput: FC<MessageInputProps> = (props) => {
         <InputBase
           className={clsx(classes.textInput)}
           multiline
+          disabled={!props.enabled}
           onKeyDown={handleEnterPressed}
           onChange={(event) => setMessage(event.target.value)}
           onFocus={(_) => setFocus(true)}
@@ -101,7 +105,11 @@ const MessageInput: FC<MessageInputProps> = (props) => {
           placeholder={"Write a message..."}
           value={message}
         />
-        <IconButton color="primary" onClick={handleSendButtonPressed}>
+        <IconButton
+          disabled={!props.enabled}
+          color="primary"
+          onClick={handleSendButtonPressed}
+        >
           <Send />
         </IconButton>
       </Box>

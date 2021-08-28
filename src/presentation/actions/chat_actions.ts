@@ -21,3 +21,19 @@ export const getChatMessages = createAsyncThunk(
     return resolveRepository.chats().getChatMessages(chatId);
   }
 );
+
+export type TransferChatArgs = {chatId: string, groupId: string}
+
+export const transferChat = createAsyncThunk(
+    "chat/transferChat",
+    async (args: TransferChatArgs, thunkAPI) => {
+        return resolveRepository.chats().transferChat(args.chatId, args.groupId);
+    }
+)
+
+export const closeChat = createAsyncThunk(
+    "chat/closeChat",
+    async (chatId: string, thunkAPI) => {
+        return resolveRepository.chats().closeChat(chatId);
+    }
+)

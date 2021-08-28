@@ -40,4 +40,34 @@ export default class ChatRepository implements IChatRepository {
 
     return response.data.data.data;
   }
+
+  async transferChat(chatId: string, groupId: string): Promise<ChatModel> {
+    const response = await this.api.post<ChatResponse>(
+      API_ENDPOINTS.transfer,
+      {
+        groupId: groupId,
+      },
+      {
+        params: {
+          id: chatId,
+        },
+      }
+    );
+
+    return response.data.data;
+  }
+
+  async closeChat(chatId: string): Promise<ChatModel> {
+    const response = await this.api.post<ChatResponse>(
+      API_ENDPOINTS.close,
+      {},
+      {
+        params: {
+          id: chatId,
+        },
+      }
+    );
+
+    return response.data.data;
+  }
 }

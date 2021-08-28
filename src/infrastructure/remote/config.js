@@ -22,6 +22,8 @@ export const API_ENDPOINTS = {
   chats: "chats",
   chat: "chats/:id",
   chatMessages: "/chats/:id/messages",
+  transfer: "/chats/:id/transfer",
+  close: "/chats/:id/close"
 };
 
 export const API_HEADERS = {
