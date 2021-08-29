@@ -23,7 +23,9 @@ export const API_ENDPOINTS = {
   chat: "chats/:id",
   chatMessages: "/chats/:id/messages",
   transfer: "/chats/:id/transfer",
-  close: "/chats/:id/close"
+  close: "/chats/:id/close",
+
+  company: "/companies",
 };
 
 export const API_HEADERS = {

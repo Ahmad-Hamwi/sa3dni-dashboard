@@ -1,7 +1,7 @@
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import List from "@material-ui/core/List";
-import { Chat, SupervisorAccount, Assessment } from "@material-ui/icons";
+import {Chat, SupervisorAccount, Assessment, Settings} from "@material-ui/icons";
 import { ToggleButton } from "@material-ui/lab";
 import { useState } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
@@ -48,73 +48,99 @@ const DrawerListItems = () => {
   let location = useLocation();
 
   return (
-    <List>
-      <ListItem
-        alignItems="center"
-        className={classes.drawerItem}
-        component={Link}
-        to={path + Routes.CHATS}
-      >
-        <ToggleButton
-          selected={location.pathname.includes(path + Routes.CHATS)}
-          className={classes.selectedDrawerItem}
+    <>
+      <List>
+        <ListItem
+          alignItems="center"
+          className={classes.drawerItem}
+          component={Link}
+          to={path + Routes.CHATS}
         >
-          <ListItemIcon>
-            <Chat
-              className={
-                location.pathname.includes(path + Routes.CHATS)
-                  ? classes.IconSelected
-                  : undefined
-              }
-            />
-          </ListItemIcon>
-        </ToggleButton>
-      </ListItem>
+          <ToggleButton
+            selected={location.pathname.includes(path + Routes.CHATS)}
+            className={classes.selectedDrawerItem}
+          >
+            <ListItemIcon>
+              <Chat
+                className={
+                  location.pathname.includes(path + Routes.CHATS)
+                    ? classes.IconSelected
+                    : undefined
+                }
+              />
+            </ListItemIcon>
+          </ToggleButton>
+        </ListItem>
 
-      <ListItem
-        alignItems="center"
-        className={classes.drawerItem}
-        component={Link}
-        to={path + Routes.WORKSPACE}
-      >
-        <ToggleButton
-          className={classes.selectedDrawerItem}
-          selected={location.pathname.includes(path + Routes.WORKSPACE)}
+        <ListItem
+          alignItems="center"
+          className={classes.drawerItem}
+          component={Link}
+          to={path + Routes.WORKSPACE}
         >
-          <ListItemIcon>
-            <SupervisorAccount
-              className={
-                location.pathname.includes(path + Routes.WORKSPACE)
-                  ? classes.IconSelected
-                  : undefined
-              }
-            />
-          </ListItemIcon>
-        </ToggleButton>
-      </ListItem>
+          <ToggleButton
+            className={classes.selectedDrawerItem}
+            selected={location.pathname.includes(path + Routes.WORKSPACE)}
+          >
+            <ListItemIcon>
+              <SupervisorAccount
+                className={
+                  location.pathname.includes(path + Routes.WORKSPACE)
+                    ? classes.IconSelected
+                    : undefined
+                }
+              />
+            </ListItemIcon>
+          </ToggleButton>
+        </ListItem>
 
-      <ListItem
-        alignItems="center"
-        className={classes.drawerItem}
-        component={Link}
-        to={path + Routes.REPORTS}
-      >
-        <ToggleButton
-          className={classes.selectedDrawerItem}
-          selected={location.pathname.includes(path + Routes.REPORTS)}
+        <ListItem
+          alignItems="center"
+          className={classes.drawerItem}
+          component={Link}
+          to={path + Routes.REPORTS}
         >
-          <ListItemIcon>
-            <Assessment
-              className={
-                location.pathname.includes(path + Routes.REPORTS)
-                  ? classes.IconSelected
-                  : undefined
-              }
-            />
-          </ListItemIcon>
-        </ToggleButton>
-      </ListItem>
-    </List>
+          <ToggleButton
+            className={classes.selectedDrawerItem}
+            selected={location.pathname.includes(path + Routes.REPORTS)}
+          >
+            <ListItemIcon>
+              <Assessment
+                className={
+                  location.pathname.includes(path + Routes.REPORTS)
+                    ? classes.IconSelected
+                    : undefined
+                }
+              />
+            </ListItemIcon>
+          </ToggleButton>
+        </ListItem>
+      </List>
+
+      <List>
+        <ListItem
+          alignItems="center"
+          className={classes.drawerItem}
+          component={Link}
+          to={path + Routes.SETTINGS}
+        >
+          <ToggleButton
+            selected={location.pathname.includes(path + Routes.SETTINGS)}
+            className={classes.selectedDrawerItem}
+          >
+            <ListItemIcon>
+              <Settings
+                className={
+                  location.pathname.includes(path + Routes.SETTINGS)
+                    ? classes.IconSelected
+                    : undefined
+                }
+              />
+            </ListItemIcon>
+          </ToggleButton>
+        </ListItem>
+      </List>
+    </>
   );
 };
 

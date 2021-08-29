@@ -25,10 +25,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     drawer: {
       paddingTop: theme.spacing(6),
+      height: "100vh",
       width: theme.spacing(8) + 1,
       "& .MuiPaper-root": {
         width: theme.spacing(8) + 1,
         position: "inherit",
+        justifyContent: "space-between",
       },
     },
     drawerItem: {

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { connectToDashboardSocket } from "../../actions/dashboardsocket/dashboard_socket_actions";
 import { dashboardSocketSelector } from "../../reducers/connection/dashboard/dashboard_socket_reducer";
 import { authSelector } from "../../reducers/app/auth/auth_reducer";
+import Settings from "./navigation/settings/Settings";
 
 const Chats = lazy(() => import("./navigation/chats/Chats"));
 const Workspace = lazy(() => import("./navigation/workspace/Workspace"));
@@ -67,10 +68,11 @@ const Dashboard = () => {
           <Route path={path + Routes.CHATS} component={Chats} />
           <Route path={path + Routes.WORKSPACE} component={Workspace} />
           <Route path={path + Routes.REPORTS} component={Reports} />
+          <Route path={path + Routes.SETTINGS} component={Settings} />
         </Switch>
       </Suspense>
     </DashboardDrawerAndAppBar>
   );
-};
+}
 
 export default Dashboard;

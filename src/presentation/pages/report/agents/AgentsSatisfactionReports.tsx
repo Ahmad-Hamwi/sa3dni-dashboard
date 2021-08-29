@@ -15,7 +15,7 @@ const AgentsSatisfactionReports: FC = (props) => {
       agent: {
         id: "1",
         fullName: "Abdulrahman",
-        email: "abd@gamil.com",
+        email: "abdulrahmantayara@company.com",
       },
       totalRatedChats: 10,
       ratedGoodChats: 6,
@@ -25,7 +25,7 @@ const AgentsSatisfactionReports: FC = (props) => {
       agent: {
         id: "2",
         fullName: "Mouaz",
-        email: "mouaz@gamil.com",
+        email: "mouazalkassem@company.com",
       },
       totalRatedChats: 10,
       ratedGoodChats: 3,
@@ -36,13 +36,13 @@ const AgentsSatisfactionReports: FC = (props) => {
   const [agents, setAgents] = useState([
     {
       id: "1",
-      fullName: "Abd",
-      email: "abd@gamil.com"
+      fullName: "Abdulrahman",
+      email: "abdulrahmantayara@company.com"
     },
     {
       id: "2",
-      fullName: "Ahmad",
-      email: "ahmad@gamil.com"
+      fullName: "Mouaz",
+      email: "mouazalkassem@company.com"
     }
   ])
 
