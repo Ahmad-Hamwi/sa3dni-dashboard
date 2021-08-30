@@ -66,6 +66,13 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: theme.palette.primary.dark,
     },
   },
+
+  noChatsText: {
+    height: `calc(100vh - ${theme.spacing(13)}px)`,
+    lineHeight: `calc(100vh - ${theme.spacing(13)}px)`,
+    textAlign: "center",
+    fontWeight: 500,
+  },
 }));
 
 const ChatsList = () => {
@@ -104,7 +111,9 @@ const ChatsList = () => {
   };
 
   const ChatsList = () => {
-    return (
+    return chats?.length === 0 ? (
+      <Typography className={classes.noChatsText}>No chats opened</Typography>
+    ) : (
       <List className={classes.agentsList}>
         {chats &&
           chats.map((chat) => {
