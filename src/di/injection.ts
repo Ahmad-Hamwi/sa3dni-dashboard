@@ -24,6 +24,7 @@ import IChatRepository, {
 import ICompanyRepository, {
   INJECT_COMPANY_REPOSITORY,
 } from "../infrastructure/repository/company/ICompanyRepository";
+import IChatReportsRepository, {INJECT_CHAT_REPORTS_REPOSITORY} from "../infrastructure/repository/reports/chat/IChatReportsRepository";
 
 let initialized = false;
 

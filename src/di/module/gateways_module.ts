@@ -33,6 +33,8 @@ import ICompanyRepository, {
   INJECT_COMPANY_REPOSITORY,
 } from "../../infrastructure/repository/company/ICompanyRepository";
 import CompanyRepository from "../../infrastructure/repository/company/CompanyRepository";
+import IChatReportsRepository, {INJECT_CHAT_REPORTS_REPOSITORY} from "../../infrastructure/repository/reports/chat/IChatReportsRepository";
+import ChatReportsRepository from "../../infrastructure/repository/reports/chat/ChatReportsRepository";
 
 export function registerGateways(container: IContainer) {
   container.registerLazySingleton<IAuthService>(INJECT_AUTH_SERVICE, (c) => {
