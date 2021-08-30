@@ -28,6 +28,10 @@ import { toast } from "react-hot-toast";
 import { Add, Close } from "@material-ui/icons";
 import CreateGroupDialog, { CreateGroupForm } from "./CreateGroupDialog";
 import GroupViewModel from "../../../../../viewmodel/group/GroupViewModel";
+import { deleteGroupSuccessState } from "../../../../../reducers/groups/groups_states";
+import AddMembersDialog from "./AddMembersDialog";
+import UserViewModel from "../../../../../viewmodel/user/UserViewModel";
+import RemoveMembersDialog from "./RemoveMembersDialog";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -74,6 +78,7 @@ export default function GroupsList() {
     deleteGroupError,
     createGroupError,
     createGroupSuccess,
+    deleteGroupSuccess,
   } = useSelector(groupsSelector);
 
   useEffect(() => {
@@ -87,6 +92,13 @@ export default function GroupsList() {
       setSnackBarOpen(true);
     }
   }, [groupsError]);
+
+  useEffect(() => {
+    if (deleteGroupSuccess) {
+      setSnackBarMessage("Group deleted successfully!");
+      setSnackBarOpen(true);
+    }
+  }, [deleteGroupSuccess]);
 
   useEffect(() => {
     if (deleteGroupError) {
@@ -126,6 +138,8 @@ export default function GroupsList() {
   };
 
   const [deleteGroupDialogOpen, setDeleteGroupDialogOpen] = useState(false);
+  const [addMembersDialogOpen, setAddMembersDialogOpen] = useState(false);
+  const [removeMembersDialogOpen, setRemoveMembersDialogOpen] = useState(false);
   const [isCreateGroupDialogOpen, setIsCreateGroupDialogOpen] = useState(false);
 
   const Groups = () => {
@@ -139,8 +153,14 @@ export default function GroupsList() {
               setSelectedGroup(group);
               setDeleteGroupDialogOpen(true);
             }}
-            onRequestAddMembersToGroup={(group) => {}}
-            onRequestRemoveMembersFromGroup={(group) => {}}
+            onRequestAddMembersToGroup={(group) => {
+              setSelectedGroup(group);
+              setAddMembersDialogOpen(true);
+            }}
+            onRequestRemoveMembersFromGroup={(group) => {
+              setSelectedGroup(group);
+              setRemoveMembersDialogOpen(true);
+            }}
           />
         ))}
       </List>
@@ -150,7 +170,30 @@ export default function GroupsList() {
   const [selectedGroup, setSelectedGroup] = useState<GroupViewModel>();
 
   const handleOnDeleteGroupConfirmation = () => {
+    setDeleteGroupDialogOpen(false);
     dispatch(deleteGroup(selectedGroup!));
+  };
+
+  const handleOnAddMembersToGroupFormSubmission = (
+    users: UserViewModel[] | null
+  ) => {
+    setAddMembersDialogOpen(false);
+
+    //if actually submitted, not dismissed.
+    if (users) {
+      //dispatch action
+    }
+  };
+
+  const handleOnRemoveMembersFromGroupFormSubmission = (
+    users: UserViewModel[] | null
+  ) => {
+    setRemoveMembersDialogOpen(false);
+
+    //if actually submitted, not dismissed.
+    if (users) {
+      //dispatch action
+    }
   };
 
   const AddGroupFab = () => {
@@ -181,6 +224,20 @@ export default function GroupsList() {
         onPositive={handleOnDeleteGroupConfirmation}
         onNegative={() => setDeleteGroupDialogOpen(false)}
       />
+      {selectedGroup && (
+        <AddMembersDialog
+          open={addMembersDialogOpen}
+          onSubmission={handleOnAddMembersToGroupFormSubmission}
+          existedUsersIds={selectedGroup?.memberIds!}
+        />
+      )}
+      {selectedGroup && (
+        <RemoveMembersDialog
+          open={removeMembersDialogOpen}
+          onSubmission={handleOnRemoveMembersFromGroupFormSubmission}
+          existedUsersIds={selectedGroup?.memberIds!}
+        />
+      )}
       <Snackbar
         anchorOrigin={{
           vertical: "bottom",
