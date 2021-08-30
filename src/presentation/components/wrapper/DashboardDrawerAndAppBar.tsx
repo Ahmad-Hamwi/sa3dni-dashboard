@@ -1,18 +1,13 @@
-import React, { useState } from "react";
-import clsx from "clsx";
+import React  from "react";
 import {
   createStyles,
   makeStyles,
-  useTheme,
   Theme,
 } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 import DrawerListItems from "./drawer/DrawerListItems";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -21,6 +16,9 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
     },
     appBar: {
+      color: "white",
+      backgroundColor: theme.palette.primary.dark + theme.palette.secondary.main,
+      borderWidth: 0,
       zIndex: theme.zIndex.drawer + 1,
     },
     drawer: {
@@ -68,12 +66,7 @@ const DashboardDrawerAndAppBar: React.FC<DashboardDrawerAndAppBarProps> = ({
 
   return (
     <div className={classes.root}>
-      <AppBar
-        position="fixed"
-        className={classes.appBar}
-        variant="outlined"
-        color="secondary"
-      >
+      <AppBar position="fixed" className={classes.appBar}>
         <Toolbar variant="dense">
           <Typography variant="h6" noWrap>
             Dashboard
