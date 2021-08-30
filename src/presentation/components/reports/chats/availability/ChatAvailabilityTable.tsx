@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { DayAvailability } from "./ChatAvailabilityParams";
 import {
   Paper,
   Table,
@@ -10,9 +9,10 @@ import {
   TableRow,
 } from "@material-ui/core";
 import Utils from "../../../../../utils/Utils";
+import {ChatAvailabilityDayModel} from "../../../../../infrastructure/model/report/ChatAvailabilitiesModel";
 
 export type ChatAvailabilityTableProps = {
-  data: DayAvailability[];
+  data: ChatAvailabilityDayModel[];
 };
 
 const ChatAvailabilityTable: FC<ChatAvailabilityTableProps> = (props) => {

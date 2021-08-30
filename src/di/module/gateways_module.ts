@@ -27,6 +27,8 @@ import IInvitationRepository, {
 import InvitationRepository from "../../infrastructure/repository/invitation/InvitationRepository";
 import IChatRepository, {INJECT_CHAT_REPOSITORY} from "../../infrastructure/repository/chat/IChatRepository";
 import ChatRepository from "../../infrastructure/repository/chat/ChatRepository";
+import IChatReportsRepository, {INJECT_CHAT_REPORTS_REPOSITORY} from "../../infrastructure/repository/reports/chat/IChatReportsRepository";
+import ChatReportsRepository from "../../infrastructure/repository/reports/chat/ChatReportsRepository";
 
 export function registerGateways(container: IContainer) {
   container.registerLazySingleton<IAuthService>(INJECT_AUTH_SERVICE,
@@ -69,6 +71,13 @@ export function registerGateways(container: IContainer) {
       INJECT_CHAT_REPOSITORY,
       (c) => {
         return new ChatRepository(c.resolve<IApiClient>(INJECT_API_CLIENT));
+      }
+  )
+
+  container.registerLazySingleton<IChatReportsRepository>(
+      INJECT_CHAT_REPORTS_REPOSITORY,
+      (c) => {
+        return new ChatReportsRepository(c.resolve<IApiClient>(INJECT_API_CLIENT));
       }
   )
 }

@@ -10,6 +10,8 @@ import { dashboardSocketReducer } from "../reducers/connection/dashboard/dashboa
 import { chatReducer } from "../reducers/chat/list/chats_reducer";
 import {openedChatReducer} from "../reducers/chat/opened/opened_chat_reducer";
 import {messagesReducer} from "../reducers/chat/messages/messages_reducer";
+import {chatSatisfactionsReducer} from "../reducers/reports/chat/satisfactions/chat_satisfactions_reducer";
+import {chatAvailabilitiesReducer} from "../reducers/reports/chat/availabilities/chat_availabilities_reducer";
 
 const reducers = {
   auth: authReducer,
@@ -23,6 +25,8 @@ const reducers = {
   chat: chatReducer,
   openedChat: openedChatReducer,
   messages: messagesReducer,
+  chatSatisfactions: chatSatisfactionsReducer,
+  chatAvailabilities: chatAvailabilitiesReducer
 };
 
 const combinedReducers = combineReducers(reducers);

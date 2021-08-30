@@ -19,6 +19,7 @@ import IAuthService, {
   INJECT_AUTH_SERVICE,
 } from "../infrastructure/service/IAuthService";
 import IChatRepository, { INJECT_CHAT_REPOSITORY } from "../infrastructure/repository/chat/IChatRepository";
+import IChatReportsRepository, {INJECT_CHAT_REPORTS_REPOSITORY} from "../infrastructure/repository/reports/chat/IChatReportsRepository";
 
 let initialized = false;
 
@@ -43,6 +44,7 @@ export const resolveRepository = {
     resolve(INJECT_INVITATION_REPOSITORY),
   userRole: (): IUserRoleRepository => resolve(INJECT_USER_ROLE_REPOSITORY),
   chats: (): IChatRepository => resolve(INJECT_CHAT_REPOSITORY),
+  chatReports: (): IChatReportsRepository => resolve(INJECT_CHAT_REPORTS_REPOSITORY)
 };
 
 export const resolveService = {

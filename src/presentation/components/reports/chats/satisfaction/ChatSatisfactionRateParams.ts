@@ -3,9 +3,3 @@ export type RateTotals = {
   ratedGoodChats: number;
   ratedBadChats: number;
 };
-
-export type DayRateSatisfaction = {
-  date: string;
-  ratedGoodChats: number;
-  ratedBadChats: number;
-}

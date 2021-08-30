@@ -1,44 +1,54 @@
-import { FC, useState } from "react";
-import DaysFilter from "../../../components/reports/DaysFilter";
+import { FC, useEffect, useState } from "react";
+import DaysFilter, {
+  FilterValue,
+} from "../../../components/reports/DaysFilter";
 import ChatsSatisfactionRatePie from "../../../components/reports/chats/satisfaction/ChatsSatisfactionRatePie";
 import ChatSatisfactionRateBar from "../../../components/reports/chats/satisfaction/ChatSatisfactionRateBar";
 import ChatSatisfactionRateTable from "../../../components/reports/chats/satisfaction/ChatSatisfactionRateTable";
+import { useDispatch, useSelector } from "react-redux";
+import { chatSatisfactionsSelector } from "../../../reducers/reports/chat/satisfactions/chat_satisfactions_reducer";
+import { getChatsSatisfactions } from "../../../actions/reports_actions";
 
 const ChatsSatisfactionReports: FC = () => {
-  const [daysSatisfaction, setDaysSatisfaction] = useState([
-    {
-      date: "10 Aug",
-      ratedGoodChats: 10,
-      ratedBadChats: 0,
-    },
-    {
-      date: "11 Aug",
-      ratedGoodChats: 1,
-      ratedBadChats: 3,
-    },
-    {
-      date: "12 Aug",
-      ratedGoodChats: 2,
-      ratedBadChats: 2,
-    },
-  ]);
+  const { satisfactions, isLoading } = useSelector(chatSatisfactionsSelector);
+
+  const [daysFilter, setDaysFilter] = useState<FilterValue>();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      getChatsSatisfactions({
+        startDate: daysFilter?.start,
+        endDate: daysFilter?.end,
+      })
+    );
+  }, [daysFilter, dispatch]);
+
+  const handleDaysFilter = (filter: FilterValue) => {
+    setDaysFilter(filter);
+  };
 
   return (
     <div>
-      <DaysFilter />
+      <DaysFilter onSelect={handleDaysFilter} />
 
-      <div style={{width: '300px', margin: '0 auto'}}>
+      <div style={{ width: "300px", margin: "0 auto" }}>
         <ChatsSatisfactionRatePie
-          data={{ totalChats: 10, ratedGoodChats: 6, ratedBadChats: 4 }}
+          data={{
+            totalChats: satisfactions?.totalChats || 0,
+            ratedGoodChats: satisfactions?.ratedGood || 0,
+            ratedBadChats: satisfactions?.ratedBad || 0,
+          }}
         />
       </div>
 
       <div style={{ width: "90%", margin: "16px auto" }}>
-        <ChatSatisfactionRateBar data={daysSatisfaction} />
+        <ChatSatisfactionRateBar data={satisfactions?.days || []} />
       </div>
 
-        <div style={{ width: "90%", margin: "16px auto" }}>
-        <ChatSatisfactionRateTable data={daysSatisfaction} />
+      <div style={{ width: "90%", margin: "16px auto" }}>
+        <ChatSatisfactionRateTable data={satisfactions?.days || []} />
       </div>
     </div>
   );

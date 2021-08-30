@@ -1,4 +1,3 @@
-import { colors } from "@material-ui/core";
 import { FC } from "react";
 import ReactApexChart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";

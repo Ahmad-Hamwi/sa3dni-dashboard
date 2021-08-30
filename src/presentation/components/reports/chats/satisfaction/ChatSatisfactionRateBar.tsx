@@ -2,21 +2,23 @@ import { FC } from "react";
 import ReactApexChart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import { ReportChartsConfig } from "../../ReportChartsConfig";
-import { DayRateSatisfaction } from "./ChatSatisfactionRateParams";
+import {
+  ChatSatisfactionDayModel,
+} from "../../../../../infrastructure/model/report/ChatSatisfactionsModel";
 
 export type ChatSatisfactionRateBarProps = {
-  data: DayRateSatisfaction[];
+  data: ChatSatisfactionDayModel[];
 };
 
 const ChatSatisfactionRateBar: FC<ChatSatisfactionRateBarProps> = (props) => {
   const series = [
     {
       name: "Good",
-      data: props.data.map((d) => d.ratedGoodChats),
+      data: props.data.map((d) => d.ratedGood),
     },
     {
       name: "Bad",
-      data: props.data.map((d) => d.ratedBadChats),
+      data: props.data.map((d) => d.ratedBad),
     },
   ];
 
