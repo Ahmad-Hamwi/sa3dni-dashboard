@@ -29,7 +29,10 @@ export const API_ENDPOINTS = {
   company: "/companies",
 
   chatReportsSatisfactions: "/reports/chats/satisfactions",
-  chatReportsAvailabilities: "/reports/chats/availabilities"
+  chatReportsAvailabilities: "/reports/chats/availabilities",
+
+  userReportsTopRated: "/reports/users/top",
+  userPerformance: "/reports/users/:id/performance"
 };
 
 export const API_HEADERS = {

@@ -13,6 +13,7 @@ import {messagesReducer} from "../reducers/chat/messages/messages_reducer";
 import {chatSatisfactionsReducer} from "../reducers/reports/chat/satisfactions/chat_satisfactions_reducer";
 import {chatAvailabilitiesReducer} from "../reducers/reports/chat/availabilities/chat_availabilities_reducer";
 import {companyReducer} from "../reducers/company/company_reducer";
+import {userReportsSliceReducer} from "../reducers/reports/user/user_reports_reducer";
 
 const reducers = {
   auth: authReducer,
@@ -28,7 +29,8 @@ const reducers = {
   messages: messagesReducer,
   company: companyReducer,
   chatSatisfactions: chatSatisfactionsReducer,
-  chatAvailabilities: chatAvailabilitiesReducer
+  chatAvailabilities: chatAvailabilitiesReducer,
+  userReports: userReportsSliceReducer
 };
 
 const combinedReducers = combineReducers(reducers);

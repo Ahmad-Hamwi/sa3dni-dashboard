@@ -25,6 +25,7 @@ import ICompanyRepository, {
   INJECT_COMPANY_REPOSITORY,
 } from "../infrastructure/repository/company/ICompanyRepository";
 import IChatReportsRepository, {INJECT_CHAT_REPORTS_REPOSITORY} from "../infrastructure/repository/reports/chat/IChatReportsRepository";
+import IUserReportsRepository, {INJECT_USER_REPORTS_REPOSITORY} from "../infrastructure/repository/reports/user/IUserReportsRepository";
 
 let initialized = false;
 
@@ -50,7 +51,8 @@ export const resolveRepository = {
   userRole: (): IUserRoleRepository => resolve(INJECT_USER_ROLE_REPOSITORY),
   chats: (): IChatRepository => resolve(INJECT_CHAT_REPOSITORY),
   company: (): ICompanyRepository => resolve(INJECT_COMPANY_REPOSITORY),
-  chatReports: (): IChatReportsRepository => resolve(INJECT_CHAT_REPORTS_REPOSITORY)
+  chatReports: (): IChatReportsRepository => resolve(INJECT_CHAT_REPORTS_REPOSITORY),
+  userReports: (): IUserReportsRepository => resolve(INJECT_USER_REPORTS_REPOSITORY)
 };
 
 export const resolveService = {
