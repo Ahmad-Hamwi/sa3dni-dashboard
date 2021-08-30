@@ -186,6 +186,7 @@ const CreateGroupDialog: FC<CreateGroupDialogProps> = (props) => {
           Cancel
         </Button>
         <Button
+          disabled={selection.selectedUsers.length === 0 || groupName.length == 0}
           variant={"contained"}
           onClick={handleFormSubmission}
           color="primary"

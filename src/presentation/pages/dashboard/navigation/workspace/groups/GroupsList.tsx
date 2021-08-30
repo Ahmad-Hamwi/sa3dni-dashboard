@@ -3,25 +3,31 @@ import {
   createStyles,
   makeStyles,
   Theme,
-  CircularProgress,
   Fab,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+  IconButton,
+  Snackbar,
 } from "@material-ui/core";
 
 import GroupListItem from "../../../../../components/groups/GroupsListItem";
 import { useDispatch, useSelector } from "react-redux";
 import { groupsSelector } from "../../../../../reducers/groups/groups_reducers";
-import {
-  groupsErrorState,
-  GroupsState,
-} from "../../../../../reducers/groups/groups_states";
 import { Spinner } from "../../../../../components/app/loader/Spinner";
-import { useEffect, useState } from "react";
-import { createGroup, getGroups } from "../../../../../actions/groups_actions";
+import React, { FC, useEffect, useState } from "react";
+import {
+  createGroup,
+  deleteGroup,
+  getGroups,
+} from "../../../../../actions/groups_actions";
 import { toast } from "react-hot-toast";
-import { Add } from "@material-ui/icons";
+import { Add, Close } from "@material-ui/icons";
 import CreateGroupDialog, { CreateGroupForm } from "./CreateGroupDialog";
-import { InviteAgentForm } from "../agents/InviteAgentDialog";
-import { inviteUser } from "../../../../../actions/invitations_actions";
+import GroupViewModel from "../../../../../viewmodel/group/GroupViewModel";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -47,14 +53,28 @@ const useStyles = makeStyles((theme: Theme) =>
     extendedIcon: {
       marginRight: theme.spacing(1),
     },
+
+    snackBar: {
+      marginInline: theme.spacing(8),
+    },
   })
 );
 
 export default function GroupsList() {
   const classes = useStyles();
 
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
+  const [snackBarMessage, setSnackBarMessage] = useState("");
+
   const dispatch = useDispatch();
-  const { isGroupsLoading, groupsError, groups } = useSelector(groupsSelector);
+  const {
+    isGroupsLoading,
+    groupsError,
+    groups,
+    deleteGroupError,
+    createGroupError,
+    createGroupSuccess,
+  } = useSelector(groupsSelector);
 
   useEffect(() => {
     if (groups) return;
@@ -62,8 +82,32 @@ export default function GroupsList() {
   }, [groups, dispatch]);
 
   useEffect(() => {
-    if (groupsError) toast.error(groupsError.message);
+    if (groupsError) {
+      setSnackBarMessage(groupsError.message);
+      setSnackBarOpen(true);
+    }
   }, [groupsError]);
+
+  useEffect(() => {
+    if (deleteGroupError) {
+      setSnackBarMessage(deleteGroupError.message);
+      setSnackBarOpen(true);
+    }
+  }, [deleteGroupError]);
+
+  useEffect(() => {
+    if (createGroupError) {
+      setSnackBarMessage(createGroupError.message);
+      setSnackBarOpen(true);
+    }
+  }, [createGroupError]);
+
+  useEffect(() => {
+    if (createGroupSuccess) {
+      setSnackBarMessage("Group created successfully!");
+      setSnackBarOpen(true);
+    }
+  }, [createGroupSuccess]);
 
   const handleOnCreateGroupFormSubmission = (
     createForm: CreateGroupForm | null
@@ -81,17 +125,33 @@ export default function GroupsList() {
     }
   };
 
+  const [deleteGroupDialogOpen, setDeleteGroupDialogOpen] = useState(false);
+  const [isCreateGroupDialogOpen, setIsCreateGroupDialogOpen] = useState(false);
+
   const Groups = () => {
     return (
       <List className={classes.groupsList}>
         {groups?.map((groupItem) => (
-          <GroupListItem key={groupItem.id} group={groupItem} />
+          <GroupListItem
+            key={groupItem.id}
+            group={groupItem}
+            onRequestDeleteGroup={(group) => {
+              setSelectedGroup(group);
+              setDeleteGroupDialogOpen(true);
+            }}
+            onRequestAddMembersToGroup={(group) => {}}
+            onRequestRemoveMembersFromGroup={(group) => {}}
+          />
         ))}
       </List>
     );
   };
 
-  const [isCreateGroupDialogOpen, setIsCreateGroupDialogOpen] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState<GroupViewModel>();
+
+  const handleOnDeleteGroupConfirmation = () => {
+    dispatch(deleteGroup(selectedGroup!));
+  };
 
   const AddGroupFab = () => {
     return (
@@ -116,6 +176,61 @@ export default function GroupsList() {
         open={isCreateGroupDialogOpen}
         onSubmission={handleOnCreateGroupFormSubmission}
       />
+      <DeleteGroupConfirmationDialog
+        open={deleteGroupDialogOpen}
+        onPositive={handleOnDeleteGroupConfirmation}
+        onNegative={() => setDeleteGroupDialogOpen(false)}
+      />
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        autoHideDuration={4000}
+        className={classes.snackBar}
+        open={snackBarOpen}
+        onClose={() => setSnackBarOpen(false)}
+        message={snackBarMessage}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => setSnackBarOpen(false)}
+          >
+            <Close fontSize="small" />
+          </IconButton>
+        }
+      />
     </Spinner>
   );
 }
+
+type DeleteGroupConfirmationDialogProps = {
+  open: boolean;
+  onPositive: () => void;
+  onNegative: () => void;
+};
+
+const DeleteGroupConfirmationDialog: FC<DeleteGroupConfirmationDialogProps> = (
+  props
+) => {
+  return (
+    <Dialog open={props.open} onClose={() => props.onNegative()}>
+      <DialogTitle>Delete Group</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          You will no longer be able to restore any of the group data.
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => props.onNegative()} color="primary">
+          Cancel
+        </Button>
+        <Button onClick={() => props.onPositive()} color="primary" autoFocus>
+          Okay
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};

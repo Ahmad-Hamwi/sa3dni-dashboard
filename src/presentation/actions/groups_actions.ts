@@ -1,5 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { resolveRepository } from "../../di/injection";
+import thunk from "redux-thunk";
+import GroupViewModel from "../viewmodel/group/GroupViewModel";
 
 export const getGroups = createAsyncThunk(
   "groups/getGroups",
@@ -26,5 +28,12 @@ export const createGroup = createAsyncThunk(
   "groups/createGroup",
   async (args: createGroupArgs, thunkAPI) => {
     return resolveRepository.groups().create(args);
+  }
+);
+
+export const deleteGroup = createAsyncThunk(
+  "groups/deleteGroup",
+  async (group: GroupViewModel, thunkAPI) => {
+    return resolveRepository.groups().delete(group.id);
   }
 );

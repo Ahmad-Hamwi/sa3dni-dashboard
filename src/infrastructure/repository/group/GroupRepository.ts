@@ -1,12 +1,11 @@
-import IGroupRepository, {
-  CreateGroupParams,
-} from "./IGroupRepository";
+import IGroupRepository, { CreateGroupParams } from "./IGroupRepository";
 import IApiClient from "../../provider/api/client/IApiClinet";
 import { API_ENDPOINTS } from "../../remote/config";
 import { GroupResponse } from "../../remote/model/group/GroupResponse";
 import GroupModel from "../../model/GroupModel";
 import EmptyResponse from "../../remote/model/EmptyResponse";
 import { GroupsResponse } from "../../remote/model/group/GroupsResponse";
+import GroupViewModel from "../../../presentation/viewmodel/group/GroupViewModel";
 
 export default class GroupRepository implements IGroupRepository {
   constructor(private readonly api: IApiClient) {}
@@ -20,14 +19,14 @@ export default class GroupRepository implements IGroupRepository {
     return response.data.data;
   }
 
-  async delete(id: string): Promise<boolean> {
-    const response = await this.api.delete<EmptyResponse>(API_ENDPOINTS.group, {
+  async delete(id: string): Promise<GroupViewModel> {
+    const response = await this.api.delete<GroupResponse>(API_ENDPOINTS.group, {
       params: {
         id: id,
       },
     });
 
-    return response.data.metadata.status;
+    return response.data.data;
   }
 
   async get(id: string): Promise<GroupModel | null> {
