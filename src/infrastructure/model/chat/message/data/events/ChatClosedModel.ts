@@ -1,6 +1,7 @@
 import MessageSenderModel from "../../MessageSenderModel";
 
 export default interface ChatClosedModel {
-    closedBy: MessageSenderModel,
+    chatId: string;
+    closedBy: MessageSenderModel;
     createdAt: string;
 }

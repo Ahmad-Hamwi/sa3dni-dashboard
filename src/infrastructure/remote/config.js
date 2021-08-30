@@ -23,6 +23,10 @@ export const API_ENDPOINTS = {
   chats: "chats",
   chat: "chats/:id",
   chatMessages: "/chats/:id/messages",
+  transfer: "/chats/:id/transfer",
+  close: "/chats/:id/close",
+
+  company: "/companies",
 
   chatReportsSatisfactions: "/reports/chats/satisfactions",
   chatReportsAvailabilities: "/reports/chats/availabilities"

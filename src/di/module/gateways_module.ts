@@ -25,14 +25,17 @@ import IInvitationRepository, {
   INJECT_INVITATION_REPOSITORY,
 } from "../../infrastructure/repository/invitation/IInvitationRepository";
 import InvitationRepository from "../../infrastructure/repository/invitation/InvitationRepository";
-import IChatRepository, {INJECT_CHAT_REPOSITORY} from "../../infrastructure/repository/chat/IChatRepository";
+import IChatRepository, {
+  INJECT_CHAT_REPOSITORY,
+} from "../../infrastructure/repository/chat/IChatRepository";
 import ChatRepository from "../../infrastructure/repository/chat/ChatRepository";
-import IChatReportsRepository, {INJECT_CHAT_REPORTS_REPOSITORY} from "../../infrastructure/repository/reports/chat/IChatReportsRepository";
-import ChatReportsRepository from "../../infrastructure/repository/reports/chat/ChatReportsRepository";
+import ICompanyRepository, {
+  INJECT_COMPANY_REPOSITORY,
+} from "../../infrastructure/repository/company/ICompanyRepository";
+import CompanyRepository from "../../infrastructure/repository/company/CompanyRepository";
 
 export function registerGateways(container: IContainer) {
-  container.registerLazySingleton<IAuthService>(INJECT_AUTH_SERVICE,
-      (c) => {
+  container.registerLazySingleton<IAuthService>(INJECT_AUTH_SERVICE, (c) => {
     return new AuthService(
       c.resolve<IAppCache>(INJECT_APP_CACHE),
       c.resolve<IApiClient>(INJECT_API_CLIENT)
@@ -68,11 +71,18 @@ export function registerGateways(container: IContainer) {
   );
 
   container.registerLazySingleton<IChatRepository>(
-      INJECT_CHAT_REPOSITORY,
-      (c) => {
-        return new ChatRepository(c.resolve<IApiClient>(INJECT_API_CLIENT));
-      }
-  )
+    INJECT_CHAT_REPOSITORY,
+    (c) => {
+      return new ChatRepository(c.resolve<IApiClient>(INJECT_API_CLIENT));
+    }
+  );
+
+  container.registerLazySingleton<ICompanyRepository>(
+    INJECT_COMPANY_REPOSITORY,
+    (c) => {
+      return new CompanyRepository(c.resolve<IApiClient>(INJECT_API_CLIENT));
+    }
+  );
 
   container.registerLazySingleton<IChatReportsRepository>(
       INJECT_CHAT_REPORTS_REPOSITORY,

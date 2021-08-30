@@ -33,7 +33,7 @@ import {
 } from "../../../../../reducers/invitations/invitations_reducer";
 import { authSelector } from "../../../../../reducers/app/auth/auth_reducer";
 import UserViewModel from "../../../../../viewmodel/user/UserViewModel";
-import {Role} from "../../../../../../infrastructure/model/UserModel";
+import { Role } from "../../../../../../infrastructure/model/UserModel";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -74,6 +74,8 @@ export default function AgentsList() {
   } = useSelector(usersSelector);
 
   const { user } = useSelector(authSelector);
+
+  const { inviteResults, invitationErrors } = useSelector(invitationsSelector);
 
   const dispatch = useDispatch();
 
@@ -156,11 +158,15 @@ export default function AgentsList() {
 
     //if actually submitted, not dismissed.
     if (inviteForm) {
-      dispatch(inviteUser(inviteForm));
+      if (inviteResults) {
+        if (inviteResults[0].email !== inviteForm.email) {
+          dispatch(inviteUser(inviteForm));
+        }
+      } else {
+        dispatch(inviteUser(inviteForm));
+      }
     }
   };
-
-  const { inviteResults, invitationErrors } = useSelector(invitationsSelector);
 
   useEffect(() => {
     if (inviteResults) {

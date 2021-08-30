@@ -1,16 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ChatsState, initialChatsState } from "./chats_state";
 import {
+  closeChat,
   getChat,
   getChatMessages,
-  getChats,
+  getChats, transferChat,
 } from "../../../actions/chat_actions";
 import ChatModel from "../../../../infrastructure/model/chat/ChatModel";
 import { TStore } from "../../../store/store";
 import ChatMessageViewModel from "../../../viewmodel/chat/message/ChatMessageViewModel";
 import ChatViewModel from "../../../viewmodel/chat/ChatViewModel";
 import {
-  notifyChatAssigned, notifyChatClosed,
+  notifyChatAssigned,
+  notifyChatClosed,
   notifyMessageReceived,
 } from "../../../actions/dashboardsocket/dashboard_socket_actions";
 import ChatClosedViewModel from "../../../viewmodel/chat/message/data/events/ChatClosedViewModel";
@@ -89,6 +91,36 @@ export const chatsSlice = createSlice({
 
     ///////////////////////////////////////////////////////////////////////////////////////
 
+    [closeChat.fulfilled.type]: (
+      state: ChatsState,
+      { payload }: PayloadAction<ChatViewModel>
+    ) => {
+      if (state.chats) {
+        const foundChatIndex = state.chats?.findIndex(
+          (chatItem) => chatItem.id === payload.id
+        );
+        if (foundChatIndex) {
+          state.chats[foundChatIndex] = payload;
+        }
+      }
+    },
+
+    [transferChat.fulfilled.type]: (
+        state: ChatsState,
+        { payload }: PayloadAction<ChatViewModel>
+    ) => {
+      if (state.chats) {
+        const foundChatIndex = state.chats?.findIndex(
+            (chatItem) => chatItem.id === payload.id
+        );
+        if (foundChatIndex) {
+          state.chats.splice(foundChatIndex, 1);
+        }
+      }
+    },
+
+    ///////////////////////////////////////////////////////////////////////////////////////
+
     [notifyMessageReceived.type]: (
       state: ChatsState,
       { payload }: PayloadAction<ChatMessageViewModel>
@@ -96,7 +128,7 @@ export const chatsSlice = createSlice({
       if (state.chats) {
         const foundChat = state.chats.find(
           (chatItem) => payload.chatId === chatItem.id
-        )
+        );
         if (foundChat) {
           foundChat.messages = foundChat.messages
             ? [...foundChat.messages, payload]
@@ -113,22 +145,36 @@ export const chatsSlice = createSlice({
       state.chats = state.chats ? [...state.chats, payload] : [payload];
     },
 
-    // [notifyChatClosed.type]: (
-    //     state: ChatsState,
-    //     { payload }: PayloadAction<ChatClosedViewModel>
-    // ) => {
-    //   if (state.chats) {
-    //     const foundChat = state.chats.find(
-    //         (chatItem) => payload.chatId === chatItem.id
-    //     );
-    //     if (foundChat) {
-    //       foundChat.messages = foundChat.messages
-    //           ? [...foundChat.messages, payload]
-    //           : [payload];
-    //     } else {
-    //     }
-    //   }
-    // },
+    [notifyChatClosed.type]: (
+      state: ChatsState,
+      { payload }: PayloadAction<ChatClosedViewModel>
+    ) => {
+      if (state.chats) {
+        const foundChat = state.chats.find(
+          (chatItem) => payload.chatId === chatItem.id
+        );
+        if (foundChat) {
+          foundChat.status = "CLOSED";
+
+          const chatMessage: ChatMessageViewModel = {
+            id: "chat-closed-id",
+            chatId: payload.chatId,
+            content: {
+              type: "EVENT",
+              data: {
+                action: "chat-closed",
+                payload: payload,
+              },
+            },
+            createdAt: payload.createdAt,
+          };
+
+          foundChat.messages = foundChat.messages
+            ? [...foundChat.messages, chatMessage]
+            : [chatMessage];
+        }
+      }
+    },
   },
 });
 

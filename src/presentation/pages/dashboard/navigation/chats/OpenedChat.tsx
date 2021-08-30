@@ -191,7 +191,7 @@ const OpenedChat = () => {
 
             <Box className={classes.content}>
               <MessageList />
-              <MessageInput onMessageSend={handleOnMessageSend} />
+              <MessageInput enabled={currentChat?.status !== "CLOSED"} onMessageSend={handleOnMessageSend} />
             </Box>
           </>
         )}
