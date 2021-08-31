@@ -12,6 +12,9 @@ export interface GroupsState {
   isCreatingGroup: boolean;
   createGroupSuccess?: GroupViewModel | null;
   createGroupError?: Error | null;
+
+  deleteGroupSuccess?: GroupViewModel | null;
+  deleteGroupError?: Error | null
 }
 
 export const groupsInitialState: GroupsState = {
@@ -93,5 +96,31 @@ export const createGroupErrorState = (
   state.isCreatingGroup = false;
   state.createGroupSuccess = null;
   state.createGroupError = error;
+  return state;
+};
+
+export const deleteGroupSuccessState = (
+    state: GroupsState,
+    group: GroupViewModel
+): GroupsState => {
+  console.log(group);
+
+  state.deleteGroupSuccess = group;
+  state.deleteGroupError = null;
+
+  const index = state.groups?.findIndex((itr) => itr.id === group.id);
+  if (index) {
+    state.groups?.splice(index, 1);
+  }
+
+  return state;
+};
+
+export const deleteGroupErrorState = (
+    state: GroupsState,
+    error: Error
+): GroupsState => {
+  state.deleteGroupSuccess = null;
+  state.deleteGroupError = error;
   return state;
 };

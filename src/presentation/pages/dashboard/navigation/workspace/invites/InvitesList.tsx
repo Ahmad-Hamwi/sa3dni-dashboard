@@ -4,9 +4,20 @@ import { fetchInvitations } from "../../../../../actions/invitations_actions";
 import { Spinner } from "../../../../../components/app/loader/Spinner";
 import { invitationsSelector } from "../../../../../reducers/invitations/invitations_reducer";
 import InviteListItem from "../../../../../components/invites/InviteListItem";
-import { Divider } from "@material-ui/core";
+import { Divider, Typography } from "@material-ui/core";
+import { makeStyles, Theme } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme: Theme) => ({
+  noInvitesText: {
+    height: `calc(100vh - ${theme.spacing(13)}px)`,
+    lineHeight: `calc(100vh - ${theme.spacing(13)}px)`,
+    textAlign: "center",
+    fontWeight: 500,
+  },
+}));
 
 const InvitesList = () => {
+  const classes = useStyles();
   const dispatch = useDispatch();
 
   const { isLoading, invitations } = useSelector(invitationsSelector);
@@ -26,7 +37,19 @@ const InvitesList = () => {
       );
     }) || [];
 
-  return <Spinner loading={isLoading}>{invitationsList}</Spinner>;
+  console.log(invitations);
+
+  return (
+    <Spinner loading={isLoading}>
+      {invitations?.length !== 0 ? (
+        invitationsList
+      ) : (
+        <Typography className={classes.noInvitesText}>
+          No ongoing invites right now
+        </Typography>
+      )}
+    </Spinner>
+  );
 };
 
 export default InvitesList;

@@ -5,7 +5,7 @@ export default interface IGroupRepository {
 
   get(id: string): Promise<GroupModel | null>;
 
-  delete(id: string): Promise<boolean>;
+  delete(id: string): Promise<GroupModel>;
 
   create(param: CreateGroupParams): Promise<GroupModel>;
 }

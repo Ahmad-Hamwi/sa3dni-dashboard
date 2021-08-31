@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  Typography,
 } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
@@ -21,17 +22,6 @@ import UserViewModel from "../../../../../viewmodel/user/UserViewModel";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    groupNameInput: {
-      width: "100%",
-
-      "&.MuiFilledInput-underline:before": {
-        borderBottom: 0,
-      },
-      "&.MuiFilledInput-underline:hover": {
-        borderBottom: 0,
-      },
-    },
-
     addAgentContainer: {
       display: "flex",
       alignItems: "center",
@@ -59,18 +49,15 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: theme.spacing(1),
       whiteSpace: "nowrap",
       color: theme.palette.text.hint,
+      fontWeight: 500,
     },
   })
 );
 
-export interface CreateGroupForm {
-  name: string;
-  users: UserViewModel[];
-}
-
-export interface CreateGroupDialogProps {
+export interface AddMembersDialogProps {
   open: boolean;
-  onSubmission: (form: CreateGroupForm | null) => void;
+  onSubmission: (users: UserViewModel[] | null) => void;
+  existedUsersIds: string[];
 }
 
 type SelectionState = {
@@ -78,10 +65,9 @@ type SelectionState = {
   remainingUsers: UserViewModel[];
 };
 
-const CreateGroupDialog: FC<CreateGroupDialogProps> = (props) => {
+const AddMembersDialog: FC<AddMembersDialogProps> = (props) => {
   const classes = useStyles();
 
-  const [groupName, setGroupName] = useState("");
   const [selection, setSelection] = useState<SelectionState>({
     selectedUsers: [],
     remainingUsers: [],
@@ -120,10 +106,27 @@ const CreateGroupDialog: FC<CreateGroupDialogProps> = (props) => {
     });
   };
 
+  let nonExisted: UserViewModel[] = [];
+
   useEffect(() => {
     if (users) {
+      let existedUsers: UserViewModel[] = [];
+
+      props.existedUsersIds.forEach((existedUserId) => {
+        const foundUser = users.find((userItr) => userItr.id === existedUserId);
+        if (foundUser) {
+          existedUsers = [...existedUsers, foundUser];
+        }
+      });
+
+      let nonExistedUsers = users.filter(
+        (userInBigArr) => !existedUsers.includes(userInBigArr)
+      );
+
+      nonExisted = nonExistedUsers;
+
       setSelection((prev) => {
-        return { ...prev, remainingUsers: users };
+        return { ...prev, remainingUsers: nonExistedUsers };
       });
     }
   }, [users]);
@@ -133,33 +136,23 @@ const CreateGroupDialog: FC<CreateGroupDialogProps> = (props) => {
   }, [usersError]);
 
   const handleFormSubmission = () => {
-    props.onSubmission({
-      name: groupName,
-      users: selection.selectedUsers,
-    });
+    props.onSubmission(selection.selectedUsers);
   };
 
   const handleOnUserSelectedFromMenu = (user: UserViewModel) => {
     addUserToSelected(user);
   };
 
+  const noMembersToAdd = nonExisted && nonExisted.length === 0;
+
   return (
     <Dialog
       open={props.open}
       onClose={handleOnClose}
-      aria-labelledby={"create-group-form-dialog"}
+      aria-labelledby={"add-members-to-group-form-dialog"}
     >
-      <DialogTitle>Create Group</DialogTitle>
+      <DialogTitle>Add member to group</DialogTitle>
       <DialogContent>
-        <TextField
-          className={classes.groupNameInput}
-          label="Group Name"
-          variant="filled"
-          onChange={(event) => setGroupName(event.target.value)}
-          size={"small"}
-        >
-          {groupName}
-        </TextField>
         <Box className={classes.addAgentContainer}>
           {selection.selectedUsers?.map((user) => {
             return <FlexItemAgent user={user} />;
@@ -170,7 +163,7 @@ const CreateGroupDialog: FC<CreateGroupDialogProps> = (props) => {
                 {...bindTrigger(usersPopUpState)}
                 className={classes.addUserText}
               >
-                Add Agent
+                {"Add Agent"}
               </Button>
               <ListOfUsersPopUpMenu
                 popupState={usersPopUpState}
@@ -179,6 +172,11 @@ const CreateGroupDialog: FC<CreateGroupDialogProps> = (props) => {
               />
             </>
           )}
+          {noMembersToAdd && (
+            <Typography className={classes.addUserText}>
+              No members to add
+            </Typography>
+          )}
         </Box>
       </DialogContent>
       <DialogActions className={classes.dialogActions}>
@@ -186,7 +184,7 @@ const CreateGroupDialog: FC<CreateGroupDialogProps> = (props) => {
           Cancel
         </Button>
         <Button
-          disabled={selection.selectedUsers.length === 0 || groupName.length == 0}
+          disabled={selection.selectedUsers.length === 0}
           variant={"contained"}
           onClick={handleFormSubmission}
           color="primary"
@@ -199,4 +197,4 @@ const CreateGroupDialog: FC<CreateGroupDialogProps> = (props) => {
   );
 };
 
-export default CreateGroupDialog;
+export default AddMembersDialog;

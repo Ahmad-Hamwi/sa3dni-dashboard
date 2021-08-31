@@ -11,10 +11,13 @@ import {
   creatingGroupState,
   createGroupErrorState,
   createGroupSuccessState,
+  deleteGroupErrorState,
+  deleteGroupSuccessState,
 } from "./groups_states";
 import { TStore } from "../../store/store";
 import {
   createGroup,
+  deleteGroup,
   getGroups,
   getSelectedGroup,
 } from "../../actions/groups_actions";
@@ -62,6 +65,16 @@ const groupsSlice = createSlice({
       state: GroupsState,
       { payload }: PayloadAction<GroupModel>
     ) => createGroupSuccessState(state, payload),
+
+    [deleteGroup.rejected.type]: (
+      state: GroupsState,
+      { payload }: PayloadAction<Error>
+    ) => deleteGroupErrorState(state, payload),
+
+    [deleteGroup.fulfilled.type]: (
+      state: GroupsState,
+      { payload }: PayloadAction<GroupModel>
+    ) => deleteGroupSuccessState(state, payload),
   },
 });
 

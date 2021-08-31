@@ -31,7 +31,8 @@ import { PopupState } from "material-ui-popup-state/core";
 import { AgentRoleItem } from "./AgentRoleItem";
 import { AgentStatusBadge } from "./AgentStatusBadge";
 import UserViewModel from "../../viewmodel/user/UserViewModel";
-import {Role} from "../../../infrastructure/model/UserModel";
+import { Role } from "../../../infrastructure/model/UserModel";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -44,6 +45,11 @@ const useStyles = makeStyles((theme: Theme) =>
       height: theme.spacing(6),
       color: theme.palette.secondary.contrastText,
       backgroundColor: theme.palette.secondary.main,
+    },
+
+    avatarSelected: {
+      backgroundColor: theme.palette.primary.main,
+      color: "white",
     },
 
     listItemText: {
@@ -89,21 +95,26 @@ export interface QueryParams {
 
 const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
   const classes = useStyles();
-  const theme = useTheme();
   const { path } = useRouteMatch();
   const location = useLocation();
 
   const { id, fullName, role, activity, email } = props.agent;
-
-  const avatar = (
-    <Avatar className={classes.avatar}>{fullName[0].toUpperCase()}</Avatar>
-  );
 
   const { [Routes.PARAM_AGENT_ID]: agentIdFromQueryParams } = qs.parse(
     location.search,
     {
       ignoreQueryPrefix: true,
     }
+  );
+
+  const isSelected = agentIdFromQueryParams === id;
+
+  const avatar = (
+    <Avatar
+      className={clsx(classes.avatar, isSelected && classes.avatarSelected)}
+    >
+      {fullName[0].toUpperCase()}
+    </Avatar>
   );
 
   const popUpState = usePopupState({
@@ -125,7 +136,7 @@ const AgentListItem: FC<AgentListItemProps> = (props: AgentListItemProps) => {
         button
         className={classes.listItemButton}
         component={Link}
-        selected={agentIdFromQueryParams === id}
+        selected={isSelected}
         to={path + "?" + Routes.PARAM_AGENT_ID + "=" + id}
       >
         <AgentStatusBadge status={activity!}>{avatar}</AgentStatusBadge>

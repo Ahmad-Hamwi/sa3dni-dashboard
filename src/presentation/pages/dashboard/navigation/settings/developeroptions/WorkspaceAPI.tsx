@@ -72,6 +72,7 @@ const WorkspaceAPI = () => {
   const { loading, apiKey } = useSelector(companySelector);
 
   useEffect(() => {
+    if (apiKey) return;
     dispatch(getCompanyApiKey());
   }, [apiKey]);
 

@@ -1,19 +1,13 @@
-import React, { useState } from "react";
-import clsx from "clsx";
-import {
-  createStyles,
-  makeStyles,
-  useTheme,
-  Theme,
-} from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
+import React from "react";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 import DrawerListItems from "./drawer/DrawerListItems";
+import { useSelector } from "react-redux";
+import { authSelector } from "../../reducers/app/auth/auth_reducer";
+import { Activity } from "../../../infrastructure/model/UserModel";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,6 +15,10 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
     },
     appBar: {
+      color: "white",
+      backgroundColor:
+        theme.palette.primary.dark + theme.palette.secondary.main,
+      borderWidth: 0,
       zIndex: theme.zIndex.drawer + 1,
     },
     drawer: {
@@ -66,14 +64,13 @@ const DashboardDrawerAndAppBar: React.FC<DashboardDrawerAndAppBarProps> = ({
 }) => {
   const classes = useStyles();
 
+  const { user } = useSelector(authSelector);
+
+  const handleOnUserActivityChanged = (activity: Activity) => {};
+
   return (
     <div className={classes.root}>
-      <AppBar
-        position="fixed"
-        className={classes.appBar}
-        variant="outlined"
-        color="secondary"
-      >
+      <AppBar position="fixed" className={classes.appBar}>
         <Toolbar variant="dense">
           <Typography variant="h6" noWrap>
             Dashboard
@@ -81,7 +78,10 @@ const DashboardDrawerAndAppBar: React.FC<DashboardDrawerAndAppBarProps> = ({
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" className={classes.drawer}>
-        <DrawerListItems />
+        <DrawerListItems
+          currentUser={user!}
+          onUserStatusRequested={handleOnUserActivityChanged}
+        />
       </Drawer>
       <div className={classes.main}>{children}</div>
     </div>
