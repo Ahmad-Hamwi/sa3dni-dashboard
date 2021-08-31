@@ -12,6 +12,8 @@ export default interface IAuthService {
   saveToken(token: string): Promise<void>;
 
   getToken(): Promise<string | null>;
+
+  removeToken(): Promise<boolean>
 }
 
 export type LoginResult = {

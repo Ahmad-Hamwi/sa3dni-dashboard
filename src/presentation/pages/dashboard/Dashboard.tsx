@@ -8,6 +8,7 @@ import { connectToDashboardSocket } from "../../actions/dashboardsocket/dashboar
 import { dashboardSocketSelector } from "../../reducers/connection/dashboard/dashboard_socket_reducer";
 import { authSelector } from "../../reducers/app/auth/auth_reducer";
 import Settings from "./navigation/settings/Settings";
+import { logout } from "../../actions/auth_actions";
 
 const Chats = lazy(() => import("./navigation/chats/Chats"));
 const Workspace = lazy(() => import("./navigation/workspace/Workspace"));
@@ -58,8 +59,12 @@ const Dashboard = () => {
     closed,
   ]);
 
+  const handleLogoutRequest = () => {
+    dispatch(logout());
+  };
+
   return (
-    <DashboardDrawerAndAppBar>
+    <DashboardDrawerAndAppBar onLogoutRequested={handleLogoutRequest}>
       <Suspense fallback={<TicketLoading />}>
         <Switch>
           <Route exact path={path}>
@@ -73,6 +78,6 @@ const Dashboard = () => {
       </Suspense>
     </DashboardDrawerAndAppBar>
   );
-}
+};
 
 export default Dashboard;

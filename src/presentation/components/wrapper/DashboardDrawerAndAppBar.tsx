@@ -1,13 +1,24 @@
-import React from "react";
+import React, { FC, useState } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import DrawerListItems from "./drawer/DrawerListItems";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authSelector } from "../../reducers/app/auth/auth_reducer";
 import { Activity } from "../../../infrastructure/model/UserModel";
+import { Link } from "react-router-dom";
+import { Routes } from "../../route/routes";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
+import { logout } from "../../actions/auth_actions";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -54,13 +65,24 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingTop: theme.spacing(6) - 2,
       maxHeight: `100vh`,
     },
+
+    title: {
+      flexGrow: 1,
+    },
+
+    logoutButton: {
+      color: "white",
+    },
   })
 );
 
-type DashboardDrawerAndAppBarProps = {};
+type DashboardDrawerAndAppBarProps = {
+  onLogoutRequested: () => void;
+};
 
 const DashboardDrawerAndAppBar: React.FC<DashboardDrawerAndAppBarProps> = ({
   children,
+  onLogoutRequested,
 }) => {
   const classes = useStyles();
 
@@ -68,13 +90,32 @@ const DashboardDrawerAndAppBar: React.FC<DashboardDrawerAndAppBarProps> = ({
 
   const handleOnUserActivityChanged = (activity: Activity) => {};
 
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+
+  const handleLogoutRequest = () => {
+    setLogoutDialogOpen(true);
+    onLogoutRequested();
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar variant="dense">
-          <Typography variant="h6" noWrap>
+          <Typography className={classes.title} variant="h6" noWrap>
             Dashboard
           </Typography>
+          <Button
+            className={classes.logoutButton}
+            variant="text"
+            onClick={() => setLogoutDialogOpen(true)}
+          >
+            Logout
+          </Button>
+          <LogoutConfirmationDialog
+            open={logoutDialogOpen}
+            onPositive={handleLogoutRequest}
+            onNegative={() => setLogoutDialogOpen(false)}
+          />
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" className={classes.drawer}>
@@ -89,3 +130,31 @@ const DashboardDrawerAndAppBar: React.FC<DashboardDrawerAndAppBarProps> = ({
 };
 
 export default DashboardDrawerAndAppBar;
+
+type LogoutConfirmationDialogProps = {
+  open: boolean;
+  onPositive: () => void;
+  onNegative: () => void;
+};
+
+const LogoutConfirmationDialog: FC<LogoutConfirmationDialogProps> = (props) => {
+  return (
+    <Dialog open={props.open} onClose={() => props.onNegative()}>
+      <DialogTitle>Logout</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          Are you sure you want to log out? Make sure you have no active chats
+          currently running
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => props.onNegative()} color="primary">
+          Cancel
+        </Button>
+        <Button onClick={() => props.onPositive()} color="primary" autoFocus>
+          Okay
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};

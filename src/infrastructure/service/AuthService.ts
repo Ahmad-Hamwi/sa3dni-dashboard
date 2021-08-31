@@ -48,4 +48,9 @@ export default class AuthService implements IAuthService {
   getToken(): Promise<string | null> {
     return Promise.resolve(this.cache.getToken());
   }
+
+  removeToken(): Promise<boolean> {
+    this.cache.removeToken();
+    return Promise.resolve(true);
+  }
 }

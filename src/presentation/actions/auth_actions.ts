@@ -12,3 +12,8 @@ export const authenticateUser = createAsyncThunk(
     };
   }
 );
+
+export const logout = createAsyncThunk("auth/logout", async () => {
+  await resolveService.authService().removeToken();
+  return;
+});

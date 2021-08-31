@@ -12,4 +12,8 @@ export default class AppCache implements IAppCache {
   saveToken(token: string): void {
     this.cacheStorage.putString(TOKEN_CACHE_KEY, token);
   }
+
+  removeToken(): void {
+    this.cacheStorage.clean(TOKEN_CACHE_KEY);
+  }
 }
