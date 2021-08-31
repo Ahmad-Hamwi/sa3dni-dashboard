@@ -1,12 +1,12 @@
 import { FC } from "react";
-import { DayAvailability } from "./ChatAvailabilityParams";
 import ReactApexChart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import { ReportChartsConfig } from "../../ReportChartsConfig";
 import Utils from "../../../../../utils/Utils";
+import {ChatAvailabilityDayModel} from "../../../../../infrastructure/model/report/ChatAvailabilitiesModel";
 
 export type ChatAvailabilityBarProps = {
-  data: DayAvailability[];
+  data: ChatAvailabilityDayModel[];
 };
 
 const ChatAvailabilityBar: FC<ChatAvailabilityBarProps> = (props) => {

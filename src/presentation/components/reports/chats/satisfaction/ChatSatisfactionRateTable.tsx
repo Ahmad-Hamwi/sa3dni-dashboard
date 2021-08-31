@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { DayRateSatisfaction } from "./ChatSatisfactionRateParams";
 import {
   Paper,
   Table,
@@ -9,9 +8,10 @@ import {
   TableBody,
   TableRow,
 } from "@material-ui/core";
+import {ChatSatisfactionDayModel} from "../../../../../infrastructure/model/report/ChatSatisfactionsModel";
 
 export type ChatSatisfactionRateTableProps = {
-  data: DayRateSatisfaction[];
+  data: ChatSatisfactionDayModel[];
 };
 
 const ChatSatisfactionRateTable: FC<ChatSatisfactionRateTableProps> = (
@@ -20,11 +20,11 @@ const ChatSatisfactionRateTable: FC<ChatSatisfactionRateTableProps> = (
   const rows: { title: string; values: number[] }[] = [
     {
       title: "Good",
-      values: props.data.map((day) => day.ratedGoodChats),
+      values: props.data.map((day) => day.ratedGood),
     },
     {
       title: "Bad",
-      values: props.data.map((day) => day.ratedBadChats),
+      values: props.data.map((day) => day.ratedBad),
     },
   ];
 

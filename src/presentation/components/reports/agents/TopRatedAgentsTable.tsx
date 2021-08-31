@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { AgentSatisfaction } from "./AgentSatisfactionParams";
 import {
   Grid,
   Paper,
@@ -13,9 +12,10 @@ import {
 } from "@material-ui/core";
 import {ThumbDownAlt, ThumbUpAlt} from "@material-ui/icons";
 import { ReportChartsConfig } from "../ReportChartsConfig";
+import UserPerformanceViewModel from "../../../viewmodel/user/UserPerformanceViewModel";
 
 export type TopRatedAgentsTableProps = {
-  data: AgentSatisfaction[];
+  data: UserPerformanceViewModel[];
 };
 
 const TopRatedAgentsTable: FC<TopRatedAgentsTableProps> = (props) => {
@@ -40,11 +40,11 @@ const TopRatedAgentsTable: FC<TopRatedAgentsTableProps> = (props) => {
               </TableCell>
 
               <AgentCell
-                fullName={row.agent.fullName}
-                email={row.agent.email}
+                fullName={row.user.fullName}
+                email={row.user.email}
               />
 
-              <TableCell>{row.totalRatedChats}</TableCell>
+              <TableCell>{row.totalChats}</TableCell>
 
               <TableCell>
                 <div style={{ display: "flex", alignItems: "center" }}>
@@ -54,7 +54,7 @@ const TopRatedAgentsTable: FC<TopRatedAgentsTableProps> = (props) => {
                       marginRight: "8px"
                     }}
                   />
-                  {row.ratedGoodChats}
+                  {row.ratedGood}
                 </div>
               </TableCell>
 
@@ -66,7 +66,7 @@ const TopRatedAgentsTable: FC<TopRatedAgentsTableProps> = (props) => {
                         marginRight: "8px"
                       }}
                   />
-                  {row.ratedBadChats}
+                  {row.ratedBad}
                 </div>
               </TableCell>
             </TableRow>

@@ -1,67 +1,75 @@
-import { FC, useState } from "react";
-import DaysFilter from "../../../components/reports/DaysFilter";
+import { FC, useEffect, useState } from "react";
+import DaysFilter, {
+  FilterValue,
+} from "../../../components/reports/DaysFilter";
 import TopRatedAgentsTable from "../../../components/reports/agents/TopRatedAgentsTable";
 import { Typography } from "@material-ui/core";
 import AgentsFilter from "../../../components/reports/agents/AgentsFilter";
-import {
-  AgentPerformanceInfo
-} from "../../../components/reports/agents/AgentSatisfactionParams";
-import Utils from "../../../../utils/Utils";
 import AgentPerformance from "../../../components/reports/agents/AgentPerformance";
+import { useDispatch, useSelector } from "react-redux";
+import { userReportsSelector } from "../../../reducers/reports/user/user_reports_reducer";
+import {
+  getTopRatedUsers,
+  getUserPerformance,
+} from "../../../actions/reports_actions";
+import { getUsers } from "../../../actions/users_actions";
+import { usersSelector } from "../../../reducers/users/users_reducer";
+import UserViewModel from "../../../viewmodel/user/UserViewModel";
 
 const AgentsSatisfactionReports: FC = (props) => {
-  const [agentsSatisfaction, setAgentsSatisfaction] = useState([
-    {
-      agent: {
-        id: "1",
-        fullName: "Abdulrahman",
-        email: "abdulrahmantayara@company.com",
-      },
-      totalRatedChats: 10,
-      ratedGoodChats: 6,
-      ratedBadChats: 4,
-    },
-    {
-      agent: {
-        id: "2",
-        fullName: "Mouaz",
-        email: "mouazalkassem@company.com",
-      },
-      totalRatedChats: 10,
-      ratedGoodChats: 3,
-      ratedBadChats: 7,
-    },
-  ]);
+  const { topRatedUsers, selectedUserPerformance } =
+    useSelector(userReportsSelector);
 
-  const [agents, setAgents] = useState([
-    {
-      id: "1",
-      fullName: "Abdulrahman",
-      email: "abdulrahmantayara@company.com"
-    },
-    {
-      id: "2",
-      fullName: "Mouaz",
-      email: "mouazalkassem@company.com"
-    }
-  ])
+  const { users } = useSelector(usersSelector);
 
-  const selectedAgent: AgentPerformanceInfo  = {
-    totalRatedChats: 10,
-    ratedGoodChats: 6,
-    ratedBadChats: 4,
-    averageResponseTime: Utils.convertMillisecondsToPeriod(2000)
-  }
+  const [daysFilter, setDaysFilter] = useState<FilterValue>();
+
+  const [selectedUser, setSelectedUser] = useState<UserViewModel>();
+
+  const dispatch = useDispatch();
+
+  const handleDaysFilter = (filter: FilterValue) => {
+    setDaysFilter(filter);
+  };
+
+  const handleUserSelect = (user: UserViewModel) => {
+      console.log("User", user)
+    setSelectedUser(user);
+  };
+
+  useEffect(() => {
+    dispatch(
+      getTopRatedUsers({
+        startDate: daysFilter?.start,
+        endDate: daysFilter?.end,
+      })
+    );
+  }, [daysFilter, dispatch]);
+
+  useEffect(() => {
+    if (selectedUser)
+      dispatch(
+        getUserPerformance({
+          userId: selectedUser.id,
+          startDate: daysFilter?.start,
+          endDate: daysFilter?.end,
+        })
+      );
+  }, [daysFilter, selectedUser, dispatch]);
+
+  useEffect(() => {
+    dispatch(getUsers());
+  }, [dispatch]);
 
   return (
     <div>
-      <DaysFilter />
+      <DaysFilter onSelect={handleDaysFilter} />
 
       <div style={{ width: "90%", margin: "16px auto" }}>
         <Typography variant="h5" style={{ marginBottom: "16px" }}>
           Top Rated Agents
         </Typography>
-        <TopRatedAgentsTable data={agentsSatisfaction} />
+        <TopRatedAgentsTable data={topRatedUsers || []} />
       </div>
 
       <div style={{ width: "90%", margin: "32px auto" }}>
@@ -69,10 +77,13 @@ const AgentsSatisfactionReports: FC = (props) => {
           Agent Performance
         </Typography>
 
-        <AgentsFilter data={agents} />
-        <div style={{marginTop: '16px'}}>
-          <AgentPerformance data={selectedAgent} />
-        </div>
+        <AgentsFilter data={users || []} onSelect={handleUserSelect} />
+
+        {selectedUserPerformance && (
+          <div style={{ marginTop: "16px" }}>
+            <AgentPerformance data={selectedUserPerformance} />
+          </div>
+        )}
       </div>
     </div>
   );

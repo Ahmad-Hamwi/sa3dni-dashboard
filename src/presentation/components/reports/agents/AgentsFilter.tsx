@@ -1,39 +1,38 @@
 import { FC, useEffect, useState } from "react";
-import { AgentInfo } from "./AgentSatisfactionParams";
 import { FormControl, MenuItem, Select, Typography } from "@material-ui/core";
 import DropDownSelectMenu from "../../common/DropDownSelectMenu";
+import UserViewModel from "../../../viewmodel/user/UserViewModel";
 
 export type AgentsFilterProps = {
-  data: AgentInfo[];
-  onSelect?: (agent: AgentInfo) => void;
+  data: UserViewModel[];
+  onSelect?: (agent: UserViewModel) => void;
 };
 
 const findAgentById = (
   id: string,
-  agents: AgentInfo[]
-): AgentInfo | undefined => {
+  agents: UserViewModel[]
+): UserViewModel | undefined => {
   return agents.find((agent) => agent.id === id);
 };
 
 const AgentsFilter: FC<AgentsFilterProps> = (props) => {
-  const [selectedValue, setSelectedValue] = useState(props.data[0].id);
+  const [selectedValue, setSelectedValue] = useState(0);
 
   const menuItemsComponents = props.data.map((agent, index) => {
+    console.log("Menu", agent)
     return (
-      <MenuItem key={index} value={agent.id}>
+      <MenuItem key={index} value={index}>
         {agent.fullName}
       </MenuItem>
     );
   });
 
   const handleChange = (event: any) => {
-    const newValue = findAgentById(event.target.id, props.data);
-
-    newValue && setSelectedValue(newValue.id);
+    setSelectedValue(event.target.value as number);
   };
 
   useEffect(() => {
-    const agent = findAgentById(selectedValue, props.data);
+    const agent = props.data[selectedValue];
     agent && props.onSelect?.(agent);
   }, [selectedValue, props]);
 

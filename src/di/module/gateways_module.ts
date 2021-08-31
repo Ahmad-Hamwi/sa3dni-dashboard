@@ -33,6 +33,10 @@ import ICompanyRepository, {
   INJECT_COMPANY_REPOSITORY,
 } from "../../infrastructure/repository/company/ICompanyRepository";
 import CompanyRepository from "../../infrastructure/repository/company/CompanyRepository";
+import IChatReportsRepository, {INJECT_CHAT_REPORTS_REPOSITORY} from "../../infrastructure/repository/reports/chat/IChatReportsRepository";
+import ChatReportsRepository from "../../infrastructure/repository/reports/chat/ChatReportsRepository";
+import IUserReportsRepository, {INJECT_USER_REPORTS_REPOSITORY} from "../../infrastructure/repository/reports/user/IUserReportsRepository";
+import UserReportsRepository from "../../infrastructure/repository/reports/user/UserReportsRepository";
 
 export function registerGateways(container: IContainer) {
   container.registerLazySingleton<IAuthService>(INJECT_AUTH_SERVICE, (c) => {
@@ -83,4 +87,18 @@ export function registerGateways(container: IContainer) {
       return new CompanyRepository(c.resolve<IApiClient>(INJECT_API_CLIENT));
     }
   );
+
+  container.registerLazySingleton<IChatReportsRepository>(
+      INJECT_CHAT_REPORTS_REPOSITORY,
+      (c) => {
+        return new ChatReportsRepository(c.resolve<IApiClient>(INJECT_API_CLIENT));
+      }
+  )
+
+  container.registerLazySingleton<IUserReportsRepository>(
+      INJECT_USER_REPORTS_REPOSITORY,
+      (c) => {
+        return new UserReportsRepository(c.resolve<IApiClient>(INJECT_API_CLIENT));
+      }
+  )
 }
