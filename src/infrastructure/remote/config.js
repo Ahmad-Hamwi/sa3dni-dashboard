@@ -1,5 +1,6 @@
 export const API_CONFIG = {
-  base: "https://sa3dni.herokuapp.com/api/",
+  base: "http://192.168.0.206:7001/api/"
+  // base: "https://sa3dni.herokuapp.com/api/",
   // base: "http://localhost:7001/api/",
 };
 
@@ -32,7 +33,9 @@ export const API_ENDPOINTS = {
   chatReportsAvailabilities: "/reports/chats/availabilities",
 
   userReportsTopRated: "/reports/users/top",
-  userPerformance: "/reports/users/:id/performance"
+  userPerformance: "/reports/users/:id/performance",
+
+  userStatus: "/users/activity",
 };
 
 export const API_HEADERS = {

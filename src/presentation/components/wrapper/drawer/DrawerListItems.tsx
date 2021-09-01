@@ -216,6 +216,7 @@ export const UserActivityMenu: FC<UserStatusMenuProps> = (props) => {
   const handleOnUserStatusRequested = (activity: Activity) => {
     popUpState.close();
     onUserStatusRequested(activity);
+    console.log(activity);
   };
 
   const userActivities = [Activity.ACTIVE, Activity.BUSY, Activity.OFFLINE];

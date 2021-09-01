@@ -78,17 +78,17 @@ const useStyles = makeStyles((theme: Theme) =>
 
 type DashboardDrawerAndAppBarProps = {
   onLogoutRequested: () => void;
+  onUserActivityChangedRequested: (activity: Activity) => void;
 };
 
 const DashboardDrawerAndAppBar: React.FC<DashboardDrawerAndAppBarProps> = ({
   children,
   onLogoutRequested,
+  onUserActivityChangedRequested,
 }) => {
   const classes = useStyles();
 
   const { user } = useSelector(authSelector);
-
-  const handleOnUserActivityChanged = (activity: Activity) => {};
 
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
@@ -121,7 +121,7 @@ const DashboardDrawerAndAppBar: React.FC<DashboardDrawerAndAppBarProps> = ({
       <Drawer variant="permanent" className={classes.drawer}>
         <DrawerListItems
           currentUser={user!}
-          onUserStatusRequested={handleOnUserActivityChanged}
+          onUserStatusRequested={onUserActivityChangedRequested}
         />
       </Drawer>
       <div className={classes.main}>{children}</div>

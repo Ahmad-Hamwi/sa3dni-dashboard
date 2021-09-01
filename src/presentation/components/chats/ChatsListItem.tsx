@@ -18,8 +18,14 @@ import { Routes } from "../../route/routes";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import qs from "qs";
 import ChatViewModel from "../../viewmodel/chat/ChatViewModel";
-import {bindMenu, bindTrigger, usePopupState} from "material-ui-popup-state/hooks";
+import {
+  bindMenu,
+  bindTrigger,
+  usePopupState,
+} from "material-ui-popup-state/hooks";
 import { PopupState } from "material-ui-popup-state/es/core";
+import clsx from "clsx";
+import UserViewModel from "../../viewmodel/user/UserViewModel";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,6 +38,15 @@ const useStyles = makeStyles((theme: Theme) =>
       height: theme.spacing(6),
       color: theme.palette.secondary.contrastText,
       backgroundColor: theme.palette.secondary.main,
+    },
+
+    avatarSelected: {
+      backgroundColor: theme.palette.primary.main,
+      color: "white",
+    },
+
+    avatarNotify: {
+      backgroundColor: "#fff3c6",
     },
 
     listItemText: {
@@ -47,6 +62,10 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
 
+    listItemButtonNotify: {
+      backgroundColor: "#fff3c6",
+    },
+
     popUpListItemWarning: {
       color: theme.palette.error.dark,
     },
@@ -55,12 +74,14 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export interface ChatsListItemProps {
   chat: ChatViewModel;
+  currentUser: UserViewModel;
   onRequestCloseChat: (chat: ChatViewModel) => void;
   onRequestTransferChat: (chat: ChatViewModel) => void;
 }
 
 const ChatsListItem: FC<ChatsListItemProps> = (props) => {
-  const { chat, onRequestCloseChat, onRequestTransferChat } = props;
+  const { chat, onRequestCloseChat, onRequestTransferChat, currentUser } =
+    props;
   const { customer, user, group } = chat;
 
   const classes = useStyles();
@@ -75,9 +96,14 @@ const ChatsListItem: FC<ChatsListItemProps> = (props) => {
     }
   );
 
+  const isSelected = chatIdFromQueryParams === props.chat.id;
+  const notify = chat.status === "PENDING" && chat.user.id === currentUser.id;
+
   const CustomerAvatar = () => {
     return (
-      <Avatar className={classes.avatar}>
+      <Avatar
+        className={clsx(classes.avatar, isSelected && classes.avatarSelected)}
+      >
         {customer.fullName[0].toUpperCase()}
       </Avatar>
     );
@@ -92,7 +118,10 @@ const ChatsListItem: FC<ChatsListItemProps> = (props) => {
     <>
       <ListItem
         button
-        className={classes.listItemButton}
+        className={clsx(
+          classes.listItemButton,
+          notify && classes.listItemButtonNotify
+        )}
         component={Link}
         selected={chatIdFromQueryParams === chat.id}
         to={path + "?" + Routes.PARAM_CHAT_ID + "=" + chat.id}
@@ -103,7 +132,6 @@ const ChatsListItem: FC<ChatsListItemProps> = (props) => {
         <ListItemText
           className={classes.listItemText}
           primary={chat.customer.fullName}
-          // secondary={last message}
         />
         <ListItemSecondaryAction>
           <IconButton

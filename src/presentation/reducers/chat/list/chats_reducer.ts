@@ -4,7 +4,8 @@ import {
   closeChat,
   getChat,
   getChatMessages,
-  getChats, transferChat,
+  getChats,
+  transferChat,
 } from "../../../actions/chat_actions";
 import ChatModel from "../../../../infrastructure/model/chat/ChatModel";
 import { TStore } from "../../../store/store";
@@ -82,6 +83,8 @@ export const chatsSlice = createSlice({
           if (foundChat) {
             payload.reverse();
             foundChat.messages = payload;
+
+            foundChat.status = "OPENED";
           } else {
             // TODO make "messages pending for chat field" cause the message came but did not find the parent chat.
           }
@@ -106,12 +109,12 @@ export const chatsSlice = createSlice({
     },
 
     [transferChat.fulfilled.type]: (
-        state: ChatsState,
-        { payload }: PayloadAction<ChatViewModel>
+      state: ChatsState,
+      { payload }: PayloadAction<ChatViewModel>
     ) => {
       if (state.chats) {
         const foundChatIndex = state.chats?.findIndex(
-            (chatItem) => chatItem.id === payload.id
+          (chatItem) => chatItem.id === payload.id
         );
         if (foundChatIndex) {
           state.chats.splice(foundChatIndex, 1);
@@ -142,7 +145,15 @@ export const chatsSlice = createSlice({
       state: ChatsState,
       { payload }: PayloadAction<ChatViewModel>
     ) => {
-      state.chats = state.chats ? [...state.chats, payload] : [payload];
+
+      const foundIndex = state.chats!.findIndex(
+        (chatItr) => chatItr.id === payload.id
+      );
+      if (foundIndex) {
+        state.chats![foundIndex] = payload;
+      } else {
+        state.chats = [...state.chats!, payload];
+      }
     },
 
     [notifyChatClosed.type]: (

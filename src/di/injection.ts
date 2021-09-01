@@ -26,6 +26,9 @@ import ICompanyRepository, {
 } from "../infrastructure/repository/company/ICompanyRepository";
 import IChatReportsRepository, {INJECT_CHAT_REPORTS_REPOSITORY} from "../infrastructure/repository/reports/chat/IChatReportsRepository";
 import IUserReportsRepository, {INJECT_USER_REPORTS_REPOSITORY} from "../infrastructure/repository/reports/user/IUserReportsRepository";
+import IUserStatusRepository, {
+  INJECT_USER_STATUS_REPOSITORY
+} from "../infrastructure/repository/userstatus/IUserStatusRepository";
 
 let initialized = false;
 
@@ -45,6 +48,7 @@ export function resolve<T>(token: any): T {
 
 export const resolveRepository = {
   users: (): IUserRepository => resolve(INJECT_USER_REPOSITORY),
+  usersStatus: (): IUserStatusRepository => resolve(INJECT_USER_STATUS_REPOSITORY),
   groups: (): IGroupRepository => resolve(INJECT_GROUP_REPOSITORY),
   invitations: (): IInvitationRepository =>
     resolve(INJECT_INVITATION_REPOSITORY),

@@ -31,6 +31,7 @@ import GroupViewModel from "../../../../viewmodel/group/GroupViewModel";
 import { groupsSelector } from "../../../../reducers/groups/groups_reducers";
 import { getGroups } from "../../../../actions/groups_actions";
 import { dispatch } from "react-hot-toast";
+import { authSelector } from "../../../../reducers/app/auth/auth_reducer";
 
 const useStyles = makeStyles((theme: Theme) => ({
   listSection: {
@@ -110,6 +111,8 @@ const ChatsList = () => {
     setTransferChatDialogOpen(true);
   };
 
+  const { user } = useSelector(authSelector);
+
   const ChatsList = () => {
     return chats?.length === 0 ? (
       <Typography className={classes.noChatsText}>No chats opened</Typography>
@@ -120,6 +123,7 @@ const ChatsList = () => {
             if (chat.status !== "CLOSED") {
               return (
                 <ChatsListItem
+                  currentUser={user!}
                   chat={chat}
                   onRequestCloseChat={handleOnChatClosed}
                   onRequestTransferChat={handleOnRequestTransferChat}

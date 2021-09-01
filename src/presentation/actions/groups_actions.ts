@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { resolveRepository } from "../../di/injection";
 import thunk from "redux-thunk";
 import GroupViewModel from "../viewmodel/group/GroupViewModel";
+import UserViewModel from "../viewmodel/user/UserViewModel";
 
 export const getGroups = createAsyncThunk(
   "groups/getGroups",

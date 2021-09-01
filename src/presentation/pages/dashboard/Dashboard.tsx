@@ -9,6 +9,8 @@ import { dashboardSocketSelector } from "../../reducers/connection/dashboard/das
 import { authSelector } from "../../reducers/app/auth/auth_reducer";
 import Settings from "./navigation/settings/Settings";
 import { logout } from "../../actions/auth_actions";
+import { changeUserStatus } from "../../actions/user_status_actions";
+import { Activity } from "../../../infrastructure/model/UserModel";
 
 const Chats = lazy(() => import("./navigation/chats/Chats"));
 const Workspace = lazy(() => import("./navigation/workspace/Workspace"));
@@ -63,8 +65,15 @@ const Dashboard = () => {
     dispatch(logout());
   };
 
+  const handleChangeActivityRequest = (activity: Activity) => {
+    dispatch(changeUserStatus(activity));
+  };
+
   return (
-    <DashboardDrawerAndAppBar onLogoutRequested={handleLogoutRequest}>
+    <DashboardDrawerAndAppBar
+      onLogoutRequested={handleLogoutRequest}
+      onUserActivityChangedRequested={handleChangeActivityRequest}
+    >
       <Suspense fallback={<TicketLoading />}>
         <Switch>
           <Route exact path={path}>
