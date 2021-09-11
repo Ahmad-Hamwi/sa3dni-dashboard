@@ -69,8 +69,11 @@ const Dashboard = () => {
     dispatch(changeUserStatus(activity));
   };
 
+  const { user } = useSelector(authSelector);
+
   return (
     <DashboardDrawerAndAppBar
+      currentUser={user!}
       onLogoutRequested={handleLogoutRequest}
       onUserActivityChangedRequested={handleChangeActivityRequest}
     >

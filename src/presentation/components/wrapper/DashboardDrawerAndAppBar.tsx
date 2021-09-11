@@ -19,6 +19,7 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { logout } from "../../actions/auth_actions";
+import UserViewModel from "../../viewmodel/user/UserViewModel";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -79,16 +80,16 @@ const useStyles = makeStyles((theme: Theme) =>
 type DashboardDrawerAndAppBarProps = {
   onLogoutRequested: () => void;
   onUserActivityChangedRequested: (activity: Activity) => void;
+  currentUser: UserViewModel;
 };
 
 const DashboardDrawerAndAppBar: React.FC<DashboardDrawerAndAppBarProps> = ({
   children,
   onLogoutRequested,
   onUserActivityChangedRequested,
+  currentUser,
 }) => {
   const classes = useStyles();
-
-  const { user } = useSelector(authSelector);
 
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
@@ -104,6 +105,7 @@ const DashboardDrawerAndAppBar: React.FC<DashboardDrawerAndAppBarProps> = ({
           <Typography className={classes.title} variant="h6" noWrap>
             Dashboard
           </Typography>
+          <Typography>{currentUser.fullName}</Typography>
           <Button
             className={classes.logoutButton}
             variant="text"
@@ -120,7 +122,7 @@ const DashboardDrawerAndAppBar: React.FC<DashboardDrawerAndAppBarProps> = ({
       </AppBar>
       <Drawer variant="permanent" className={classes.drawer}>
         <DrawerListItems
-          currentUser={user!}
+          currentUser={currentUser!}
           onUserStatusRequested={onUserActivityChangedRequested}
         />
       </Drawer>

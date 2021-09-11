@@ -1,6 +1,6 @@
 export const API_CONFIG = {
-  base: "http://192.168.0.206:7001/api/"
-  // base: "https://sa3dni.herokuapp.com/api/",
+  // base: "http://192.168.43.60:7001/api/"
+  base: "https://sa3dni.herokuapp.com/api/",
   // base: "http://localhost:7001/api/",
 };
 

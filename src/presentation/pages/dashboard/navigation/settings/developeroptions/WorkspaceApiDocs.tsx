@@ -36,7 +36,7 @@ const WorkspaceApiDocs = () => {
   const classes = useStyles();
 
   const code: string =
-    '<script\n    defer\n    id="chat_script"\n    src="https://sa3dni.herokuapp.com/module/web/sa3dni_chat_cdn.js"\n    api_key="Pc7d8yqrhg39ODp3qF6dHqdRk6aHk3c8kasMAmEyptY="\n    mountId="inject"/>';
+    '<script\n    defer\n    id="chat_script"\n    src="https://sa3dni.herokuapp.com/module/web/sa3dni_chat_cdn.js"\n    api_key="API_KEY_HERE"\n    mountId="inject"/>';
 
   return (
     <Box
