@@ -36,7 +36,16 @@ const WorkspaceApiDocs = () => {
   const classes = useStyles();
 
   const code: string =
-    '<script\n    defer\n    id="chat_script"\n    src="https://sa3dni.herokuapp.com/module/web/sa3dni_chat_cdn.js"\n    api_key="API_KEY_HERE"\n    mountId="inject"/>';
+    '<script\n    defer\n    id="chat_script"\n    src="https://sa3dni.com/module/web/sa3dni_chat_cdn.js"\n    api_key="API_KEY_HERE"\n    mountId="inject"/>';
+
+  const androidResourceCode: String =
+      '<?xml version="1.0" encoding="utf-8"?>\n' +
+      '<resources>\n' +
+      '\n' +
+      '    <!-- Sa3dni workspace api key -->\n' +
+      '    <string name="sa3dni_workspace_key" translatable="false">Your api key here</string>\n' +
+      '\n' +
+      '</resources>'
 
   return (
     <Box
@@ -57,7 +66,7 @@ const WorkspaceApiDocs = () => {
           1- Get your workspace API key from{" "}
           <Link
             target="_blank"
-            href="https://sa3dni-dashboard.herokuapp.com//dashboard/settings/apiKey"
+            href="https://sa3dni-dashboard.com//dashboard/settings/apiKey"
           >
             Here
           </Link>
@@ -90,7 +99,35 @@ const WorkspaceApiDocs = () => {
         </Typography>
         <Divider className={classes.spacer} orientation={"horizontal"} />
         <Typography className={classes.spacer} variant={"h6"}>
-          Coming soon...
+          Here are the steps for integrating the module in your Android app:
+        </Typography>
+        <Typography className={classes.spacer} variant={"body1"}>
+          1- Get your workspace API key from{" "}
+          <Link
+              target="_blank"
+              href="https://sa3dni-dashboard.com//dashboard/settings/apiKey"
+          >
+            Here
+          </Link>
+        </Typography>
+        <Typography className={classes.spacer} variant={"body1"}>
+          2- Add your api key in your android string resources as follows:
+        </Typography>
+        <Paper variant={"outlined"} className={classes.code}>
+          <pre>
+            <code>{androidResourceCode}</code>
+          </pre>
+        </Paper>
+        <Typography className={classes.spacer} variant={"h6"}>
+          Notes:
+        </Typography>
+        <Typography className={classes.spacer} variant={"body1"}>
+          - api_key attribute is used for passing your own company api key.
+        </Typography>
+        <Typography className={classes.spacer} variant={"body1"}>
+          - mountId attribute is used for specifying a div which the html code
+          will be injected to. If no mountId is specified the code will be
+          injected to the body.
         </Typography>
       </Box>
     </Box>

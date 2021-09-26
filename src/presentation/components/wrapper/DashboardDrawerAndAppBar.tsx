@@ -103,9 +103,9 @@ const DashboardDrawerAndAppBar: React.FC<DashboardDrawerAndAppBarProps> = ({
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar variant="dense">
           <Typography className={classes.title} variant="h6" noWrap>
-            Dashboard
+              Sa3dni - Dashboard
           </Typography>
-          <Typography>{currentUser.fullName}</Typography>
+          {/*<Typography>{currentUser.fullName}</Typography>*/}
           <Button
             className={classes.logoutButton}
             variant="text"

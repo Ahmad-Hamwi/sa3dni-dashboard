@@ -3,6 +3,7 @@ import ReactApexChart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import { ReportChartsConfig } from "../../ReportChartsConfig";
 import { RateTotals } from "./ChatSatisfactionRateParams";
+import {useTheme} from "@material-ui/core/styles";
 
 export type ChatsSatisfactionRatePieProps = {
   data: RateTotals;
@@ -11,10 +12,12 @@ export type ChatsSatisfactionRatePieProps = {
 };
 
 const ChatsSatisfactionRatePie: FC<ChatsSatisfactionRatePieProps> = (props) => {
+  const theme = useTheme();
+
   const options: ApexOptions = {
     colors: [
-      ReportChartsConfig.colors.badChatRate,
-      ReportChartsConfig.colors.goodChatRate,
+      theme.palette.error,
+      theme.palette.success,
     ],
     labels: [`Bad`, `Good`],
     plotOptions: {

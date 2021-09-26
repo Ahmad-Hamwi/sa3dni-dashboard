@@ -1,4 +1,5 @@
 export const DASHBOARD_SOCKET_BASE_URL = "wss://sa3dni.herokuapp.com/";
+// export const DASHBOARD_SOCKET_BASE_URL = "wss://localhost:7001/";
 // export const DASHBOARD_SOCKET_BASE_URL = "ws://192.168.43.60:7001/";
 export const DASHBOARD_SOCKET_AUTH_QP = "token";
 
