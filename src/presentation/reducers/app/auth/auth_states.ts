@@ -11,11 +11,13 @@ export const initialState: AuthState = {};
 export const authenticatedState = (
   state: AuthState,
   user: UserViewModel,
-  token: string,
+  token: string
 ): AuthState => {
-  state.isUserAuthenticated = true;
-  state.user = user;
-  state.token = token;
+  if (token.length !== 0) {
+    state.isUserAuthenticated = true;
+    state.user = user;
+    state.token = token;
+  }
   return state;
 };
 
