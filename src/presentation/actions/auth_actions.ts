@@ -1,15 +1,20 @@
 import { resolveRepository, resolveService } from "../../di/injection";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { Exception } from "../../infrastructure/exception/Exception";
 
 export const authenticateUser = createAsyncThunk(
   "user/authenticateUser",
   async (_, thunkAPI) => {
-    const user = await resolveRepository.users().me();
     const token = await resolveService.authService().getToken();
-    return {
-      user,
-      token,
-    };
+    if (token) {
+      const user = await resolveRepository.users().me();
+      return {
+        user,
+        token,
+      };
+    } else {
+      throw new Exception(-1, "Token not cached");
+    }
   }
 );
 

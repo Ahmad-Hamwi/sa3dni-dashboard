@@ -6,6 +6,7 @@ import { authSelector } from "../reducers/app/auth/auth_reducer";
 import { authenticateUser } from "../actions/auth_actions";
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
+import { TicketLoading } from "../components/app/loader/TicketLoading";
 
 interface AuthenticatedRouteProps {
   component:
@@ -35,7 +36,7 @@ const AuthenticatedRoute: FC<AuthenticatedRouteProps> = ({
         ) : isUserAuthenticated === false ? (
           <Redirect to={Routes.LOGIN} />
         ) : (
-          <></>
+          <TicketLoading />
         )
       }
     />
